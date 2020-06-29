@@ -267,7 +267,7 @@ class Test(models.Model):
     )
 
     def __str__(self):
-        return f'amount: {self.amount}, balance: {self.balance}, user: {self.user}, first offer: {self.offers.first()}'
+        return f'{self.offers.first()}, {self.user}, {self.balance}'
 
 
 class Campaign(models.Model):
@@ -348,7 +348,7 @@ class Campaign(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f'{self.id} {self.name}'
 
     def __eq__(self, other):
         if not other:
