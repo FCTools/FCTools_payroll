@@ -25,7 +25,12 @@ SECRET_KEY = '(726i#i50=z6@y00ywppg3$%is14+rv442l87pg(jr+#+#3q2d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['185.92.150.58', 'team.fctools.ru', '127.0.0.1']
+ALLOWED_HOSTS = [
+    '185.92.150.58',
+    'team.fctools.ru',
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -160,6 +165,7 @@ if DEBUG:
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/home/FCTools_upd/website/static/'
-STATIC_ROOT = '/home/FCTools_upd/website/static/'
-MEDIA_URL = '/home/FCTools_upd/website/media/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
