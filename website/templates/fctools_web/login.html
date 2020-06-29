@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Log-in</title>
+    <style type="text/css">
+        #centerLayer {
+            margin-left: 30%;
+            width: 40%;
+            padding: 10px;
+        }
+    </style>
+    <style>
+        .field_login {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 25px;
+            width: 223px;
+            margin: 10px 10px 10px 0;
+        }
+    </style>
+    <style>
+        .field_password {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 25px;
+            width: 200px;
+            margin: 10px 10px 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="centerLayer">
+    <h1 id="centerLayer">Log-in</h1>
+    <form action="." method="post">
+        <div class="fieldWrapper" id="centerLayer">
+            <label for="id_login">Login:</label>
+            {{ form.login }}
+        </div>
+        <div class="fieldWrapper" id="centerLayer">
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+        </div>
+        {% csrf_token %}
+        <p>
+            <button type="submit" id="centerLayer">Log-in</button>
+        </p>
+    </form>
+</div>
+</body>
+</html>

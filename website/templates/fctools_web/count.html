@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Count</title>
+    <style type="text/css">
+        #centerLayer {
+            margin-left: 30%;
+            width: 40%;
+            padding: 10px;
+        }
+    </style>
+    <style>
+        .field {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 25px;
+            width: 223px;
+            margin: 10px 10px 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="centerLayer">
+    <h1 id="centerLayer">Count salary</h1>
+    <form action="." method="post">
+        <div class="fieldWrapper" id="centerLayer">
+            <label for="id_user">User:</label>
+            {{ form.user }}
+        </div>
+        <div class="fieldWrapper" id="centerLayer">
+            <label for="id_start_date">Start date:</label><br>
+            {{ form.start_date }}
+        </div>
+        <div class="fieldWrapper" id="centerLayer">
+            <label for="id_end_date">End date:</label><br>
+            {{ form.end_date }}
+        </div>
+        {% csrf_token %}
+        <p>
+            <button type="submit" id="centerLayer">Submit</button>
+        </p>
+    </form>
+</div>
+</body>
+</html>
