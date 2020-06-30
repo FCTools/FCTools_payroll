@@ -1,24 +1,23 @@
 from django import forms
-from django.contrib.auth import authenticate
 
 from .models import User
 
 
-class LoginForm(forms.Form):
-    login = forms.CharField(label='Login', required=True, widget=forms.TextInput(attrs={'class': 'field_login'}))
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'field_password'}),
-                               required=True)
-
-    def clean(self):
-        login = self.cleaned_data['login']
-        password = self.cleaned_data['password']
-
-        user = authenticate(username=login, password=password)
-
-        if user is not None:
-            return self.cleaned_data
-        else:
-            raise forms.ValidationError('Incorrect login data')
+# class LoginForm(AuthenticationForm):
+#     login = forms.CharField(label='Login', required=True, widget=forms.TextInput(attrs={'class': 'field_login'}))
+#     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'field_password'}),
+#                                required=True)
+#
+#     def clean(self):
+#         login = self.cleaned_data['login']
+#         password = self.cleaned_data['password']
+#
+#         user = authenticate(username=login, password=password)
+#
+#         if user is not None:
+#             return self.cleaned_data
+#         else:
+#             raise forms.ValidationError('Incorrect login data')
 
 
 class ReportInfoForm(forms.Form):

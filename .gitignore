@@ -10,7 +10,8 @@ __pycache__/
 .idea/
 
 # static files
-static/
+static/admin
+static/debug_toolbar
 
 # DB source files and migrations
 *.db

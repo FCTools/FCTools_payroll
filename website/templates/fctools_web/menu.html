@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Menu</title>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Menu{% endblock %}
+{% block headers %}
     <style type="text/css">
         #centerLayer {
             margin-left: 30%;
@@ -19,14 +20,14 @@
             border-radius: 3px;
         }
     </style>
-</head>
-<body>
-<div id="content">
-    <a href="{% url 'update_db' %}" class="btn" id="centerLayer">Редактировать базу данных</a>
-    <br>
-    <br>
-    <a href="{% url 'count' %}" class="btn" id="centerLayer">Расчёт</a>
-    <p id="centerLayer">Logged in as {{ user }}. <a href="{% url 'logout' %}">Logout?</a></p>
-</div>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <a href="{% url 'update_db' %}" class="btn" id="centerLayer">Редактировать базу данных</a>
+        <br>
+        <br>
+        <a href="{% url 'count' %}" class="btn" id="centerLayer">Расчёт</a>
+        <p id="centerLayer">Logged in as {{ user }}. <a href="{% url 'logout' %}">Logout?</a></p>
+    </div>
+{% endblock %}

@@ -55,3 +55,4 @@ class CampaignAdmin(admin.ModelAdmin):
 @admin.register(PercentDependency)
 class PercentDependencyAdmin(admin.ModelAdmin):
     pass
+

@@ -3,12 +3,13 @@ import os
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from fctools_salary.services.binom.update import update_basic_info
 from fctools_salary.services.engine.engine import count_user_salary
-from .forms import LoginForm, ReportInfoForm
+from .forms import ReportInfoForm
 
 
 @login_required(login_url='login/')
@@ -50,10 +51,10 @@ def update_db(request):
 
 def login_view(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = AuthenticationForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['login']
+            username = form.cleaned_data['username']
             password = form.cleaned_data['password']
 
             user = authenticate(username=username, password=password)
@@ -64,7 +65,7 @@ def login_view(request):
             return render(request, os.path.join('fctools_web', 'login.html'), {'form': form})
 
     else:
-        form = LoginForm()
+        form = AuthenticationForm()
         return render(request, os.path.join('fctools_web', 'login.html'), {'form': form})
 
 
