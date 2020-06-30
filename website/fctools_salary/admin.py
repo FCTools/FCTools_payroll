@@ -9,6 +9,7 @@ from .models import User, Offer, TrafficSource, Test, Campaign, PercentDependenc
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'login', 'is_lead', 'group')
     list_display_links = ('id', 'login')
+    list_filter = ('is_lead', 'group')
 
 
 @admin.register(Offer)
@@ -21,11 +22,13 @@ class OfferAdmin(admin.ModelAdmin):
 class TrafficSourceAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'user')
     list_display_links = ('id', 'name')
+    list_filter = ['user']
 
 
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
     list_display = ('offers_list', 'user', 'traffic_sources_list', 'traffic_group', 'amount_rounded', 'balance_colored')
+    list_filter = ('user', 'traffic_group')
 
     def offers_list(self, test):
         return ' ||| '.join([str(offer) for offer in test.offers.all()])
@@ -38,6 +41,7 @@ class TestAdmin(admin.ModelAdmin):
 class CampaignAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'traffic_group', 'ts_id', 'cost_rounded', 'revenue_rounded', 'profit_colored', 'user')
     list_display_links = ('id', 'name')
+    list_filter = ('traffic_group', 'ts_id', 'user')
 
 
 @admin.register(PercentDependency)
