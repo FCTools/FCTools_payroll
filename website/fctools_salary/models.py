@@ -1,12 +1,13 @@
 # Create your models here.
 
 from django.db import models
+from django.utils.html import format_html
 
 
 class User(models.Model):
     id = models.IntegerField(
         primary_key=True,
-        verbose_name='User ID (user group)',
+        verbose_name='ID',
         null=False,
         blank=False,
         unique=True,
@@ -108,7 +109,7 @@ class User(models.Model):
 class TrafficSource(models.Model):
     id = models.IntegerField(
         primary_key=True,
-        verbose_name='Traffic source ID',
+        verbose_name='ID',
         null=False,
         blank=False,
         unique=True,
@@ -157,7 +158,7 @@ class TrafficSource(models.Model):
 class Offer(models.Model):
     id = models.IntegerField(
         primary_key=True,
-        verbose_name='Offer ID',
+        verbose_name='ID',
         null=False,
         blank=False,
         unique=True,
@@ -192,7 +193,7 @@ class Offer(models.Model):
     )
 
     def __str__(self):
-        return f'{self.id} {self.name}'
+        return self.name
 
     def __eq__(self, other):
         if not other:
@@ -210,7 +211,7 @@ class Offer(models.Model):
 
 class Test(models.Model):
     amount = models.DecimalField(
-        verbose_name='Test budget',
+        verbose_name='Budget',
         null=False,
         blank=False,
         decimal_places=6,
@@ -266,6 +267,17 @@ class Test(models.Model):
         null=True,
     )
 
+    def amount_rounded(self):
+        return round(self.amount, 4)
+
+    amount_rounded.short_description = 'Budget'
+
+    def balance_colored(self):
+        return format_html(f'<span style="color: {"#008000" if self.balance >= 0 else "#FF0000"};">'
+                           f'{round(self.balance, 4)}</span>')
+
+    balance_colored.short_description = 'Balance'
+
     def __str__(self):
         return f'{self.offers.first()}, {self.user}, {self.balance}'
 
@@ -273,7 +285,7 @@ class Test(models.Model):
 class Campaign(models.Model):
     id = models.IntegerField(
         primary_key=True,
-        verbose_name='Campaign ID',
+        verbose_name='ID',
         unique=True,
         blank=False,
         null=False,
@@ -346,6 +358,28 @@ class Campaign(models.Model):
         related_name='campaigns_list',
         verbose_name='Offers',
     )
+
+    def profit_colored(self):
+        color_code = '#D3D3D3'
+
+        if self.profit < 0:
+            color_code = '#FF0000'
+        elif self.profit > 0:
+            color_code = '#008000'
+
+        return format_html(f'<span style="color: {color_code};">{round(self.profit, 4)}</span>')
+
+    profit_colored.short_description = 'Profit'
+
+    def cost_rounded(self):
+        return round(self.cost, 4)
+
+    cost_rounded.short_description = 'Cost'
+
+    def revenue_rounded(self):
+        return round(self.revenue, 4)
+
+    revenue_rounded.short_description = 'Revenue'
 
     def __str__(self):
         return f'{self.id} {self.name}'
