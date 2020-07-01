@@ -261,12 +261,6 @@ class Test(models.Model):
         max_digits=13,
     )
 
-    comments = models.TextField(
-        verbose_name='Comments',
-        blank=True,
-        null=True,
-    )
-
     def amount_rounded(self):
         return round(self.amount, 4)
 
