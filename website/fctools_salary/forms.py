@@ -5,7 +5,7 @@ from .models import User
 
 
 class ReportInfoForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.all(), required=True, widget=forms.Select(attrs={
+    user = forms.ModelChoiceField(queryset=User.objects.filter(group__gt=0), required=True, widget=forms.Select(attrs={
         'class': 'field'}))
     start_date = forms.DateField(required=True, widget=DatePicker(
         attrs={
