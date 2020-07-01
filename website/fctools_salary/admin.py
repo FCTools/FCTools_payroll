@@ -1,6 +1,8 @@
 # Register your models here.
 
+from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 
 from .models import User, Offer, TrafficSource, Test, Campaign, PercentDependency
 
@@ -30,17 +32,31 @@ class TrafficSourceAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
+class TestForm(forms.ModelForm):
+    class Meta:
+        model = Test
+        fields = ('amount', 'user', 'offers', 'traffic_sources', 'traffic_group', 'balance')
+
+    def clean(self):
+        if not self.instance.id:
+            related_tests = Test.objects.filter(user=self.cleaned_data['user'],
+                                                traffic_group=self.cleaned_data['traffic_group'])
+            offers_list = ' ||| '.join(sorted([str(offer) for offer in self.cleaned_data['offers'].all()]))
+            traffic_sources_list = ' ||| '.join(sorted([str(ts) for ts in self.cleaned_data['traffic_sources'].all()]))
+
+            for test in related_tests:
+                if test.offers_list() == offers_list and test.traffic_sources_list() == traffic_sources_list:
+                    raise ValidationError('This test already exists.')
+
+        super().clean()
+
+
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
     list_display = ('offers_list', 'user', 'traffic_sources_list', 'traffic_group', 'amount_rounded', 'balance_colored')
     list_filter = ('user', 'traffic_group')
     list_select_related = ['user']
-
-    def offers_list(self, test):
-        return ' ||| '.join([str(offer) for offer in test.offers.all()])
-
-    def traffic_sources_list(self, test):
-        return ' ||| '.join([str(ts) for ts in test.traffic_sources.all()])
+    form = TestForm
 
 
 @admin.register(Campaign)

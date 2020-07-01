@@ -254,7 +254,7 @@ class Test(models.Model):
     )
 
     balance = models.DecimalField(
-        verbose_name='User balance',
+        verbose_name='Balance',
         blank=False,
         null=False,
         decimal_places=6,
@@ -278,8 +278,18 @@ class Test(models.Model):
 
     balance_colored.short_description = 'Balance'
 
+    def offers_list(self):
+        return ' ||| '.join(sorted([str(offer) for offer in self.offers.all()]))
+
+    offers_list.short_description = 'Offers'
+
+    def traffic_sources_list(self):
+        return ' ||| '.join(sorted([str(ts) for ts in self.traffic_sources.all()]))
+
+    traffic_sources_list.short_description = 'Traffic sources'
+
     def __str__(self):
-        return f'{self.offers.first()}, {self.user}, {self.balance}'
+        return f'{self.user}, {self.traffic_group}, {self.offers_list()}, {self.traffic_sources_list()}'
 
 
 class Campaign(models.Model):
