@@ -4,7 +4,6 @@ import os
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from fctools_salary.services.binom.update import update_basic_info
@@ -31,10 +30,22 @@ def count_view(request):
             user = form.cleaned_data['user']
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
+            update_db_flag = form.cleaned_data['update_db']
 
-            salary, report = count_user_salary(user, start_date, end_date)
+            total_revenue, final_percent, start_balances, profits, from_rev_period, tests, result = \
+                count_user_salary(user, start_date, end_date, update_db_flag)
 
-            return HttpResponse(report)
+            return render(request, os.path.join('fctools_web', 'count_result.html'), context={
+                'start_balances': start_balances,
+                'profits': profits,
+                'from_prev_period': from_rev_period,
+                'tests': tests,
+                'result': result,
+                'total_revenue': total_revenue,
+                'final_percent': final_percent,
+                'user': user,
+                'start_date': start_date,
+                'end_date': end_date})
         else:
             return render(request, os.path.join('fctools_web', 'count.html'), {'form': form})
 

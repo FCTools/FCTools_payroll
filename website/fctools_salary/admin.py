@@ -7,6 +7,9 @@ from django.core.exceptions import ValidationError
 from .models import User, Offer, TrafficSource, Test, Campaign, PercentDependency
 
 
+# TODO: add table with salary groups (fields: id, rules). Maybe you need to create table for rules and use it
+# TODO: with table for salary groups as m2m field
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'login', 'is_lead', 'group')
@@ -57,6 +60,8 @@ class TestAdmin(admin.ModelAdmin):
     list_filter = ('user', 'traffic_group')
     list_select_related = ['user']
     form = TestForm
+    save_as = True
+    filter_horizontal = ('offers', 'traffic_sources',)
 
 
 @admin.register(Campaign)
@@ -70,5 +75,6 @@ class CampaignAdmin(admin.ModelAdmin):
 
 @admin.register(PercentDependency)
 class PercentDependencyAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('from_user', 'to_user', 'percent')
+    list_filter = ('from_user', 'to_user')
+    list_select_related = ('from_user', 'to_user')

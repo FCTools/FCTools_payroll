@@ -7,6 +7,7 @@ from .models import User
 class ReportInfoForm(forms.Form):
     user = forms.ModelChoiceField(queryset=User.objects.filter(group__gt=0), required=True, widget=forms.Select(attrs={
         'class': 'field'}))
+    update_db = forms.BooleanField(initial=False, required=False)
     start_date = forms.DateField(required=True, widget=DatePicker(
         attrs={
             'append': 'fa fa-calendar',
