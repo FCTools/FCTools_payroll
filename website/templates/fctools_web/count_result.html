@@ -56,6 +56,7 @@
     <p>Period: <b>{{ start_date }} - {{ end_date }}</b></p>
 
     <table border="1" cellpadding="5">
+
         <tr>
             <td style="padding:15px">----</td>
             {% for traffic_group in start_balances %}
@@ -64,6 +65,7 @@
                 </td>
             {% endfor %}
         </tr>
+
         <tr>
             <td style="padding:15px">Start balances</td>
             {% for traffic_group, balance in start_balances.items %}
@@ -76,6 +78,7 @@
                 {% endif %}
             {% endfor %}
         </tr>
+
         <tr>
             <td style="padding:15px">Profits</td>
             {% for traffic_group, profit in profits.items %}
@@ -88,6 +91,7 @@
                 {% endif %}
             {% endfor %}
         </tr>
+
         <tr>
             <td style="padding:15px">Previous period</td>
             {% for traffic_group, profit in from_prev_period.items %}
@@ -100,6 +104,7 @@
                 {% endif %}
             {% endfor %}
         </tr>
+
         <tr>
             <td style="padding:15px">Tests</td>
             {% for traffic_group, profit in tests.items %}
@@ -112,6 +117,22 @@
                 {% endif %}
             {% endfor %}
         </tr>
+
+        {% if from_other_users %}
+        <tr>
+            <td style="padding:15px">From other users</td>
+            {% for traffic_group, value in from_other_users.items %}
+                <td style="padding:15px">
+                    {% if value.1 > 0 %}
+                        <p class="text_green">{{ value.0 }}</p>
+                    {% else %}
+                        0.0
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+        {% endif %}
+
         <tr>
             <td style="padding:15px">Summary</td>
             {% for traffic_group, profit in result.items %}
@@ -124,5 +145,6 @@
                 {% endif %}
             {% endfor %}
         </tr>
+
     </table>
 {% endblock %}
