@@ -204,30 +204,30 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
             else:
                 from_other_users[traffic_group][0] = '0.0'
 
-        for traffic_group in result:
-            if not light:
-                result[traffic_group] = ['', result[traffic_group]]
+    for traffic_group in result:
+        if not light:
+            result[traffic_group] = ['', result[traffic_group]]
 
-                if result[traffic_group][1] >= 0:
-                    result[traffic_group][
-                        0] = f'({start_balances[traffic_group]}' \
-                             f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}' \
-                             f' + {from_prev_period[traffic_group][1]} + ' \
-                             f'{tests[traffic_group][1]}) * {percent}'
-                else:
-                    result[traffic_group][
-                        0] = f'{start_balances[traffic_group]}' \
-                             f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}' \
-                             f' + {from_prev_period[traffic_group][1]} + ' \
-                             f'{tests[traffic_group][1]}'
-
-                if user.is_lead and from_other_users[traffic_group][1] > 0:
-                    result[traffic_group][0] += f' + {from_other_users[traffic_group][1]}'
-
-                result[traffic_group][1] = round(result[traffic_group][1], 6)
-                result[traffic_group][0] += f' = {result[traffic_group][1]}'
+            if result[traffic_group][1] >= 0:
+                result[traffic_group][
+                    0] = f'({start_balances[traffic_group]}' \
+                         f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}' \
+                         f' + {from_prev_period[traffic_group][1]} + ' \
+                         f'{tests[traffic_group][1]}) * {percent}'
             else:
-                result[traffic_group] = round(result[traffic_group], 6)
+                result[traffic_group][
+                    0] = f'{start_balances[traffic_group]}' \
+                         f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}' \
+                         f' + {from_prev_period[traffic_group][1]} + ' \
+                         f'{tests[traffic_group][1]}'
+
+            if user.is_lead and from_other_users[traffic_group][1] > 0:
+                result[traffic_group][0] += f' + {from_other_users[traffic_group][1]}'
+
+            result[traffic_group][1] = round(result[traffic_group][1], 6)
+            result[traffic_group][0] += f' = {result[traffic_group][1]}'
+        else:
+            result[traffic_group] = round(result[traffic_group], 6)
 
     if update_db:
         user.admin_balance = result['ADMIN'] if result['ADMIN'] < 0 else 0
