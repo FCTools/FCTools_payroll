@@ -1,5 +1,5 @@
 # from .base import *
-from website.settings.base import *
+from settings.base import *
 
 
 DEBUG = False
