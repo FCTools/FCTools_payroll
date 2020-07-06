@@ -22,14 +22,14 @@ from django.urls import path, include
 
 from fctools_salary.views import base_menu, count_view, logout_view, update_db
 
-urlpatterns = [
+urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
                   path('', base_menu, name='base_menu'),
                   path('count/', count_view, name='count'),
                   path('logout/', logout_view, name='logout'),
                   path('update_db/', update_db, name='update_db'),
                   path('admin/', admin.site.urls),
                   path('login/', views.LoginView.as_view(), name='login'),
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+              ]
 
 if settings.DEBUG:
     import debug_toolbar
