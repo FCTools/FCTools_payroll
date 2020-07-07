@@ -1,6 +1,23 @@
 from .base import *
 
 
+DEBUG = True
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'fctools_info',
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -36,6 +53,6 @@ INSTALLED_APPS += ['debug_toolbar']
 MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
 
 STATIC_URL = '/static/'
-MEDIA_URL = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = ['static', os.path.join(BASE_DIR, 'static/')]

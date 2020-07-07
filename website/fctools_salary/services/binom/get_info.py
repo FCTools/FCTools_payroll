@@ -6,7 +6,7 @@ import requests
 
 from fctools_salary.models import User, Offer, TrafficSource, Campaign
 
-_api_key = os.environ.get('binom_api_key')
+_api_key = os.environ.get('BINOM_API_KEY')
 _requests_url = 'https://fcttrk.com/'
 
 

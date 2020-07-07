@@ -3,6 +3,7 @@ from website.settings.base import *
 
 
 DEBUG = False
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 ALLOWED_HOSTS = [
     '185.92.150.58',
@@ -10,6 +11,17 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
 ]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
+    }
+}
 
 LOGGING = {
     'version': 1,

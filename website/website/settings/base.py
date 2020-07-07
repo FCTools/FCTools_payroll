@@ -3,11 +3,6 @@ import os
 
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '..')
 
-
-SECRET_KEY = '(726i#i50=z6@y00ywppg3$%is14+rv442l87pg(jr+#+#3q2d'
-
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -54,13 +49,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'website.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'fctools_info.sqlite3'),
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
