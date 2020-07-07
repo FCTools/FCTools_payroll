@@ -61,26 +61,6 @@ def update_db(request):
     return redirect('/admin/fctools_salary/')
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request.POST)
-
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-
-            user = authenticate(username=username, password=password)
-            login(request, user)
-
-            return redirect('base_menu')
-        else:
-            return render(request, os.path.join('fctools_web', 'login.html'), {'form': form})
-
-    else:
-        form = AuthenticationForm()
-        return render(request, os.path.join('fctools_web', 'login.html'), {'form': form})
-
-
 def logout_view(request):
     logout(request)
     return redirect('login')
