@@ -5,34 +5,15 @@
 {% block headers %}
     <style type="text/css">
         #centerLayer {
-            margin-left: 30%;
-            width: 40%;
+            margin-left: 10%;
+            width: 80%;
             padding: 10px;
-        }
-
-        .container {
-            overflow: hidden;
-            width: 200px
-        }
-
-        .box {
-            white-space: nowrap
         }
 
         .box div {
             width: 250px;
             display: inline-block;
             border: 1px solid black
-        }
-    </style>
-    <style>
-        .field {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            height: 30px;
-            width: 300px;
-            margin: 10px 10px 10px 0;
-            background-color: #ffffff;
         }
     </style>
     <style>
@@ -47,6 +28,17 @@
             color: #ff0000;
         }
     </style>
+     <style>
+   table {
+    width: 80%;
+       height: 70%;
+   }
+  </style>
+    <style>
+    .col {
+        width: 11%;
+    }
+    </style>
 {% endblock %}
 
 {% block body_class %}text-center{% endblock %}
@@ -57,74 +49,74 @@
     <p>Final percent: <b>{{ final_percent }}</b></p>
     <p>Period: <b>{{ start_date }} - {{ end_date }}</b></p>
 
-    <table border="1" cellpadding="5">
+    <table id="centerLayer" border="1" cellpadding="5">
 
         <tr>
-            <td style="padding:15px">----</td>
+            <td style="padding:15px" class="col">----</td>
             {% for traffic_group in start_balances %}
-                <td style="padding:15px">
+                <td style="padding:15px" class="col">
                     {{ traffic_group }}
                 </td>
             {% endfor %}
         </tr>
 
         <tr>
-            <td style="padding:15px">Start balances</td>
+            <td style="padding:15px" class="col">Start balances</td>
             {% for traffic_group, balance in start_balances.items %}
                 {% if balance > 0 %}
-                    <td class="text_green" style="padding:15px">{{ balance }}</td>
+                    <td class="text_green col" style="padding:15px">{{ balance }}</td>
                 {% elif balance < 0 %}
-                    <td class="text_red" style="padding:15px">{{ balance }}</td>
+                    <td class="text_red col" style="padding:15px">{{ balance }}</td>
                 {% else %}
-                    <td style="padding:15px">{{ balance }}</td>
+                    <td style="padding:15px" class="col">{{ balance }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
 
         <tr>
-            <td style="padding:15px">Profits</td>
+            <td style="padding:15px" class="col">Profits</td>
             {% for traffic_group, profit in profits.items %}
                 {% if profit > 0 %}
-                    <td class="text_green" style="padding:15px">{{ profit }}</td>
+                    <td class="text_green col" style="padding:15px">{{ profit }}</td>
                 {% elif profit < 0 %}
-                    <td class="text_red" style="padding:15px">{{ profit }}</td>
+                    <td class="text_red col" style="padding:15px">{{ profit }}</td>
                 {% else %}
-                    <td style="padding:15px">{{ profit }}</td>
+                    <td style="padding:15px" class="col">{{ profit }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
 
         <tr>
-            <td style="padding:15px">Previous period</td>
+            <td style="padding:15px" class="col">Previous period</td>
             {% for traffic_group, profit in from_prev_period.items %}
                 {% if profit.1 > 0 %}
-                    <td class="text_green" style="padding:15px">{{ profit.0 }}</td>
+                    <td class="text_green col" style="padding:15px">{{ profit.0 }}</td>
                 {% elif profit.1 < 0 %}
-                    <td class="text_red" style="padding:15px">{{ profit.0 }}</td>
+                    <td class="text_red col" style="padding:15px">{{ profit.0 }}</td>
                 {% else %}
-                    <td style="padding:15px">{{ profit.0 }}</td>
+                    <td style="padding:15px" class="col">{{ profit.0 }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
 
         <tr>
-            <td style="padding:15px">Tests</td>
+            <td style="padding:15px" class="col">Tests</td>
             {% for traffic_group, profit in tests.items %}
                 {% if profit.1 > 0 %}
-                    <td class="text_green" style="padding:15px">{{ profit.0 }}</td>
+                    <td class="text_green col" style="padding:15px">{{ profit.0 }}</td>
                 {% elif profit.1 < 0 %}
-                    <td class="text_red" style="padding:15px">{{ profit.0 }}</td>
+                    <td class="text_red col" style="padding:15px">{{ profit.0 }}</td>
                 {% else %}
-                    <td style="padding:15px">{{ profit.0 }}</td>
+                    <td style="padding:15px" class="col">{{ profit.0 }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
 
         {% if from_other_users %}
         <tr>
-            <td style="padding:15px">From other users</td>
+            <td style="padding:15px" class="col">From other users</td>
             {% for traffic_group, value in from_other_users.items %}
-                <td style="padding:15px">
+                <td style="padding:15px" class="col">
                     {% if value.1 > 0 %}
                         <p class="text_green">{{ value.0 }}</p>
                     {% else %}
@@ -136,14 +128,14 @@
         {% endif %}
 
         <tr>
-            <td style="padding:15px">Summary</td>
+            <td style="padding:15px" class="col">Summary</td>
             {% for traffic_group, profit in result.items %}
                 {% if profit.1 > 0 %}
-                    <td class="text_green" style="padding:15px">{{ profit.0 }}</td>
+                    <td class="text_green col" style="padding:15px">{{ profit.0 }}</td>
                 {% elif profit.1 < 0 %}
-                    <td class="text_red" style="padding:15px">{{ profit.0 }}</td>
+                    <td class="text_red col" style="padding:15px">{{ profit.0 }}</td>
                 {% else %}
-                    <td style="padding:15px">{{ profit.0 }}</td>
+                    <td style="padding:15px" class="col">{{ profit.0 }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
