@@ -1,34 +1,39 @@
-{% extends "base.html" %}
-{% load crispy_forms_filters %}
 {% load static %}
-{% load crispy_forms_tags %}
 
-{% block title %}Log-in{% endblock %}
-{% block headers %}
-    <style type="text/css">
-        #centerLayer {
-            margin-left: 40%;
-            width: 40%;
-            padding: 10px;
-        }
-    </style>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-{% block content %}
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title" id="centerLayer">Log in to your account</h4>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Log-in</title>
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "main.css" %}">
+  <link rel="stylesheet" href="{% static "login.css" %}">
+</head>
+<body class="text-center" data-gr-c-s-loaded="true">
 
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}">
 
-                <div class="form" id="centerLayer">
-                    {{ form|crispy }}
-                    <br>
-                    <button type="submit" class="btn btn-primary">Log in</button>
-                </div>
-            </form>
-        </div>
-    </div>
-{% endblock %}
+<form class="form-signin" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="">
+  <img class="mb-4" src="{% static "logo.png" %}" alt="" width="100" height="100">
+
+
+  <h1 class="h3 mb-3 font-weight-normal">Log-in</h1>
+  <label for="inputEmail" class="sr-only">Login</label>
+  <input type="username" id="inputUsername" class="form-control" placeholder="Login" name="username"
+         value="" required="" autofocus="" data-cip-id="inputEmail">
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+         name="password" required="" data-cip-id="inputPassword">
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+  <p class="mt-5 mb-3 text-muted">© FCTools 2020</p>
+</form>
+
+<script src="{% static "jquery-3.3.1.slim.min.js" %}"></script>
+<script src="{% static "popper.min.js" %}"></script>
+<script src="{% static "bootstrap.min.js" %}"></script>
+</body>
+</html>
