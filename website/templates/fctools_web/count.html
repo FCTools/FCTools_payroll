@@ -1,48 +1,41 @@
-{% extends "base.html" %}
+
+
+
+{% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}Count{% endblock %}
-{% block headers %}
-    {# Include FontAwesome; required for icon display #}
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
 
-    {# Include Bootstrap 4 and jQuery #}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+{% block headers %}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static "count.css" %}">
 
-    {# Django Tempus Dominus assets are included in `{{ form.media }}` #}
-    <style type="text/css">
-        #centerLayer {
-            margin-left: 30%;
-            width: 40%;
-            padding: 10px;
-        }
-    </style>
     <style>
-        .field {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            height: 30px;
-            width: 300px;
-            margin: 10px 10px 10px 0;
-            background-color: #ffffff;
-        }
+    select {
+  font-size: 120%;
+  width: 100%;
+    }
     </style>
     {{ form.media }}
 {% endblock %}
 
+{% block body_class %}text-center{% endblock %}
+
 {% block content %}
-    <div id="centerLayer">
-        <h1 id="centerLayer">Count salary</h1>
-        <form action="." method="post">
-            {{ form.as_p }}
-            {% csrf_token %}
-            <p>
-                <button type="submit" id="centerLayer" class="btn btn-primary">Submit</button>
-            </p>
-        </form>
-    </div>
+  <form class="form-count" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="">
+  <img class="mb-4" src="{% static "logo.png" %}" alt="" width="120" height="120">
+
+  {{ form.as_p }}
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+  <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
+</form>
 {% endblock %}

@@ -1,22 +1,24 @@
-<!DOCTYPE html>{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}" media="screen,projection"/>
+{% load static %}
 
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    {% block headers %}{% endblock %}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+
+  {% block headers %}{% endblock %}
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
 {% block content %}{% endblock %}
 
 <!--JavaScript at end of body for optimized loading-->
-<script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
+<script src="{% static 'jquery-3.3.1.slim.min.js' %}"></script>
+<script src="{% static 'popper.min.js' %}"></script>
+<script src="{% static 'bootstrap.min.js' %}"></script>
 </body>
 </html>

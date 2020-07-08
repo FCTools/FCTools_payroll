@@ -1,47 +1,40 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+{% block title %}Menu{% endblock %}
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Log-in</title>
-  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
-  <link rel="stylesheet" href="{% static "main.css" %}">
-</head>
-<body class="text-center" data-gr-c-s-loaded="true">
+{% block headers %}
+{% endblock %}
 
-  <input type="hidden" name="next" value="">
-  <div>
-  <img class="mb-4" src="{% static "logo.png" %}" alt="" width="100" height="100">
-  </div>
+{% block body_class %}text-center{% endblock %}
 
-  <a href="{% url 'update_db' %}" class="btn btn-lg btn-primary">Edit database</a>
-  <br>
-  <br>
-  <a href="{% url 'count' %}" class="btn btn-lg btn-primary">Count salary</a>
+{% block content %}
 
-<nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
+    <input type="hidden" name="next" value="">
+    <div>
+        <img class="mb-4" src="{% static "logo.png" %}" alt="" width="100" height="100">
+    </div>
 
-    </ul>
+    <a href="{% url 'update_db' %}" class="btn btn-lg btn-primary">Edit database</a>
+    <br>
+    <br>
+    <a href="{% url 'count' %}" class="btn btn-lg btn-primary">Count salary</a>
 
-    <a class="btn btn-outline-success my-2 my-sm-0" role="button"
-       href="{% url 'logout' %}">Logout</a>
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
 
-  </div>
-</nav>
+            </ul>
 
-<footer class="container">
-  <p class="mt-5 mb-3 text-muted">Logged in as {{ user }}</p>
-  <p class="text-muted">© FC Tools 2020</p>
-</footer>
+            <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+               href="{% url 'logout' %}">Logout</a>
 
-<script src="{% static "jquery-3.3.1.slim.min.js" %}"></script>
-<script src="{% static "popper.min.js" %}"></script>
-<script src="{% static "bootstrap.min.js" %}"></script>
+        </div>
+    </nav>
 
-</body>
-</html>
+    <footer class="container">
+        <p class="mt-5 mb-3 text-muted">Logged in as {{ user }}</p>
+        <p class="text-muted">© FC Tools 2020</p>
+    </footer>
+
+{% endblock %}

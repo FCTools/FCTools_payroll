@@ -1,20 +1,16 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+{% block title %}Log-in{% endblock %}
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Log-in</title>
-  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
-  <link rel="stylesheet" href="{% static "main.css" %}">
-  <link rel="stylesheet" href="{% static "login.css" %}">
-</head>
-<body class="text-center" data-gr-c-s-loaded="true">
+{% block headers %}
+    <link rel="stylesheet" href="{% static "login.css" %}">
+{% endblock %}
 
+{% block body_class %}text-center{% endblock %}
 
-<form class="form-signin" method="post">
+{% block content %}
+  <form class="form-signin" method="post">
   {% csrf_token %}
   <input type="hidden" name="next" value="">
   <img class="mb-4" src="{% static "logo.png" %}" alt="" width="120" height="120">
@@ -31,9 +27,4 @@
   <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
   <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
 </form>
-
-<script src="{% static "jquery-3.3.1.slim.min.js" %}"></script>
-<script src="{% static "popper.min.js" %}"></script>
-<script src="{% static "bootstrap.min.js" %}"></script>
-</body>
-</html>
+{% endblock %}
