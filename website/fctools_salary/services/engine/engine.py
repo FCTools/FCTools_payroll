@@ -75,10 +75,10 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
 
                     if not light:
                         if from_prev_period[campaign.traffic_group][1] > 0:
-                            from_prev_period[campaign.traffic_group][0] += f" + {diff}"
+                            from_prev_period[campaign.traffic_group][0] += f" + {diff} [{campaign.id}]"
                             from_prev_period[campaign.traffic_group][1] += diff
                         else:
-                            from_prev_period[campaign.traffic_group][0] = f"{diff}"
+                            from_prev_period[campaign.traffic_group][0] = f"{diff} [{campaign.id}]"
                             from_prev_period[campaign.traffic_group][1] += diff
 
     if not light:
@@ -124,14 +124,14 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
                 done_current_campaigns.append(campaign)
                 continue
 
-            if test_balance >= 0 and test_balance + campaign.profit < 0 and campaign.traffic_group in result:
+            if test_balance >= 0 > test_balance + campaign.profit and campaign.traffic_group in result:
                 result[campaign.traffic_group] += round(float(test_balance), 6)
 
                 if not light:
                     if tests[campaign.traffic_group][1] > 0:
-                        tests[campaign.traffic_group][0] += f' + {round(float(test_balance), 6)}'
+                        tests[campaign.traffic_group][0] += f' + {round(float(test_balance), 6)} [{campaign.id}]'
                     else:
-                        tests[campaign.traffic_group][0] += f'{round(float(test_balance), 6)}'
+                        tests[campaign.traffic_group][0] += f'{round(float(test_balance), 6)} [{campaign.id}]'
 
                     tests[campaign.traffic_group][1] += round(float(test_balance), 6)
 
@@ -140,9 +140,9 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
 
                 if not light:
                     if tests[campaign.traffic_group][1] > 0:
-                        tests[campaign.traffic_group][0] += f' + {-round(float(campaign.profit), 6)}'
+                        tests[campaign.traffic_group][0] += f' + {-round(float(campaign.profit), 6)} [{campaign.id}]'
                     else:
-                        tests[campaign.traffic_group][0] += f'{-round(float(campaign.profit), 6)}'
+                        tests[campaign.traffic_group][0] += f'{-round(float(campaign.profit), 6)} [{campaign.id}]'
 
                     tests[campaign.traffic_group][1] -= round(float(campaign.profit), 6)
 
@@ -184,18 +184,20 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
             salary = count_user_salary(dependency.from_user, start_date, end_date, update_db, light=True)
 
             for traffic_group in salary:
-                if salary[traffic_group] > 0:
-                    result[traffic_group] += dependency.percent * salary[traffic_group]
+                rounded_salary = round(salary[traffic_group], 6)
+                if rounded_salary > 0:
+                    profit = round(dependency.percent * rounded_salary, 6)
+                    result[traffic_group] += profit
 
                     if not light:
-                        from_other_users[traffic_group][1] += dependency.percent * salary[traffic_group]
+                        from_other_users[traffic_group][1] += profit
 
                         if not from_other_users[traffic_group][0]:
-                            from_other_users[traffic_group][0] = f'{dependency.percent * salary[traffic_group]}' \
-                                                                 f'[{dependency.from_user}]'
+                            from_other_users[traffic_group][0] = f'{profit}' \
+                                                                 f' [{dependency.from_user.login}]'
                         else:
-                            from_other_users[traffic_group][0] += f' + {dependency.percent * salary[traffic_group]}' \
-                                                                  f'[{dependency.from_user}]'
+                            from_other_users[traffic_group][0] += f' + {profit}' \
+                                                                  f' [{dependency.from_user.login}]'
 
         for traffic_group in from_other_users:
             if from_other_users[traffic_group][1] > 0:
