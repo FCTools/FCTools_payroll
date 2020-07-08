@@ -1,9 +1,8 @@
 # Create your views here.
 import os
 
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LogoutView as DJLogoutView
 from django.shortcuts import render, redirect
 
 from fctools_salary.services.binom.update import update_basic_info
@@ -55,12 +54,12 @@ def count_view(request):
         return render(request, os.path.join('fctools_web', 'count.html'), {'form': form})
 
 
+@login_required(login_url='login/')
 def update_db(request):
     update_basic_info()
 
     return redirect('/admin/fctools_salary/')
 
 
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+class LogoutView(DJLogoutView):
+    next_page = 'login'
