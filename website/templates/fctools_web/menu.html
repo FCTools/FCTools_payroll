@@ -1,33 +1,47 @@
-{% extends "base.html" %}
 {% load static %}
 
-{% block title %}Menu{% endblock %}
-{% block headers %}
-    <style type="text/css">
-        #centerLayer {
-            margin-left: 30%;
-            width: 40%;
-            padding: 10px;
-        }
-    </style>
-    <style>
-        .btn {
-            display: inline-block;
-            background: #8C959D;
-            color: #fff;
-            padding: 1rem 1.5rem;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-    </style>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-{% block content %}
-    <div id="content">
-        <a href="{% url 'update_db' %}" class="btn" id="centerLayer">Редактировать базу данных</a>
-        <br>
-        <br>
-        <a href="{% url 'count' %}" class="btn" id="centerLayer">Расчёт</a>
-        <p id="centerLayer">Logged in as {{ user }}. <a href="{% url 'logout' %}">Logout?</a></p>
-    </div>
-{% endblock %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Log-in</title>
+  <link rel="stylesheet" href="{% static "bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "main.css" %}">
+</head>
+<body class="text-center" data-gr-c-s-loaded="true">
+
+  <input type="hidden" name="next" value="">
+  <div>
+  <img class="mb-4" src="{% static "logo.png" %}" alt="" width="100" height="100">
+  </div>
+
+  <a href="{% url 'update_db' %}" class="btn btn-lg btn-primary">Edit database</a>
+  <br>
+  <br>
+  <a href="{% url 'count' %}" class="btn btn-lg btn-primary">Count salary</a>
+
+<nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+
+    </ul>
+
+    <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+       href="{% url 'logout' %}">Logout</a>
+
+  </div>
+</nav>
+
+<footer class="container">
+  <p class="mt-5 mb-3 text-muted">Logged in as {{ user }}</p>
+  <p class="text-muted">© FC Tools 2020</p>
+</footer>
+
+<script src="{% static "jquery-3.3.1.slim.min.js" %}"></script>
+<script src="{% static "popper.min.js" %}"></script>
+<script src="{% static "bootstrap.min.js" %}"></script>
+
+</body>
+</html>

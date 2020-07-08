@@ -17,19 +17,19 @@
 <form class="form-signin" method="post">
   {% csrf_token %}
   <input type="hidden" name="next" value="">
-  <img class="mb-4" src="{% static "logo.png" %}" alt="" width="100" height="100">
+  <img class="mb-4" src="{% static "logo.png" %}" alt="" width="120" height="120">
 
 
   <h1 class="h3 mb-3 font-weight-normal">Log-in</h1>
-  <label for="inputEmail" class="sr-only">Login</label>
-  <input type="username" id="inputUsername" class="form-control" placeholder="Login" name="username"
-         value="" required="" autofocus="" data-cip-id="inputEmail">
+  <label for="inputUsername" class="sr-only">Login</label>
+  <input type="text" id="inputUsername" class="form-control" placeholder="Login" name="username"
+         value="" required="" autofocus="" data-cip-id="inputUsername">
   <label for="inputPassword" class="sr-only">Password</label>
   <input type="password" id="inputPassword" class="form-control" placeholder="Password"
          name="password" required="" data-cip-id="inputPassword">
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-  <p class="mt-5 mb-3 text-muted">© FCTools 2020</p>
+  <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
 </form>
 
 <script src="{% static "jquery-3.3.1.slim.min.js" %}"></script>
