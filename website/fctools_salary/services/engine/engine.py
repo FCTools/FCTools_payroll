@@ -121,7 +121,7 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
                 continue
 
             if campaign.profit >= 0:
-                test_balance += campaign.profit
+                # test_balance += campaign.profit
                 done_current_campaigns.append(campaign)
                 continue
 
