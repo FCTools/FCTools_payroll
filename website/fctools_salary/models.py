@@ -143,6 +143,8 @@ class TrafficSource(models.Model):
     )
 
     def __str__(self):
+        if self.user:
+            return f'{self.id} {self.name} {self.user.login}'
         return f'{self.id} {self.name}'
 
     def __eq__(self, other):
