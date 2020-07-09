@@ -1,8 +1,9 @@
 from copy import deepcopy
 from datetime import timedelta
 
-from fctools_salary.models import Campaign, Test, PercentDependency
+from fctools_salary.models import Campaign, Test, PercentDependency, Offer
 from fctools_salary.services.binom.get_info import get_campaigns
+from fctools_salary.services.binom.update import update_basic_info
 
 
 def count_final_percent(revenue, salary_group):
@@ -181,7 +182,7 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
         dependencies_list = PercentDependency.objects.all().filter(to_user=user)
 
         for dependency in dependencies_list:
-            salary = count_user_salary(dependency.from_user, start_date, end_date, update_db, light=True)
+            salary = count_user_salary(dependency.from_user, start_date, end_date, update_db=False, light=True)
 
             for traffic_group in salary:
                 rounded_salary = round(salary[traffic_group], 6)
@@ -232,17 +233,31 @@ def count_user_salary(user, start_date, end_date, update_db, light=False):
             result[traffic_group] = round(result[traffic_group], 6)
 
     if update_db:
-        user.admin_balance = result['ADMIN'] if result['ADMIN'] < 0 else 0
-        user.fpa_hsa_pwa_balance = result['FPA/HSA/PWA'] if result['FPA/HSA/PWA'] < 0 else 0
-        user.inapp_balance = result['INAPP traff'] if result['INAPP traff'] < 0 else 0
-        user.native_balance = result['NATIVE traff'] if result['NATIVE traff'] < 0 else 0
-        user.pop_balance = result['POP traff'] if result['POP traff'] < 0 else 0
-        user.push_balance = result['PUSH traff'] if result['PUSH traff'] < 0 else 0
+        user.admin_balance = result['ADMIN'][1] if result['ADMIN'][1] < 0 else 0
+        user.fpa_hsa_pwa_balance = result['FPA/HSA/PWA'][1] if result['FPA/HSA/PWA'][1] < 0 else 0
+        user.inapp_balance = result['INAPP traff'][1] if result['INAPP traff'][1] < 0 else 0
+        user.native_balance = result['NATIVE traff'][1] if result['NATIVE traff'][1] < 0 else 0
+        user.pop_balance = result['POP traff'][1] if result['POP traff'][1] < 0 else 0
+        user.push_balance = result['PUSH traff'][1] if result['PUSH traff'][1] < 0 else 0
 
         user.save()
 
         for campaign in current_campaigns_tracker:
-            campaign['campaign'].save()
+            if campaign['campaign'] in prev_campaigns_db_list:
+                campaign['campaign'].save()
+            else:
+                campaign['campaign'].save()
+
+                for offer_id in campaign['offers_list']:
+                    try:
+                        offer = Offer.objects.get(id=offer_id)
+                    except Offer.DoesNotExist:
+                        update_basic_info()
+                        offer = Offer.objects.get(id=offer_id)
+
+                    campaign['campaign'].offers_list.add(offer)
+
+                campaign['campaign'].save()
 
     if not light:
         return round(total_revenue, 6), percent, start_balances, profits, from_prev_period, tests, from_other_users, \

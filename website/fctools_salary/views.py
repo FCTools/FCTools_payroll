@@ -31,6 +31,7 @@ def count_view(request):
             end_date = form.cleaned_data['end_date']
             update_db_flag = form.cleaned_data['update_db']
 
+            update_basic_info()
             total_revenue, final_percent, start_balances, profits, from_rev_period, tests, from_other, result = \
                 count_user_salary(user, start_date, end_date, update_db_flag)
 
