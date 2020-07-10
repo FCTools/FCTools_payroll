@@ -234,6 +234,11 @@ class Test(models.Model):
         related_name='tests_list',
     )
 
+    one_budget_for_all_traffic_sources = models.BooleanField(
+        verbose_name='One budget for all traffic sources',
+        default=False,
+    )
+
     offers = models.ManyToManyField(
         Offer,
         verbose_name='Offers',
@@ -283,9 +288,6 @@ class Test(models.Model):
         return ' ||| '.join(sorted([str(ts) for ts in self.traffic_sources.all()]))
 
     traffic_sources_list.short_description = 'Traffic sources'
-
-    def __str__(self):
-        return f'{self.user}, {self.traffic_group}, {self.offers_list()}, {self.traffic_sources_list()}'
 
 
 class Campaign(models.Model):
