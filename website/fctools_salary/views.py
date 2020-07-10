@@ -30,10 +30,11 @@ def count_view(request):
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
             update_db_flag = form.cleaned_data['update_db']
+            traffic_groups = form.cleaned_data['traffic_groups']
 
             update_basic_info()
             total_revenue, final_percent, start_balances, profits, from_rev_period, tests, from_other, result = \
-                count_user_salary(user, start_date, end_date, update_db_flag)
+                count_user_salary(user, start_date, end_date, update_db_flag, traffic_groups)
 
             return render(request, os.path.join('fctools_web', 'count_result.html'), context={
                 'start_balances': start_balances,

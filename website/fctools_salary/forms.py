@@ -7,7 +7,18 @@ from .models import User
 class ReportInfoForm(forms.Form):
     user = forms.ModelChoiceField(queryset=User.objects.filter(group__gt=0), required=True, widget=forms.Select(attrs={
         'class': 'field'}))
+
     update_db = forms.BooleanField(initial=False, required=False)
+
+    traffic_groups = forms.MultipleChoiceField(choices=(
+            ('ADMIN', 'ADMIN'),
+            ('FPA/HSA/PWA', 'FPA/HSA/PWA'),
+            ('INAPP traff', 'INAPP traff'),
+            ('NATIVE traff', 'NATIVE traff'),
+            ('POP traff', 'POP traff'),
+            ('PUSH traff', 'PUSH traff'),
+        ), widget=forms.SelectMultiple, required=True)
+
     start_date = forms.DateField(required=True, widget=DatePicker(
         attrs={
             'append': 'fa fa-calendar',
