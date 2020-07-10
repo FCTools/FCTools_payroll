@@ -39,7 +39,7 @@
         "admin_balance": "0.000000",
         "fpa_hsa_pwa_balance": "0.000000",
         "inapp_balance": "0.000000",
-        "native_balance": "-5.331250",
+        "native_balance": "-34.883590",
         "pop_balance": "0.000000",
         "push_balance": "0.000000"
     }
@@ -67,9 +67,9 @@
         "is_lead": false,
         "group": 1,
         "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000390",
+        "fpa_hsa_pwa_balance": "0.000000",
         "inapp_balance": "0.000000",
-        "native_balance": "-19.716000",
+        "native_balance": "-20.957000",
         "pop_balance": "0.000000",
         "push_balance": "0.000000"
     }
@@ -84,7 +84,7 @@
         "admin_balance": "0.000000",
         "fpa_hsa_pwa_balance": "0.000000",
         "inapp_balance": "0.000000",
-        "native_balance": "-15.255000",
+        "native_balance": "-18.870000",
         "pop_balance": "0.000000",
         "push_balance": "0.000000"
     }
@@ -236,7 +236,7 @@
         "inapp_balance": "0.000000",
         "native_balance": "0.000000",
         "pop_balance": "0.000000",
-        "push_balance": "0.000000"
+        "push_balance": "-8.542960"
     }
 },
 {
