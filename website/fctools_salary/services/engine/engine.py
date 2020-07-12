@@ -1,17 +1,19 @@
 from copy import deepcopy
-from datetime import timedelta
+from datetime import timedelta, date
+from typing import List, Dict, Union, Tuple
 
 from fctools_salary.models import (
     Campaign,
     Test,
     PercentDependency,
-    Offer
+    Offer, User
 )
 from fctools_salary.services.binom.get_info import get_campaigns
-from fctools_salary.services.binom.update import update_basic_info, update_offers
+from fctools_salary.services.binom.update import update_offers
 
 
-def count_final_percent(revenue, salary_group):
+def calculate_final_percent(revenue: float,
+                            salary_group: int) -> float:
     if salary_group == 1:
         percent = 0.5
 
@@ -30,14 +32,17 @@ def count_final_percent(revenue, salary_group):
     return percent
 
 
-def count_profit_with_tests(user, start_date, end_date, traffic_groups):
+def calculate_profit_with_tests(user: User,
+                                start_date: date,
+                                end_date: date,
+                                traffic_groups: List[str]) -> Dict[str, float]:
     result = {traffic_group: 0.0 for traffic_group in traffic_groups}
 
     current_campaigns_tracker = get_campaigns(start_date, end_date, user)
-    _, profit = count_profit_for_reporting_period(current_campaigns_tracker, traffic_groups)
+    profit = calculate_profit_for_period(current_campaigns_tracker, traffic_groups)[1]
 
     tests_list = list(Test.objects.filter(user=user))
-    tests = count_tests(tests_list, current_campaigns_tracker, False, traffic_groups)
+    tests = calculate_tests(tests_list, current_campaigns_tracker, False, traffic_groups)
 
     for traffic_group in result:
         result[traffic_group] += profit[traffic_group] + tests[traffic_group][1]
@@ -45,7 +50,7 @@ def count_profit_with_tests(user, start_date, end_date, traffic_groups):
     return result
 
 
-def set_start_balances(user, traffic_groups):
+def set_start_balances(user: User, traffic_groups: List[str]) -> Dict[str, float]:
     result = {}
 
     if 'ADMIN' in traffic_groups:
@@ -64,7 +69,8 @@ def set_start_balances(user, traffic_groups):
     return result
 
 
-def count_profit_for_reporting_period(campaigns_list, traffic_groups):
+def calculate_profit_for_period(campaigns_list: List[Dict[str, Union[Campaign, List]]],
+                                traffic_groups: List[str]) -> Tuple[float, Dict[str, float]]:
     profit = {traffic_group: 0.0 for traffic_group in traffic_groups}
     total_revenue = 0.0
 
@@ -77,7 +83,7 @@ def count_profit_for_reporting_period(campaigns_list, traffic_groups):
     return total_revenue, profit
 
 
-def count_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
+def calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
     deltas = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
 
     for campaign_tracker in campaigns_tracker_list:
@@ -111,7 +117,7 @@ def count_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
     return deltas
 
 
-def count_tests(tests_list, campaigns_list, commit, traffic_groups):
+def calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
     tests = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
 
     for test in tests_list:
@@ -169,13 +175,13 @@ def count_tests(tests_list, campaigns_list, commit, traffic_groups):
     return tests
 
 
-def count_percent_from_other_users(start_date, end_date, user, traffic_groups):
+def calculate_fee_from_other_users(start_date, end_date, user, traffic_groups):
     from_other_users = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
 
     dependencies_list = PercentDependency.objects.all().filter(to_user=user)
 
     for dependency in dependencies_list:
-        profit_with_tests = count_profit_with_tests(dependency.from_user, start_date, end_date, traffic_groups)
+        profit_with_tests = calculate_profit_with_tests(dependency.from_user, start_date, end_date, traffic_groups)
 
         for traffic_group in profit_with_tests:
             profit_from_user = round(profit_with_tests[traffic_group] * dependency.percent, 6)
@@ -228,7 +234,7 @@ def save_campaigns(campaigns_to_save, campaigns_db):
         campaign['instance'].save()
 
 
-def count_user_salary(user, start_date, end_date, commit, traffic_groups):
+def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     result = set_start_balances(user, traffic_groups)
     start_balances = deepcopy(result)
 
@@ -236,17 +242,17 @@ def count_user_salary(user, start_date, end_date, commit, traffic_groups):
     prev_campaigns_tracker_list = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
     current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
 
-    total_revenue, profits = count_profit_for_reporting_period(current_campaigns_tracker_list, traffic_groups)
-    deltas = count_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
+    total_revenue, profits = calculate_profit_for_period(current_campaigns_tracker_list, traffic_groups)
+    deltas = calculate_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
 
     tests_list = list(Test.objects.filter(user=user))
-    tests = count_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups)
+    tests = calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups)
 
-    final_percent = count_final_percent(total_revenue, user.salary_group)
+    final_percent = calculate_final_percent(total_revenue, user.salary_group)
 
     from_other_users = None
     if user.is_lead:
-        from_other_users = count_percent_from_other_users(start_date, end_date, user, traffic_groups)
+        from_other_users = calculate_fee_from_other_users(start_date, end_date, user, traffic_groups)
 
     for traffic_group in result:
         result[traffic_group] += round(profits[traffic_group], 6)

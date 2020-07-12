@@ -1,6 +1,8 @@
 import os
+from datetime import date
 from decimal import Decimal
 from urllib.parse import urlencode
+from typing import List, Dict, Union
 
 import requests
 
@@ -15,12 +17,12 @@ _binom_api_key = os.environ.get('BINOM_API_KEY')
 _tracker_url = 'https://fcttrk.com/'
 
 
-def get_users():
+def get_users() -> List[User]:
     response = requests.get(_tracker_url, params={'page': 'Users', 'api_key': _binom_api_key}).json()
     return [User(id=int(user['id']), login=user['login']) for user in response]
 
 
-def get_offers():
+def get_offers() -> List[Offer]:
     response = requests.get(_tracker_url, params={'page': 'Offers',
                                                   'api_key': _binom_api_key,
                                                   'group': 'all',
@@ -33,7 +35,7 @@ def get_offers():
                   network=offer['network_name']) for offer in response]
 
 
-def get_traffic_sources():
+def get_traffic_sources() -> List[TrafficSource]:
     result = []
     all_traffic_sources = requests.get(_tracker_url, params={'page': 'Traffic_Sources',
                                                              'api_key': _binom_api_key,
@@ -56,7 +58,7 @@ def get_traffic_sources():
     return result
 
 
-def get_offers_ids_by_campaign(campaign):
+def get_offers_ids_by_campaign(campaign: Campaign) -> List[int]:
     result = []
 
     requests_url = _tracker_url + 'arm.php'
@@ -71,7 +73,7 @@ def get_offers_ids_by_campaign(campaign):
     return result
 
 
-def get_campaigns(start_date, end_date, user):
+def get_campaigns(start_date: date, end_date: date, user: User) -> List[Dict[str, Union[Campaign, List]]]:
     params = {
         'page': 'Campaigns',
         'user_group': user.id,

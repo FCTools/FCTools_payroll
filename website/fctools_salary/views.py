@@ -5,7 +5,7 @@ from django.contrib.auth.views import LogoutView as DJLogoutView
 from django.shortcuts import render, redirect
 
 from fctools_salary.services.binom.update import update_basic_info
-from fctools_salary.services.engine.engine import count_user_salary
+from fctools_salary.services.engine.engine import calculate_user_salary
 from .forms import ReportInfoForm
 
 
@@ -33,7 +33,7 @@ def count_view(request):
 
             update_basic_info()
             total_revenue, final_percent, start_balances, profits, from_rev_period, tests, from_other, result = \
-                count_user_salary(user, start_date, end_date, update_db_flag, traffic_groups)
+                calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups)
 
             return render(request, os.path.join('fctools_web', 'count_result.html'), context={
                 'start_balances': start_balances,
