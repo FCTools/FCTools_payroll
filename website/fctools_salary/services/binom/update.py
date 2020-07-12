@@ -12,7 +12,7 @@ def _update_users():
             user.save()
 
 
-def _update_offers():
+def update_offers():
     offers_db = Offer.objects.all()
     offers_tracker = get_offers()
 
@@ -33,4 +33,4 @@ def _update_traffic_sources():
 def update_basic_info():
     _update_users()
     _update_traffic_sources()
-    _update_offers()
+    update_offers()

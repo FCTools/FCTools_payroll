@@ -8,7 +8,7 @@ from fctools_salary.models import (
     Offer
 )
 from fctools_salary.services.binom.get_info import get_campaigns
-from fctools_salary.services.binom.update import update_basic_info
+from fctools_salary.services.binom.update import update_basic_info, update_offers
 
 
 def count_final_percent(revenue, salary_group):
@@ -74,7 +74,7 @@ def count_profit_with_tests(user, start_date, end_date, traffic_groups):
     return result
 
 
-def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
+def set_start_balances(user, traffic_groups):
     result = {}
 
     if 'ADMIN' in traffic_groups:
@@ -90,109 +90,101 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
     if 'PUSH traff' in traffic_groups:
         result['PUSH traff'] = round(float(user.push_balance), 6)
 
-    start_balances = deepcopy(result)
+    return result
 
-    prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
 
-    prev_campaigns_tracker = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
-    current_campaigns_tracker = get_campaigns(start_date, end_date, user)
-
+def count_profit_for_reporting_period(campaigns_list, traffic_groups):
+    profit = {traffic_group: 0.0 for traffic_group in traffic_groups}
     total_revenue = 0.0
 
-    for campaign in current_campaigns_tracker:
+    for campaign in campaigns_list:
         total_revenue += float(campaign['instance'].revenue)
 
-        if campaign['instance'].traffic_group in result:
-            result[campaign['instance'].traffic_group] += float(campaign['instance'].profit)
+        if campaign['instance'].traffic_group in traffic_groups:
+            profit[campaign['instance'].traffic_group] += float(campaign['instance'].profit)
 
-    profits = {}
+    return total_revenue, profit
 
-    for traffic_group in result:
-        profits[traffic_group] = round(result[traffic_group] - start_balances[traffic_group], 6)
 
-    from_prev_period = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
+def count_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
+    deltas = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
 
-    for campaign_obj in prev_campaigns_tracker:
-        campaign = campaign_obj['instance']
+    for campaign_tracker in campaigns_tracker_list:
+        campaign = campaign_tracker['instance']
 
-        if campaign in prev_campaigns_db_list:
-            campaign_db_profit = [x for x in prev_campaigns_db_list if x.id == campaign.id][0].profit
+        if campaign.traffic_group not in traffic_groups:
+            continue
+
+        if campaign in campaigns_db_list:
+            campaign_db_profit = [x for x in campaigns_db_list if x.id == campaign.id][0].profit
 
             if campaign.profit > campaign_db_profit:
-                if campaign.traffic_group not in result:
-                    continue
-
                 diff = float(campaign.profit - campaign_db_profit)
-                result[campaign.traffic_group] += diff
 
-                if from_prev_period[campaign.traffic_group][1] > 0:
-                    from_prev_period[campaign.traffic_group][0] += f" + {diff} [{campaign.id}]"
-                    from_prev_period[campaign.traffic_group][1] += diff
+                if deltas[campaign.traffic_group][1] > 0:
+                    deltas[campaign.traffic_group][0] += f" + {diff} [{campaign.id}]"
                 else:
-                    from_prev_period[campaign.traffic_group][0] = f"{diff} [{campaign.id}]"
-                    from_prev_period[campaign.traffic_group][1] += diff
+                    deltas[campaign.traffic_group][0] = f"{diff} [{campaign.id}]"
+                deltas[campaign.traffic_group][1] += diff
 
-    for traffic_group in from_prev_period:
-        from_prev_period[traffic_group][1] = round(from_prev_period[traffic_group][1], 6)
+    for traffic_group in deltas:
+        deltas[traffic_group][1] = round(deltas[traffic_group][1], 6)
 
-        if from_prev_period[traffic_group][1] == 0.0:
-            from_prev_period[traffic_group][0] = '0.0'
+        if deltas[traffic_group][1] == 0.0:
+            deltas[traffic_group][0] = '0.0'
 
-        elif '+' in from_prev_period[traffic_group][0]:
-            from_prev_period[traffic_group][0] = f'{from_prev_period[traffic_group][0]} = ' \
-                                                 f'{from_prev_period[traffic_group][1]}'
+        elif '+' in deltas[traffic_group][0]:
+            deltas[traffic_group][0] = f'{deltas[traffic_group][0]} = ' \
+                                                 f'{deltas[traffic_group][1]}'
 
-    tests_list = list(Test.objects.filter(user=user))
-    done_current_campaigns = []
+    return deltas
 
+
+def count_tests(tests_list, campaigns_list, commit, traffic_groups):
     tests = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
 
-    # optimize that
     for test in tests_list:
-        current_campaigns_list = []
+        test_campaigns_list = []
+
         test_offers_ids = {offer.id for offer in list(test.offers.all())}
         test_traffic_sources_ids = [ts.id for ts in list(test.traffic_sources.all())]
+
         start_balance = test.balance
         test_balance = test.balance
 
-        for campaign in current_campaigns_tracker:
+        for campaign in campaigns_list:
             if campaign['instance'].traffic_group in traffic_groups and \
                     campaign['instance'].traffic_source.id in test_traffic_sources_ids and \
                     len(test_offers_ids & set(campaign['offers_list'])) != 0:
-                current_campaigns_list.append(campaign['instance'])
+                test_campaigns_list.append(campaign['instance'])
 
-        for campaign in current_campaigns_list:
-            if campaign in done_current_campaigns:
+        for test_campaign in test_campaigns_list:
+            if test_campaign.profit >= 0:
                 continue
 
-            if campaign.profit >= 0:
-                done_current_campaigns.append(campaign)
-                continue
-
-            if test_balance >= 0 > test_balance + campaign.profit:
-                result[campaign.traffic_group] += round(float(test_balance), 6)
-
-                if tests[campaign.traffic_group][1] > 0:
-                    tests[campaign.traffic_group][0] += f' + {round(float(test_balance), 6)} [{campaign.id}]'
+            if test_balance >= 0 > test_balance + test_campaign.profit:
+                if tests[test_campaign.traffic_group][1] > 0:
+                    tests[test_campaign.traffic_group][0] += f' + {round(float(test_balance), 6)} ' \
+                                                             f'[{test_campaign.id}]'
                 else:
-                    tests[campaign.traffic_group][0] += f'{round(float(test_balance), 6)} [{campaign.id}]'
+                    tests[test_campaign.traffic_group][0] += f'{round(float(test_balance), 6)} ' \
+                                                             f'[{test_campaign.id}]'
 
-                tests[campaign.traffic_group][1] += round(float(test_balance), 6)
+                tests[test_campaign.traffic_group][1] += round(float(test_balance), 6)
 
-            elif test_balance + campaign.profit >= 0:
-                result[campaign.traffic_group] -= round(float(campaign.profit), 6)
-
-                if tests[campaign.traffic_group][1] > 0:
-                    tests[campaign.traffic_group][0] += f' + {-round(float(campaign.profit), 6)} [{campaign.id}]'
+            elif test_balance + test_campaign.profit >= 0:
+                if tests[test_campaign.traffic_group][1] > 0:
+                    tests[test_campaign.traffic_group][0] += f' + {-round(float(test_campaign.profit), 6)} ' \
+                                                             f'[{test_campaign.id}]'
                 else:
-                    tests[campaign.traffic_group][0] += f'{-round(float(campaign.profit), 6)} [{campaign.id}]'
+                    tests[test_campaign.traffic_group][0] += f'{-round(float(test_campaign.profit), 6)} ' \
+                                                             f'[{test_campaign.id}]'
 
-                tests[campaign.traffic_group][1] -= round(float(campaign.profit), 6)
+                tests[test_campaign.traffic_group][1] -= round(float(test_campaign.profit), 6)
 
-            test_balance += campaign.profit
-            done_current_campaigns.append(campaign)
+            test_balance += test_campaign.profit
 
-        if update_db and test_balance != start_balance:
+        if commit and test_balance != start_balance:
             test.balance = test_balance
             test.save()
 
@@ -203,58 +195,112 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
         elif '+' in tests[traffic_group][0]:
             tests[traffic_group][0] = f'{tests[traffic_group][0]} = {tests[traffic_group][1]}'
 
-    percent = count_final_percent(total_revenue, user.salary_group)
+    return tests
 
-    for traffic_group in result:
-        if result[traffic_group] > 0:
-            result[traffic_group] *= percent
+
+def count_percent_from_other_users(start_date, end_date, user, traffic_groups):
+    from_other_users = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
+
+    dependencies_list = PercentDependency.objects.all().filter(to_user=user)
+
+    for dependency in dependencies_list:
+        profit_with_tests = count_profit_with_tests(dependency.from_user, start_date, end_date, traffic_groups)
+
+        for traffic_group in profit_with_tests:
+            profit_from_user = round(profit_with_tests[traffic_group] * dependency.percent, 6)
+
+            if profit_from_user > 0:
+                from_other_users[traffic_group][1] += profit_from_user
+
+                if not from_other_users[traffic_group][0]:
+                    from_other_users[traffic_group][0] = f'{profit_from_user}' \
+                                                         f' [{dependency.from_user.login}]'
+                else:
+                    from_other_users[traffic_group][0] += f' + {profit_from_user}' \
+                                                          f' [{dependency.from_user.login}]'
+
+    for traffic_group in from_other_users:
+        if from_other_users[traffic_group][1] > 0:
+            if '+' in from_other_users[traffic_group][0]:
+                from_other_users[traffic_group][0] += f' = {from_other_users[traffic_group][1]}'
+        else:
+            from_other_users[traffic_group][0] = '0.0'
+
+    return from_other_users
+
+
+def commit_user_balances(user, balances):
+    user.admin_balance = balances['ADMIN'] if 'ADMIN' in balances and balances['ADMIN'] < 0 else 0
+    user.admin_balance = balances['FPA/HSA/PWA'] if 'FPA/HSA/PWA' in balances and balances['FPA/HSA/PWA'] < 0 else 0
+    user.admin_balance = balances['INAPP traff'] if 'INAPP traff' in balances and balances['INAPP traff'] < 0 else 0
+    user.admin_balance = balances['NATIVE traff'] if 'NATIVE traff' in balances and balances['NATIVE traff'] < 0 else 0
+    user.admin_balance = balances['POP traff'] if 'POP traff' in balances and balances['POP traff'] < 0 else 0
+    user.admin_balance = balances['PUSH traff'] if 'PUSH traff' in balances and balances['PUSH traff'] < 0 else 0
+
+    user.save()
+
+
+def save_campaigns(campaigns_to_save, campaigns_db):
+    for campaign in campaigns_to_save:
+        if campaign['instance'] not in campaigns_db:
+            campaign['instance'].save()
+
+            for offer_id in campaign['offers_list']:
+                try:
+                    offer = Offer.objects.get(id=offer_id)
+                except Offer.DoesNotExist:
+                    update_offers()
+                    offer = Offer.objects.get(id=offer_id)
+
+                campaign['instance'].offers_list.add(offer)
+
+        campaign['instance'].save()
+
+
+def count_user_salary(user, start_date, end_date, commit, traffic_groups):
+    result = set_start_balances(user, traffic_groups)
+    start_balances = deepcopy(result)
+
+    prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
+    prev_campaigns_tracker_list = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
+    current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
+
+    total_revenue, profits = count_profit_for_reporting_period(current_campaigns_tracker_list, traffic_groups)
+    deltas = count_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
+
+    tests_list = list(Test.objects.filter(user=user))
+    tests = count_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups)
+
+    final_percent = count_final_percent(total_revenue, user.salary_group)
 
     from_other_users = None
-
     if user.is_lead:
-        from_other_users = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
-
-        dependencies_list = PercentDependency.objects.all().filter(to_user=user)
-
-        for dependency in dependencies_list:
-            salary = count_profit_with_tests(dependency.from_user, start_date, end_date, traffic_groups)
-
-            for traffic_group in salary:
-                rounded_salary = round(salary[traffic_group], 6)
-                if rounded_salary > 0:
-                    profit = round(dependency.percent * rounded_salary, 6)
-                    result[traffic_group] += profit
-
-                    from_other_users[traffic_group][1] += profit
-
-                    if not from_other_users[traffic_group][0]:
-                        from_other_users[traffic_group][0] = f'{profit}' \
-                                                             f' [{dependency.from_user.login}]'
-                    else:
-                        from_other_users[traffic_group][0] += f' + {profit}' \
-                                                              f' [{dependency.from_user.login}]'
-
-        for traffic_group in from_other_users:
-            if from_other_users[traffic_group][1] > 0:
-                if '+' in from_other_users[traffic_group][0]:
-                    from_other_users[traffic_group][0] += f' = {from_other_users[traffic_group][1]}'
-            else:
-                from_other_users[traffic_group][0] = '0.0'
+        from_other_users = count_percent_from_other_users(start_date, end_date, user, traffic_groups)
 
     for traffic_group in result:
+        result[traffic_group] += round(profits[traffic_group], 6)
+        result[traffic_group] += round(deltas[traffic_group][1], 6)
+        result[traffic_group] += round(tests[traffic_group][1], 6)
+
+        if result[traffic_group] > 0:
+            result[traffic_group] *= final_percent
+
+        if user.is_lead:
+            result[traffic_group] += from_other_users[traffic_group][1]
+
         result[traffic_group] = ['', result[traffic_group]]
 
         if result[traffic_group][1] >= 0:
             result[traffic_group][
                 0] = f'({start_balances[traffic_group]}' \
                      f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}' \
-                     f' + {from_prev_period[traffic_group][1]} + ' \
-                     f'{tests[traffic_group][1]}) * {percent}'
+                     f' + {deltas[traffic_group][1]} + ' \
+                     f'{tests[traffic_group][1]}) * {final_percent}'
         else:
             result[traffic_group][
                 0] = f'{start_balances[traffic_group]}' \
                      f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}' \
-                     f' + {from_prev_period[traffic_group][1]} + ' \
+                     f' + {deltas[traffic_group][1]} + ' \
                      f'{tests[traffic_group][1]}'
 
         if user.is_lead and from_other_users[traffic_group][1] > 0:
@@ -263,31 +309,8 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
         result[traffic_group][1] = round(result[traffic_group][1], 6)
         result[traffic_group][0] += f' = {result[traffic_group][1]}'
 
-    if update_db:
-        user.admin_balance = result['ADMIN'][1] if result['ADMIN'][1] < 0 else 0
-        user.fpa_hsa_pwa_balance = result['FPA/HSA/PWA'][1] if result['FPA/HSA/PWA'][1] < 0 else 0
-        user.inapp_balance = result['INAPP traff'][1] if result['INAPP traff'][1] < 0 else 0
-        user.native_balance = result['NATIVE traff'][1] if result['NATIVE traff'][1] < 0 else 0
-        user.pop_balance = result['POP traff'][1] if result['POP traff'][1] < 0 else 0
-        user.push_balance = result['PUSH traff'][1] if result['PUSH traff'][1] < 0 else 0
+    if commit:
+        commit_user_balances(user, {traffic_group: result[traffic_group][1] for traffic_group in result})
+        save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
 
-        user.save()
-
-        for campaign in current_campaigns_tracker:
-            if campaign['instance'] in prev_campaigns_db_list:
-                campaign['instance'].save()
-            else:
-                campaign['instance'].save()
-
-                for offer_id in campaign['offers_list']:
-                    try:
-                        offer = Offer.objects.get(id=offer_id)
-                    except Offer.DoesNotExist:
-                        update_basic_info()
-                        offer = Offer.objects.get(id=offer_id)
-
-                    campaign['instance'].offers_list.add(offer)
-
-                campaign['instance'].save()
-
-    return round(total_revenue, 6), percent, start_balances, profits, from_prev_period, tests, from_other_users, result
+    return round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result
