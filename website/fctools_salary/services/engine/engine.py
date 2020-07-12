@@ -34,42 +34,13 @@ def count_profit_with_tests(user, start_date, end_date, traffic_groups):
     result = {traffic_group: 0.0 for traffic_group in traffic_groups}
 
     current_campaigns_tracker = get_campaigns(start_date, end_date, user)
-
-    for campaign in current_campaigns_tracker:
-        if campaign['instance'].traffic_group in result:
-            result[campaign['instance'].traffic_group] += float(campaign['instance'].profit)
+    _, profit = count_profit_for_reporting_period(current_campaigns_tracker, traffic_groups)
 
     tests_list = list(Test.objects.filter(user=user))
-    done_current_campaigns = []
+    tests = count_tests(tests_list, current_campaigns_tracker, False, traffic_groups)
 
-    for test in tests_list:
-        current_campaigns_list = []
-        test_offers_ids = {offer.id for offer in list(test.offers.all())}
-        test_traffic_sources_ids = [ts.id for ts in list(test.traffic_sources.all())]
-        test_balance = test.balance
-
-        for campaign in current_campaigns_tracker:
-            if campaign['instance'].traffic_group in traffic_groups and \
-                    campaign['instance'].traffic_source.id in test_traffic_sources_ids and \
-                    len(test_offers_ids & set(campaign['offers_list'])) != 0:
-                current_campaigns_list.append(campaign['instance'])
-
-        for campaign in current_campaigns_list:
-            if campaign in done_current_campaigns:
-                continue
-
-            if campaign.profit >= 0:
-                done_current_campaigns.append(campaign)
-                continue
-
-            if test_balance >= 0 > test_balance + campaign.profit:
-                result[campaign.traffic_group] += round(float(test_balance), 6)
-
-            elif test_balance + campaign.profit >= 0:
-                result[campaign.traffic_group] -= round(float(campaign.profit), 6)
-
-            test_balance += campaign.profit
-            done_current_campaigns.append(campaign)
+    for traffic_group in result:
+        result[traffic_group] += profit[traffic_group] + tests[traffic_group][1]
 
     return result
 
