@@ -36,8 +36,8 @@ def count_profit_with_tests(user, start_date, end_date, traffic_groups):
     current_campaigns_tracker = get_campaigns(start_date, end_date, user)
 
     for campaign in current_campaigns_tracker:
-        if campaign['campaign'].traffic_group in result:
-            result[campaign['campaign'].traffic_group] += float(campaign['campaign'].profit)
+        if campaign['instance'].traffic_group in result:
+            result[campaign['instance'].traffic_group] += float(campaign['instance'].profit)
 
     tests_list = list(Test.objects.filter(user=user))
     done_current_campaigns = []
@@ -49,10 +49,10 @@ def count_profit_with_tests(user, start_date, end_date, traffic_groups):
         test_balance = test.balance
 
         for campaign in current_campaigns_tracker:
-            if campaign['campaign'].traffic_group in traffic_groups and \
-                    campaign['campaign'].ts_id.id in test_traffic_sources_ids and \
+            if campaign['instance'].traffic_group in traffic_groups and \
+                    campaign['instance'].traffic_source.id in test_traffic_sources_ids and \
                     len(test_offers_ids & set(campaign['offers_list'])) != 0:
-                current_campaigns_list.append(campaign['campaign'])
+                current_campaigns_list.append(campaign['instance'])
 
         for campaign in current_campaigns_list:
             if campaign in done_current_campaigns:
@@ -100,10 +100,10 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
     total_revenue = 0.0
 
     for campaign in current_campaigns_tracker:
-        total_revenue += float(campaign['campaign'].revenue)
+        total_revenue += float(campaign['instance'].revenue)
 
-        if campaign['campaign'].traffic_group in result:
-            result[campaign['campaign'].traffic_group] += float(campaign['campaign'].profit)
+        if campaign['instance'].traffic_group in result:
+            result[campaign['instance'].traffic_group] += float(campaign['instance'].profit)
 
     profits = {}
 
@@ -113,7 +113,7 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
     from_prev_period = {traffic_group: ['', 0.0] for traffic_group in traffic_groups}
 
     for campaign_obj in prev_campaigns_tracker:
-        campaign = campaign_obj['campaign']
+        campaign = campaign_obj['instance']
 
         if campaign in prev_campaigns_db_list:
             campaign_db_profit = [x for x in prev_campaigns_db_list if x.id == campaign.id][0].profit
@@ -156,10 +156,10 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
         test_balance = test.balance
 
         for campaign in current_campaigns_tracker:
-            if campaign['campaign'].traffic_group in traffic_groups and \
-                    campaign['campaign'].ts_id.id in test_traffic_sources_ids and \
+            if campaign['instance'].traffic_group in traffic_groups and \
+                    campaign['instance'].traffic_source.id in test_traffic_sources_ids and \
                     len(test_offers_ids & set(campaign['offers_list'])) != 0:
-                current_campaigns_list.append(campaign['campaign'])
+                current_campaigns_list.append(campaign['instance'])
 
         for campaign in current_campaigns_list:
             if campaign in done_current_campaigns:
@@ -203,7 +203,7 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
         elif '+' in tests[traffic_group][0]:
             tests[traffic_group][0] = f'{tests[traffic_group][0]} = {tests[traffic_group][1]}'
 
-    percent = count_final_percent(total_revenue, user.group)
+    percent = count_final_percent(total_revenue, user.salary_group)
 
     for traffic_group in result:
         if result[traffic_group] > 0:
@@ -274,10 +274,10 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
         user.save()
 
         for campaign in current_campaigns_tracker:
-            if campaign['campaign'] in prev_campaigns_db_list:
-                campaign['campaign'].save()
+            if campaign['instance'] in prev_campaigns_db_list:
+                campaign['instance'].save()
             else:
-                campaign['campaign'].save()
+                campaign['instance'].save()
 
                 for offer_id in campaign['offers_list']:
                     try:
@@ -286,8 +286,8 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
                         update_basic_info()
                         offer = Offer.objects.get(id=offer_id)
 
-                    campaign['campaign'].offers_list.add(offer)
+                    campaign['instance'].offers_list.add(offer)
 
-                campaign['campaign'].save()
+                campaign['instance'].save()
 
     return round(total_revenue, 6), percent, start_balances, profits, from_prev_period, tests, from_other_users, result

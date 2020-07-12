@@ -25,7 +25,7 @@ class User(models.Model):
         default=False,
     )
 
-    group = models.IntegerField(
+    salary_group = models.IntegerField(
         verbose_name='Salary group',
         null=True,
         blank=False,
@@ -185,7 +185,7 @@ class Offer(models.Model):
         blank=True,
     )
 
-    network_name = models.CharField(
+    network = models.CharField(
         max_length=64,
         verbose_name='Network',
         null=True,
@@ -203,14 +203,14 @@ class Offer(models.Model):
                self.name == other.name and \
                self.geo == other.geo and \
                self.group == other.group and \
-               self.network_name == other.network_name
+               self.network == other.network
 
     def __hash__(self):
-        return hash((self.id, self.name, self.geo, self.group, self.network_name))
+        return hash((self.id, self.name, self.geo, self.group, self.network))
 
 
 class Test(models.Model):
-    amount = models.DecimalField(
+    budget = models.DecimalField(
         verbose_name='Budget',
         null=False,
         blank=False,
@@ -266,10 +266,10 @@ class Test(models.Model):
         max_digits=13,
     )
 
-    def amount_rounded(self):
-        return round(self.amount, 4)
+    def budget_rounded(self):
+        return round(self.budget, 4)
 
-    amount_rounded.short_description = 'Budget'
+    budget_rounded.short_description = 'Budget'
 
     def balance_colored(self):
         return format_html(f'<span style="color: {"#008000" if self.balance >= 0 else "#FF0000"};">'
@@ -277,15 +277,15 @@ class Test(models.Model):
 
     balance_colored.short_description = 'Balance'
 
-    def offers_list(self):
+    def offers_str(self):
         return ' ||| '.join(sorted([str(offer) for offer in self.offers.all()]))
 
-    offers_list.short_description = 'Offers'
+    offers_str.short_description = 'Offers'
 
-    def traffic_sources_list(self):
+    def traffic_sources_str(self):
         return ' ||| '.join(sorted([str(ts) for ts in self.traffic_sources.all()]))
 
-    traffic_sources_list.short_description = 'Traffic sources'
+    traffic_sources_str.short_description = 'Traffic sources'
 
 
 class Campaign(models.Model):
@@ -305,7 +305,7 @@ class Campaign(models.Model):
     )
 
     traffic_group = models.CharField(
-        max_length=64,
+        max_length=16,
         verbose_name='Traffic group',
         null=False,
         blank=False,
@@ -319,7 +319,7 @@ class Campaign(models.Model):
         ),
     )
 
-    ts_id = models.ForeignKey(
+    traffic_source = models.ForeignKey(
         TrafficSource,
         on_delete=models.CASCADE,
         verbose_name='Traffic source',
@@ -366,12 +366,12 @@ class Campaign(models.Model):
     )
 
     def profit_colored(self):
-        color_code = '#D3D3D3'
-
         if self.profit < 0:
             color_code = '#FF0000'
         elif self.profit > 0:
             color_code = '#008000'
+        else:
+            color_code = '#D3D3D3'
 
         return format_html(f'<span style="color: {color_code};">{round(self.profit, 4)}</span>')
 
@@ -395,10 +395,10 @@ class Campaign(models.Model):
             return False
 
         return self.id == other.id and self.name == other.name and self.traffic_group == other.traffic_group and \
-               self.ts_id == other.ts_id
+               self.traffic_source == other.traffic_source
 
     def __hash__(self):
-        return hash((self.id, self.name, self.ts_id))
+        return hash((self.id, self.name, self.traffic_source))
 
 
 class PercentDependency(models.Model):

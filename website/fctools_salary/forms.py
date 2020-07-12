@@ -5,7 +5,7 @@ from .models import User
 
 
 class ReportInfoForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.filter(group__gt=0),
+    user = forms.ModelChoiceField(queryset=User.objects.filter(salary_group__gt=0),
                                   required=True,
                                   widget=forms.Select(attrs={'class': 'field'}))
 
