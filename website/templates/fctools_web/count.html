@@ -1,6 +1,3 @@
-
-
-
 {% extends 'base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
@@ -9,7 +6,7 @@
 
 {% block headers %}
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -17,10 +14,10 @@
     <link rel="stylesheet" href="{% static "count.css" %}">
 
     <style>
-    select {
-  font-size: 120%;
-  width: 100%;
-    }
+        select {
+            font-size: 120%;
+            width: 100%;
+        }
     </style>
     {{ form.media }}
 {% endblock %}
@@ -28,14 +25,14 @@
 {% block body_class %}text-center{% endblock %}
 
 {% block content %}
-  <form class="form-count" method="post">
-  {% csrf_token %}
-  <input type="hidden" name="next" value="">
-  <img class="mb-4" src="{% static "logo.png" %}" alt="" width="120" height="120">
+    <form class="form-count" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="">
+        <img class="mb-4" src="{% static "logo.png" %}" alt="" width="120" height="120">
 
-  {{ form.as_p }}
+        {{ form.as_p }}
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-  <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
-</form>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
+    </form>
 {% endblock %}

@@ -1,7 +1,12 @@
 from copy import deepcopy
 from datetime import timedelta
 
-from fctools_salary.models import Campaign, Test, PercentDependency, Offer
+from fctools_salary.models import (
+    Campaign,
+    Test,
+    PercentDependency,
+    Offer
+)
 from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_basic_info
 
@@ -154,7 +159,6 @@ def count_user_salary(user, start_date, end_date, update_db, traffic_groups):
             if campaign['campaign'].traffic_group in traffic_groups and \
                     campaign['campaign'].ts_id.id in test_traffic_sources_ids and \
                     len(test_offers_ids & set(campaign['offers_list'])) != 0:
-
                 current_campaigns_list.append(campaign['campaign'])
 
         for campaign in current_campaigns_list:

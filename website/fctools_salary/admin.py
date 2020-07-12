@@ -1,10 +1,15 @@
-# Register your models here.
-
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 
-from .models import User, Offer, TrafficSource, Test, Campaign, PercentDependency
+from .models import (
+    User,
+    Offer,
+    TrafficSource,
+    Test,
+    Campaign,
+    PercentDependency
+)
 
 
 # TODO: add table with salary groups (fields: id, rules). Maybe you need to create table for rules and use it
@@ -113,6 +118,8 @@ def split_tests(modeladmin, request, queryset):
                 new_test.save()
 
             test.delete()
+
+
 split_tests.short_description = 'Analyze by traffic sources'
 
 

@@ -4,7 +4,12 @@ from urllib.parse import urlencode
 
 import requests
 
-from fctools_salary.models import User, Offer, TrafficSource, Campaign
+from fctools_salary.models import (
+    User,
+    Offer,
+    TrafficSource,
+    Campaign
+)
 
 _api_key = os.environ.get('BINOM_API_KEY')
 _requests_url = 'https://fcttrk.com/'

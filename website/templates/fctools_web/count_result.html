@@ -28,16 +28,16 @@
             color: #ff0000;
         }
     </style>
-     <style>
-   table {
-    width: 80%;
-       height: 70%;
-   }
-  </style>
     <style>
-    .col {
-        width: 11%;
-    }
+        table {
+            width: 80%;
+            height: 70%;
+        }
+    </style>
+    <style>
+        .col {
+            width: 11%;
+        }
     </style>
 {% endblock %}
 
@@ -100,7 +100,7 @@
         </tr>
 
         <tr>
-            <td style="padding:15px" >Tests</td>
+            <td style="padding:15px">Tests</td>
             {% for traffic_group, profit in tests.items %}
                 {% if profit.1 > 0 %}
                     <td class="text_green" style="padding:15px">{{ profit.0 }}</td>
@@ -113,18 +113,18 @@
         </tr>
 
         {% if from_other_users %}
-        <tr>
-            <td style="padding:15px" >From other users</td>
-            {% for traffic_group, value in from_other_users.items %}
-                <td style="padding:15px" >
-                    {% if value.1 > 0 %}
-                        <p class="text_green">{{ value.0 }}</p>
-                    {% else %}
-                        0.0
-                    {% endif %}
-                </td>
-            {% endfor %}
-        </tr>
+            <tr>
+                <td style="padding:15px">From other users</td>
+                {% for traffic_group, value in from_other_users.items %}
+                    <td style="padding:15px">
+                        {% if value.1 > 0 %}
+                            <p class="text_green">{{ value.0 }}</p>
+                        {% else %}
+                            0.0
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
         {% endif %}
 
         <tr>

@@ -5,7 +5,6 @@ DEBUG = True
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -16,7 +15,6 @@ DATABASES = {
         'PORT': '',
     }
 }
-
 
 LOGGING = {
     'version': 1,

@@ -1,4 +1,3 @@
-# Create your views here.
 import os
 
 from django.contrib.auth.decorators import login_required
