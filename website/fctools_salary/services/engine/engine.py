@@ -1,14 +1,24 @@
 from copy import deepcopy
 from datetime import timedelta, date
-from typing import List, Dict, Union, Tuple, Optional
+from typing import List, Dict, Tuple
 
 from fctools_salary.models import Campaign, Test, PercentDependency, Offer, User
 from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
-from services.type_hints import CampaignTracker
 
 
-def calculate_final_percent(revenue: float, salary_group: int) -> float:
+def calculate_final_percent(revenue, salary_group):
+    """
+    :param revenue: total revenue for the period
+    :type revenue: float
+
+    :param salary_group: user salary group
+    :type salary_group: int
+
+    :return final percent based on user salary group and total revenue
+    :rtype: float
+    """
+
     if salary_group == 1:
         percent = 0.5
 
@@ -27,9 +37,24 @@ def calculate_final_percent(revenue: float, salary_group: int) -> float:
     return percent
 
 
-def calculate_profit_with_tests(
-    user: User, start_date: date, end_date: date, traffic_groups: List[str]
-) -> Dict[str, float]:
+def calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
+    """
+    :param user: User
+    :type user: User
+
+    :param start_date: date
+    :type start_date: date
+
+    :param end_date: date
+    :type end_date: date
+
+    :param traffic_groups: User
+    :type traffic_groups: List[str]
+
+    :return user profit from start_date to end_date including tests
+    :rtype: Dict[str, float]
+    """
+
     result = {traffic_group: 0.0 for traffic_group in traffic_groups}
 
     current_campaigns_tracker = get_campaigns(start_date, end_date, user)
@@ -44,7 +69,18 @@ def calculate_profit_with_tests(
     return result
 
 
-def set_start_balances(user: User, traffic_groups: List[str]) -> Dict[str, float]:
+def set_start_balances(user, traffic_groups):
+    """
+    :param user: user to get start balances
+    :type user: User
+
+    :param traffic_groups: traffic groups which balances needed
+    :type traffic_groups: List[str]
+
+    :return: start balance (from database) for each traffic group in traffic_groups
+    :rtype: Dict[str, float]
+    """
+
     result = {}
 
     if "ADMIN" in traffic_groups:
@@ -63,9 +99,18 @@ def set_start_balances(user: User, traffic_groups: List[str]) -> Dict[str, float
     return result
 
 
-def calculate_profit_for_period(
-    campaigns_list: List[CampaignTracker], traffic_groups: List[str]
-) -> Tuple[float, Dict[str, float]]:
+def calculate_profit_for_period(campaigns_list, traffic_groups):
+    """
+    :param campaigns_list: list of campaigns for period with current traffic statistics
+    :type campaigns_list: List[CampaignTracker]
+
+    :param traffic_groups: traffic groups that includes in calculation
+    :type traffic_groups: List[str]
+
+    :return: total revenue and profit for this period (split by traffic groups)
+    :rtype: Tuple[float, Dict[str, float]]
+    """
+
     profit = {traffic_group: 0.0 for traffic_group in traffic_groups}
     total_revenue = 0.0
 
@@ -81,9 +126,21 @@ def calculate_profit_for_period(
     return total_revenue, profit
 
 
-def calculate_deltas(
-    campaigns_tracker_list: List[CampaignTracker], campaigns_db_list: List[Campaign], traffic_groups: List[str]
-) -> Dict[str, List[Union[str, float]]]:
+def calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
+    """
+    :param campaigns_tracker_list: campaigns list for the period with current traffic statistics
+    :type campaigns_tracker_list: List[CampaignTracker]
+
+    :param campaigns_db_list: campaigns list for the period with traffic statistics from last report
+    :type campaigns_db_list: List[Campaign]
+
+    :param traffic_groups: traffic groups that includes in calculation
+    :type traffic_groups: List[str]
+
+    :return: deltas with detailed calculation for the period (split by traffic groups)
+    :rtype: Dict[str, List[Union[str, float]]]
+    """
+
     deltas = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
 
     for campaign_tracker in campaigns_tracker_list:
@@ -116,9 +173,27 @@ def calculate_deltas(
     return deltas
 
 
-def calculate_tests(
-    tests_list: List[Test], campaigns_list: List[CampaignTracker], commit: bool, traffic_groups: List[str]
-) -> Dict[str, List[Union[str, float]]]:
+def calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
+    """
+    Calculates the amount that should be returned to employee (user)
+    analyzing the statistics of the test campaigns for the period.
+
+    :param tests_list: list of user tests
+    :type tests_list: List[Test]
+
+    :param campaigns_list: list of user campaigns with current statistics
+    :type campaigns_list: List[CampaignTracker]
+
+    :param commit: if set to True, than all changes will be committed to database (e.g. tests balances)
+    :type commit: bool
+
+    :param traffic_groups: traffic groups that includes in calculation
+    :type traffic_groups: List[str]
+
+    :return: amounts with detailed calculation for the period (split by traffic sources)
+    :rtype: Dict[str, List[Union[str, float]]]
+    """
+
     tests = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
 
     for test in tests_list:
@@ -184,9 +259,26 @@ def calculate_tests(
     return tests
 
 
-def calculate_fee_from_other_users(
-    start_date: date, end_date: date, user: User, traffic_groups: List[str]
-) -> Dict[str, List[Union[str, float]]]:
+def calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups):
+    """
+    Calculates teamlead profit from other users.
+
+    :param start_date: period start date
+    :type start_date: date
+
+    :param end_date: period end date
+    :type end_date: date
+
+    :param user: user (teamlead)
+    :type user: User
+
+    :param traffic_groups: traffic groups that includes in calculation
+    :type traffic_groups: List[str]
+
+    :return: profit from other users with detailed calculation (split by traffic groups)
+    :rtype: Dict[str, List[Union[str, float]]]
+    """
+
     from_other_users = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
 
     dependencies_list = PercentDependency.objects.all().filter(to_user=user)
@@ -215,7 +307,20 @@ def calculate_fee_from_other_users(
     return from_other_users
 
 
-def commit_user_balances(user: User, balances: Dict[str, float]):
+def save_user_balances(user, balances):
+    """
+    Saves user balances to database.
+
+    :param user: user
+    :type user: User
+
+    :param balances: balances to save (split by traffic group)
+    :type balances: Dict[str, float]
+
+    :return: None
+    :rtype: None
+    """
+
     user.admin_balance = balances["ADMIN"] if "ADMIN" in balances and balances["ADMIN"] < 0 else 0
     user.admin_balance = balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
     user.admin_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
@@ -226,7 +331,20 @@ def commit_user_balances(user: User, balances: Dict[str, float]):
     user.save()
 
 
-def save_campaigns(campaigns_to_save: List[CampaignTracker], campaigns_db: List[Campaign]):
+def save_campaigns(campaigns_to_save, campaigns_db):
+    """
+    Saves campaigns to database (or update statistics, if campaign already exists).
+
+    :param campaigns_to_save: campaigns to save
+    :type campaigns_to_save: List[CampaignTracker]
+
+    :param campaigns_db: current campaigns from database
+    :type campaigns_db: List[Campaign]
+
+    :return: None
+    :rtype: None
+    """
+
     for campaign in campaigns_to_save:
         if campaign["instance"] not in campaigns_db:
             campaign["instance"].save()
@@ -243,9 +361,28 @@ def save_campaigns(campaigns_to_save: List[CampaignTracker], campaigns_db: List[
         campaign["instance"].save()
 
 
-def calculate_user_salary(
-    user: User, start_date: date, end_date: date, commit: bool, traffic_groups: List[str]
-) -> Tuple[
+def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
+    """
+    Calculates user salary for the period from start_date to end_date by selected traffic groups.
+
+    :param user: user
+    :type user: User
+
+    :param start_date: period start date
+    :type start_date: date
+
+    :param end_date: period end date
+    :type end_date: date
+
+    :param commit: if set to True, than all changes will be committed to database (e.g. tests balances,
+    campaigns statistics and user balances)
+    :type commit: bool
+
+    :param traffic_groups: traffic groups that includes in calculation
+    :type traffic_groups: List[str]
+
+    :return:
+    :rtype: Tuple[
     float,
     float,
     Dict[str, float],
@@ -254,7 +391,9 @@ def calculate_user_salary(
     Dict[str, List[Union[str, float]]],
     Optional[Dict[str, List[Union[str, float]]]],
     Dict[str, float],
-]:
+]
+    """
+
     result = set_start_balances(user, traffic_groups)
     start_balances = deepcopy(result)
 
@@ -272,7 +411,7 @@ def calculate_user_salary(
 
     from_other_users = None
     if user.is_lead:
-        from_other_users = calculate_fee_from_other_users(start_date, end_date, user, traffic_groups)
+        from_other_users = calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
 
     for traffic_group in result:
         result[traffic_group] += round(profits[traffic_group], 6)
@@ -309,7 +448,7 @@ def calculate_user_salary(
         result[traffic_group][0] += f" = {result[traffic_group][1]}"
 
     if commit:
-        commit_user_balances(user, {traffic_group: result[traffic_group][1] for traffic_group in result})
+        save_user_balances(user, {traffic_group: result[traffic_group][1] for traffic_group in result})
         save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
 
     return round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result
