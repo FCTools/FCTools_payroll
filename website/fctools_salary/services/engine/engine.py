@@ -1,6 +1,6 @@
 from copy import deepcopy
 from datetime import timedelta, date
-from typing import List, Dict, Union, Tuple
+from typing import List, Dict, Union, Tuple, Optional
 
 from fctools_salary.models import Campaign, Test, PercentDependency, Offer, User
 from fctools_salary.services.binom.get_info import get_campaigns
@@ -184,7 +184,9 @@ def calculate_tests(
     return tests
 
 
-def calculate_fee_from_other_users(start_date, end_date, user, traffic_groups):
+def calculate_fee_from_other_users(
+    start_date: date, end_date: date, user: User, traffic_groups: List[str]
+) -> Dict[str, List[Union[str, float]]]:
     from_other_users = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
 
     dependencies_list = PercentDependency.objects.all().filter(to_user=user)
@@ -213,7 +215,7 @@ def calculate_fee_from_other_users(start_date, end_date, user, traffic_groups):
     return from_other_users
 
 
-def commit_user_balances(user, balances):
+def commit_user_balances(user: User, balances: Dict[str, float]):
     user.admin_balance = balances["ADMIN"] if "ADMIN" in balances and balances["ADMIN"] < 0 else 0
     user.admin_balance = balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
     user.admin_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
@@ -224,7 +226,7 @@ def commit_user_balances(user, balances):
     user.save()
 
 
-def save_campaigns(campaigns_to_save, campaigns_db):
+def save_campaigns(campaigns_to_save: List[CampaignTracker], campaigns_db: List[Campaign]):
     for campaign in campaigns_to_save:
         if campaign["instance"] not in campaigns_db:
             campaign["instance"].save()
@@ -241,7 +243,18 @@ def save_campaigns(campaigns_to_save, campaigns_db):
         campaign["instance"].save()
 
 
-def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
+def calculate_user_salary(
+    user: User, start_date: date, end_date: date, commit: bool, traffic_groups: List[str]
+) -> Tuple[
+    float,
+    float,
+    Dict[str, float],
+    Dict[str, float],
+    Dict[str, List[Union[str, float]]],
+    Dict[str, List[Union[str, float]]],
+    Optional[Dict[str, List[Union[str, float]]]],
+    Dict[str, float],
+]:
     result = set_start_balances(user, traffic_groups)
     start_balances = deepcopy(result)
 
