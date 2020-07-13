@@ -41,7 +41,10 @@ class User(models.Model):
         return f"{self.id} {self.login}"
 
     def __eq__(self, other):
-        return all([other, self.id == other.id, self.login == other.login])
+        if not other:
+            return False
+
+        return all([self.id == other.id, self.login == other.login])
 
     def __hash__(self):
         return hash((self.id, self.login))
@@ -62,7 +65,10 @@ class TrafficSource(models.Model):
         return f"{self.id} {self.name} {self.user.login}" if self.user else f"{self.id} {self.name}"
 
     def __eq__(self, other):
-        return all([other, self.id == other.id, self.name == other.name])
+        if not other:
+            return False
+
+        return all([self.id == other.id, self.name == other.name])
 
     def __hash__(self):
         return hash((self.id, self.name))
@@ -83,9 +89,11 @@ class Offer(models.Model):
         return self.name
 
     def __eq__(self, other):
+        if not other:
+            return False
+
         return all(
             [
-                other,
                 self.id == other.id,
                 self.name == other.name,
                 self.geo == other.geo,
@@ -216,7 +224,6 @@ class Campaign(models.Model):
 
         return all(
             [
-                other,
                 self.id == other.id,
                 self.name == other.name,
                 self.traffic_group == other.traffic_group,
