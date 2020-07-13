@@ -41,10 +41,7 @@ class User(models.Model):
         return f"{self.id} {self.login}"
 
     def __eq__(self, other):
-        if not other:
-            return False
-
-        return self.id == other.id and self.login == other.login
+        return all([other, self.id == other.id, self.login == other.login])
 
     def __hash__(self):
         return hash((self.id, self.login))
@@ -62,15 +59,10 @@ class TrafficSource(models.Model):
     campaigns = models.IntegerField(verbose_name="Campaigns", null=True, blank=True,)
 
     def __str__(self):
-        if self.user:
-            return f"{self.id} {self.name} {self.user.login}"
-        return f"{self.id} {self.name}"
+        return f"{self.id} {self.name} {self.user.login}" if self.user else f"{self.id} {self.name}"
 
     def __eq__(self, other):
-        if not other:
-            return False
-
-        return self.id == other.id and self.name == other.name
+        return all([other, self.id == other.id, self.name == other.name])
 
     def __hash__(self):
         return hash((self.id, self.name))
@@ -91,15 +83,15 @@ class Offer(models.Model):
         return self.name
 
     def __eq__(self, other):
-        if not other:
-            return False
-
-        return (
-            self.id == other.id
-            and self.name == other.name
-            and self.geo == other.geo
-            and self.group == other.group
-            and self.network == other.network
+        return all(
+            [
+                other,
+                self.id == other.id,
+                self.name == other.name,
+                self.geo == other.geo,
+                self.group == other.group,
+                self.network == other.network,
+            ]
         )
 
     def __hash__(self):
@@ -222,11 +214,14 @@ class Campaign(models.Model):
         if not other:
             return False
 
-        return (
-            self.id == other.id
-            and self.name == other.name
-            and self.traffic_group == other.traffic_group
-            and self.traffic_source == other.traffic_source
+        return all(
+            [
+                other,
+                self.id == other.id,
+                self.name == other.name,
+                self.traffic_group == other.traffic_group,
+                self.traffic_source == other.traffic_source,
+            ]
         )
 
     def __hash__(self):
