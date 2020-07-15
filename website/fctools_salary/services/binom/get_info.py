@@ -1,8 +1,8 @@
 import os
 from datetime import date
 from decimal import Decimal
+from typing import List, Dict
 from urllib.parse import urlencode
-from typing import List, Dict, Union
 
 import requests
 
@@ -12,12 +12,26 @@ _binom_api_key = os.environ.get("BINOM_API_KEY")
 _tracker_url = "https://fcttrk.com/"
 
 
-def get_users() -> List[User]:
+def get_users():
+    """
+    Gets users from tracker.
+
+    :return: list of users
+    :rtype: List[User]
+    """
+
     response = requests.get(_tracker_url, params={"page": "Users", "api_key": _binom_api_key}).json()
     return [User(id=int(user["id"]), login=user["login"]) for user in response]
 
 
-def get_offers() -> List[Offer]:
+def get_offers():
+    """
+    Gets offers from tracker.
+
+    :return: list of offers
+    :rtype: List[Offer]
+    """
+
     response = requests.get(
         _tracker_url, params={"page": "Offers", "api_key": _binom_api_key, "group": "all", "status": "all"}
     ).json()
@@ -34,7 +48,14 @@ def get_offers() -> List[Offer]:
     ]
 
 
-def get_traffic_sources() -> List[TrafficSource]:
+def get_traffic_sources():
+    """
+    Gets traffic sources from tracker.
+
+    :return: list of traffic sources
+    :rtype: List[TrafficSource]
+    """
+
     result = []
     all_traffic_sources = requests.get(
         _tracker_url, params={"page": "Traffic_Sources", "api_key": _binom_api_key, "status": "all"}
@@ -62,7 +83,17 @@ def get_traffic_sources() -> List[TrafficSource]:
     return result
 
 
-def get_offers_ids_by_campaign(campaign: Campaign) -> List[int]:
+def get_offers_ids_by_campaign(campaign: Campaign):
+    """
+    Gets list of offers ids for taken campaign.
+
+    :param campaign: campaign
+    :type campaign: Campaign
+
+    :return: list of of offers ids
+    :rtype: List[int]
+    """
+
     result = []
 
     requests_url = _tracker_url + "arm.php"
@@ -77,7 +108,24 @@ def get_offers_ids_by_campaign(campaign: Campaign) -> List[int]:
     return result
 
 
-def get_campaigns(start_date: date, end_date: date, user: User) -> List[Dict[str, Union[Campaign, List]]]:
+def get_campaigns(start_date, end_date, user):
+    """
+    Gets user campaigns from start_date to end_date.
+
+    :param start_date: period start date
+    :type start_date: date
+
+    :param end_date: period end date
+    :type end_date: date
+
+    :param user: user
+    :type user: User
+
+    :return: list of campaigns from tracker, each campaign is dict with 2 keys: instance - Campaign class instance
+    from models, offers_list - list of offers ids
+    :rtype: List[Dict[str, Union[CampaignTracker, List]]]
+    """
+
     params = {
         "page": "Campaigns",
         "user_group": user.id,

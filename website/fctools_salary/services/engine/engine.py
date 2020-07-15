@@ -9,6 +9,8 @@ from fctools_salary.services.binom.update import update_offers
 
 def calculate_final_percent(revenue, salary_group):
     """
+    Calculates final percent based on total revenue for the period and user salary group.
+
     :param revenue: total revenue for the period
     :type revenue: float
 
@@ -39,6 +41,8 @@ def calculate_final_percent(revenue, salary_group):
 
 def calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
     """
+    Calculates user profit for the period including tests
+
     :param user: User
     :type user: User
 
@@ -71,6 +75,8 @@ def calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
 
 def set_start_balances(user, traffic_groups):
     """
+    Gets user balances for selected traffic groups from database.
+
     :param user: user to get start balances
     :type user: User
 
@@ -101,6 +107,8 @@ def set_start_balances(user, traffic_groups):
 
 def calculate_profit_for_period(campaigns_list, traffic_groups):
     """
+    Calculates profit for the period without tests (just sum profit for all user campaigns).
+
     :param campaigns_list: list of campaigns for period with current traffic statistics
     :type campaigns_list: List[CampaignTracker]
 
@@ -128,6 +136,9 @@ def calculate_profit_for_period(campaigns_list, traffic_groups):
 
 def calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
     """
+    Calculates deltas from previous period. Delta - a profit that relates to the previous period,
+    but was not available at the time of calculation.
+
     :param campaigns_tracker_list: campaigns list for the period with current traffic statistics
     :type campaigns_tracker_list: List[CampaignTracker]
 
