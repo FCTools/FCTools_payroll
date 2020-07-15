@@ -4,6 +4,12 @@ from .get_info import get_users, get_offers, get_traffic_sources
 
 
 def _update_users():
+    """
+    Synchronize Users table in tracker and database.
+
+    :return: None
+    """
+
     users_db = User.objects.all()
     users_tracker = get_users()
 
@@ -13,6 +19,12 @@ def _update_users():
 
 
 def update_offers():
+    """
+    Synchronize Offers table in tracker and database.
+
+    :return: None
+    """
+
     offers_db = Offer.objects.all()
     offers_tracker = get_offers()
 
@@ -22,6 +34,12 @@ def update_offers():
 
 
 def _update_traffic_sources():
+    """
+    Synchronize TrafficSources table in tracker and database.
+
+    :return: None
+    """
+
     traffic_sources_db = TrafficSource.objects.all()
     traffic_sources_tracker = get_traffic_sources()
 
@@ -31,6 +49,12 @@ def _update_traffic_sources():
 
 
 def update_basic_info():
+    """
+    Synchronize Users, Offers and TrafficSources tables in tracker and database.
+
+    :return: None
+    """
+
     _update_users()
     _update_traffic_sources()
     update_offers()
