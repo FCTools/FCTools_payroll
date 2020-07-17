@@ -5,6 +5,11 @@ from .models import User
 
 
 class ReportInfoForm(forms.Form):
+    """
+    This form created for calculation configuration on /count page. Here you can select user,
+    period and other parameters.
+    """
+
     user = forms.ModelChoiceField(
         queryset=User.objects.filter(salary_group__gt=0), required=True, widget=forms.Select(attrs={"class": "field"})
     )
