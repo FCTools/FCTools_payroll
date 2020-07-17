@@ -7,7 +7,7 @@ from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
 
 
-def calculate_final_percent(revenue, salary_group):
+def _calculate_final_percent(revenue, salary_group):
     """
     Calculates final percent based on total revenue for the period and user salary group.
 
@@ -39,7 +39,7 @@ def calculate_final_percent(revenue, salary_group):
     return percent
 
 
-def calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
+def _calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
     """
     Calculates user profit for the period including tests
 
@@ -62,10 +62,10 @@ def calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
     result = {traffic_group: 0.0 for traffic_group in traffic_groups}
 
     current_campaigns_tracker = get_campaigns(start_date, end_date, user)
-    profit = calculate_profit_for_period(current_campaigns_tracker, traffic_groups)[1]
+    profit = _calculate_profit_for_period(current_campaigns_tracker, traffic_groups)[1]
 
     tests_list = list(Test.objects.filter(user=user))
-    tests = calculate_tests(tests_list, current_campaigns_tracker, False, traffic_groups)
+    tests = _calculate_tests(tests_list, current_campaigns_tracker, False, traffic_groups)
 
     for traffic_group in result:
         result[traffic_group] += profit[traffic_group] + tests[traffic_group][1]
@@ -73,7 +73,7 @@ def calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
     return result
 
 
-def set_start_balances(user, traffic_groups):
+def _set_start_balances(user, traffic_groups):
     """
     Gets user balances for selected traffic groups from database.
 
@@ -105,7 +105,7 @@ def set_start_balances(user, traffic_groups):
     return result
 
 
-def calculate_profit_for_period(campaigns_list, traffic_groups):
+def _calculate_profit_for_period(campaigns_list, traffic_groups):
     """
     Calculates profit for the period without tests (just sum profit for all user campaigns).
 
@@ -134,7 +134,7 @@ def calculate_profit_for_period(campaigns_list, traffic_groups):
     return total_revenue, profit
 
 
-def calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
+def _calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
     """
     Calculates deltas from previous period. Delta - a profit that relates to the previous period,
     but was not available at the time of calculation.
@@ -184,7 +184,7 @@ def calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
     return deltas
 
 
-def calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
+def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
     """
     Calculates the amount that should be returned to employee (user)
     analyzing the statistics of the test campaigns for the period.
@@ -270,7 +270,7 @@ def calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
     return tests
 
 
-def calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups):
+def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups):
     """
     Calculates teamlead profit from other users.
 
@@ -295,7 +295,7 @@ def calculate_teamlead_profit_from_other_users(start_date, end_date, user, traff
     dependencies_list = PercentDependency.objects.all().filter(to_user=user)
 
     for dependency in dependencies_list:
-        profit_with_tests = calculate_profit_with_tests(dependency.from_user, start_date, end_date, traffic_groups)
+        profit_with_tests = _calculate_profit_with_tests(dependency.from_user, start_date, end_date, traffic_groups)
 
         for traffic_group in profit_with_tests:
             profit_from_user = round(profit_with_tests[traffic_group] * dependency.percent, 6)
@@ -318,7 +318,7 @@ def calculate_teamlead_profit_from_other_users(start_date, end_date, user, traff
     return from_other_users
 
 
-def save_user_balances(user, balances):
+def _save_user_balances(user, balances):
     """
     Saves user balances to database.
 
@@ -342,7 +342,7 @@ def save_user_balances(user, balances):
     user.save()
 
 
-def save_campaigns(campaigns_to_save, campaigns_db):
+def _save_campaigns(campaigns_to_save, campaigns_db):
     """
     Saves campaigns to database (or update statistics, if campaign already exists).
 
@@ -405,24 +405,24 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
 ]
     """
 
-    result = set_start_balances(user, traffic_groups)
+    result = _set_start_balances(user, traffic_groups)
     start_balances = deepcopy(result)
 
     prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
     prev_campaigns_tracker_list = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
     current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
 
-    total_revenue, profits = calculate_profit_for_period(current_campaigns_tracker_list, traffic_groups)
-    deltas = calculate_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
+    total_revenue, profits = _calculate_profit_for_period(current_campaigns_tracker_list, traffic_groups)
+    deltas = _calculate_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
 
     tests_list = list(Test.objects.filter(user=user))
-    tests = calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups)
+    tests = _calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups)
 
-    final_percent = calculate_final_percent(total_revenue, user.salary_group)
+    final_percent = _calculate_final_percent(total_revenue, user.salary_group)
 
     from_other_users = None
     if user.is_lead:
-        from_other_users = calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
+        from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
 
     for traffic_group in result:
         result[traffic_group] += round(profits[traffic_group], 6)
@@ -459,7 +459,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
         result[traffic_group][0] += f" = {result[traffic_group][1]}"
 
     if commit:
-        save_user_balances(user, {traffic_group: result[traffic_group][1] for traffic_group in result})
-        save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
+        _save_user_balances(user, {traffic_group: result[traffic_group][1] for traffic_group in result})
+        _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
 
     return round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result

@@ -11,7 +11,7 @@ from .forms import ReportInfoForm
 
 @login_required(login_url="login/")
 def base_menu(request):
-    template = os.path.join("fctools_web", "menu.html")
+    template = os.path.join("fctools_salary", "menu.html")
     user = request.user.username
 
     context = {"user": user}
@@ -45,7 +45,7 @@ def count_view(request):
 
             return render(
                 request,
-                os.path.join("fctools_web", "count_result.html"),
+                os.path.join("fctools_salary", "count_result.html"),
                 context={
                     "start_balances": start_balances,
                     "profits": profits,
@@ -61,11 +61,11 @@ def count_view(request):
                 },
             )
         else:
-            return render(request, os.path.join("fctools_web", "count.html"), {"form": form})
+            return render(request, os.path.join("fctools_salary", "count.html"), {"form": form})
 
     else:
         form = ReportInfoForm()
-        return render(request, os.path.join("fctools_web", "count.html"), {"form": form})
+        return render(request, os.path.join("fctools_salary", "count.html"), {"form": form})
 
 
 @login_required(login_url="login/")
