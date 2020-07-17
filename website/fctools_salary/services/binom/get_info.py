@@ -6,7 +6,10 @@ from urllib.parse import urlencode
 
 import requests
 
-from fctools_salary.models import User, Offer, TrafficSource, Campaign
+from fctools_salary.domains.tracker.campaign import Campaign
+from fctools_salary.domains.tracker.offer import Offer
+from fctools_salary.domains.tracker.traffic_source import TrafficSource
+from fctools_salary.domains.accounts.user import User
 
 _binom_api_key = os.environ.get("BINOM_API_KEY")
 _tracker_url = "https://fcttrk.com/"

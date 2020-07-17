@@ -2,7 +2,10 @@ from copy import deepcopy
 from datetime import timedelta, date
 from typing import List, Dict, Tuple
 
-from fctools_salary.models import Campaign, Test, PercentDependency, Offer, User
+from fctools_salary.domains.tracker.campaign import Campaign
+from fctools_salary.domains.tracker.offer import Offer
+from fctools_salary.domains.accounts.percent_dependency import PercentDependency
+from fctools_salary.domains.accounts.test import Test
 from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
 

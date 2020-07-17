@@ -1,7 +1,7 @@
 from django import forms
 from tempus_dominus.widgets import DatePicker
 
-from .models import User
+from fctools_salary.domains.accounts.user import User
 
 
 class ReportInfoForm(forms.Form):
