@@ -25,28 +25,12 @@ DATABASES = {
     }
 }
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {"console": {"class": "logging.StreamHandler",},},
-#     "root": {"handlers": ["console"], "level": "WARNING",},
-#     "loggers": {"django": {"handlers": ["console"], "level": "INFO", "propagate": False,},},
-# }
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {"console": {"class": "logging.StreamHandler",},},
-    "root": {"handlers": ["console"], "level": "DEBUG",},
-    "loggers": {
-        "django": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"), "propagate": False,},
-        "django.db_backends": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
-            "propagate": False,
-        },
-        "django.db": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"), "propagate": False,},
-    },
+    "root": {"handlers": ["console"], "level": "WARNING",},
+    "loggers": {"django": {"handlers": ["console"], "level": "INFO", "propagate": False,},},
 }
 
 STATIC_URL = "/static/"
