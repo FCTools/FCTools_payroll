@@ -1,7 +1,7 @@
 from website.settings.base import *
 
 
-DEBUG = True
+DEBUG = False
 
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
