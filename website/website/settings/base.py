@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "crispy_forms",
     "tempus_dominus",
-    "fctools_salary",
+    "fctools_salary.apps.FctoolsSalaryConfig",
 ]
 
 MIDDLEWARE = [
