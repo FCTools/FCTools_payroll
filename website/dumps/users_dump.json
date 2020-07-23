@@ -1,2 +1,2693 @@
 [
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "auth",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "fctools_salary",
+        "model": "offer"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "fctools_salary",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "fctools_salary",
+        "model": "trafficsource"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+        "app_label": "fctools_salary",
+        "model": "test"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "fctools_salary",
+        "model": "percentdependency"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "fctools_salary",
+        "model": "campaign"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "1nv6hl0or734knxjg9ddanf7f1cn8wps",
+    "fields": {
+        "session_data": "ZDQxMzFjMTY0M2Q5YjY0MTUxNGJkYThhZGI4MmNmNGQ2ODMxZGM4OTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhNTcxYTY1YzllMzE1OTY1YTkxNTg4MTE0NTNkNWRmMTdjZGYwOTVhIn0=",
+        "expire_date": "2020-08-06T07:13:01.972Z"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 2,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 3,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 4,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 4,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 4,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 4,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 5,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 5,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 5,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 5,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 6,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 6,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 6,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 6,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add offer",
+        "content_type": 7,
+        "codename": "add_offer"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change offer",
+        "content_type": 7,
+        "codename": "change_offer"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete offer",
+        "content_type": 7,
+        "codename": "delete_offer"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view offer",
+        "content_type": 7,
+        "codename": "view_offer"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 8,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 8,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 8,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 8,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add traffic source",
+        "content_type": 9,
+        "codename": "add_trafficsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change traffic source",
+        "content_type": 9,
+        "codename": "change_trafficsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete traffic source",
+        "content_type": 9,
+        "codename": "delete_trafficsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view traffic source",
+        "content_type": 9,
+        "codename": "view_trafficsource"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add test",
+        "content_type": 10,
+        "codename": "add_test"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change test",
+        "content_type": 10,
+        "codename": "change_test"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete test",
+        "content_type": 10,
+        "codename": "delete_test"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can view test",
+        "content_type": 10,
+        "codename": "view_test"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can add Percent dependency",
+        "content_type": 11,
+        "codename": "add_percentdependency"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can change Percent dependency",
+        "content_type": 11,
+        "codename": "change_percentdependency"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can delete Percent dependency",
+        "content_type": 11,
+        "codename": "delete_percentdependency"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view Percent dependency",
+        "content_type": 11,
+        "codename": "view_percentdependency"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can add campaign",
+        "content_type": 12,
+        "codename": "add_campaign"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can change campaign",
+        "content_type": 12,
+        "codename": "change_campaign"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can delete campaign",
+        "content_type": 12,
+        "codename": "delete_campaign"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can view campaign",
+        "content_type": 12,
+        "codename": "view_campaign"
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$JKuRrrZjDjQI$jzr9LeBe26IqhrmRA20gPRm+5natGRM0+Ae4THvu5zo=",
+        "last_login": "2020-07-23T07:13:01.915Z",
+        "is_superuser": true,
+        "username": "alcatraz",
+        "first_name": "",
+        "last_name": "",
+        "email": "germanyakimov@yandex.ru",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2020-07-07T07:51:52.030Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$4En6EY7XQCCd$kH3PYpLvsDIPpjwJTi1Az49pD1aQDRnWDYKGgfSQjz0=",
+        "last_login": "2020-07-20T09:28:13.011Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2020-07-07T07:53:35.369Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2020-07-09T08:19:19.967Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "606",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 48 PropellerAds - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2020-07-09T08:21:04.431Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "607",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 54 EvaDav - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2020-07-09T08:21:39.906Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "608",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 66 ByMyAds - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2020-07-09T08:22:13.126Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "609",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 67 DatsPush  -  @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2020-07-09T08:23:28.767Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "610",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 99 Megapu.sh - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+        "action_time": "2020-07-09T08:23:59.237Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "611",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 119 PushAds - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+        "action_time": "2020-07-09T08:24:26.446Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "612",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 120 Push.house - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+        "action_time": "2020-07-09T08:25:04.127Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "613",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 127 Kadam - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+        "action_time": "2020-07-09T08:25:29.674Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "614",
+        "object_repr": "4 User100, PUSH traff, [451] Rummy Circle CPL - $2.4, 131 AdvertLink - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+        "action_time": "2020-07-09T08:29:25.921Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "615",
+        "object_repr": "17 User402, PUSH traff, [447] Magic Red Mobile CPL - $4, 81 EvaDav - @crypking (u402)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+        "action_time": "2020-07-09T08:29:41.078Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "615",
+        "object_repr": "17 User402, PUSH traff, [447] Magic Red Mobile CPL - $4, 81 EvaDav - @crypking (u402)",
+        "action_flag": 2,
+        "change_message": "[]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+        "action_time": "2020-07-09T08:30:55.022Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "616",
+        "object_repr": "17 User402, PUSH traff, [447] Magic Red Mobile CPL - $4, 106 PropellerAds - @crypking (u402)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+        "action_time": "2020-07-09T08:45:24.760Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "617",
+        "object_repr": "17 User402, PUSH traff, [447] Magic Red Mobile CPL - $4, 112 Push.house - @crypking (u402) User402",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+        "action_time": "2020-07-09T08:45:49.125Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "618",
+        "object_repr": "17 User402, PUSH traff, [447] Magic Red Mobile CPL - $4, 113 ByMyAds - @crypking (u402) User402",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+        "action_time": "2020-07-09T08:46:11.596Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "619",
+        "object_repr": "17 User402, PUSH traff, [447] Magic Red Mobile CPL - $4, 125 Megapu.sh - @crypking (u402) User402",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+        "action_time": "2020-07-09T08:47:28.824Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "620",
+        "object_repr": "23 User408, PUSH traff, [447] Magic Red Mobile CPL - $4, 87 EvaDav - @alexandrp84 (u408) User408",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+        "action_time": "2020-07-09T08:47:50.697Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "621",
+        "object_repr": "23 User408, PUSH traff, [447] Magic Red Mobile CPL - $4, 132 ByMyAds - @alexandrp84 (u408) User408",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+        "action_time": "2020-07-09T08:48:19.452Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "622",
+        "object_repr": "23 User408, PUSH traff, [447] Magic Red Mobile CPL - $4, 133 PropellerAds - @alexandrp84 (u408) User408",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+        "action_time": "2020-07-09T08:48:40.978Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "623",
+        "object_repr": "23 User408, PUSH traff, [447] Magic Red Mobile CPL - $4, 135 Push.house - @alexandrp84 (u408) User408",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+        "action_time": "2020-07-09T08:50:49.264Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "624",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 7 RichPush - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+        "action_time": "2020-07-09T08:51:14.719Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "625",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 8 PropellerAds - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+        "action_time": "2020-07-09T08:51:49.963Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "626",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 9 EvaDav - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+        "action_time": "2020-07-09T08:52:28.391Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "627",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 10 Push.house - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+        "action_time": "2020-07-09T08:52:48.579Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "628",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 11 ByMyAds - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+        "action_time": "2020-07-09T08:53:11.109Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "629",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 12 DatsPush  -  @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+        "action_time": "2020-07-09T08:54:07.883Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "630",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 57 TacoLoco - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+        "action_time": "2020-07-09T08:54:31.537Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "631",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 58 \u0421qrpush - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+        "action_time": "2020-07-09T08:55:08.031Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "632",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 60 PushSender - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+        "action_time": "2020-07-09T08:55:49.477Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "633",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 76 Vimmy - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+        "action_time": "2020-07-09T08:56:19.743Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "634",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 98 Megapu.sh - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+        "action_time": "2020-07-09T08:56:49.945Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "635",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 116 Tranding.bid - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+        "action_time": "2020-07-09T08:57:19.809Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "636",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 117 Clickadilla - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+        "action_time": "2020-07-09T08:57:48.795Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "637",
+        "object_repr": "6 User69, PUSH traff, [447] Magic Red Mobile CPL - $4, 118 PushAds - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+        "action_time": "2020-07-09T08:58:54.270Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "638",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 7 RichPush - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 35,
+    "fields": {
+        "action_time": "2020-07-09T08:59:55.625Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "639",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 8 PropellerAds - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 36,
+    "fields": {
+        "action_time": "2020-07-09T09:00:46.300Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "640",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 9 EvaDav - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 37,
+    "fields": {
+        "action_time": "2020-07-09T09:01:07.676Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "641",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 10 Push.house - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 38,
+    "fields": {
+        "action_time": "2020-07-09T09:01:48.034Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "642",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 11 ByMyAds - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 39,
+    "fields": {
+        "action_time": "2020-07-09T09:02:25.371Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "643",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 12 DatsPush  -  @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 40,
+    "fields": {
+        "action_time": "2020-07-09T09:03:02.519Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "644",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 57 TacoLoco - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 41,
+    "fields": {
+        "action_time": "2020-07-09T09:03:41.524Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "645",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 58 \u0421qrpush - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 42,
+    "fields": {
+        "action_time": "2020-07-09T09:04:14.110Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "646",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 60 PushSender - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 43,
+    "fields": {
+        "action_time": "2020-07-09T09:04:40.889Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "647",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 76 Vimmy - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 44,
+    "fields": {
+        "action_time": "2020-07-09T09:05:01.894Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "648",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 98 Megapu.sh - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 45,
+    "fields": {
+        "action_time": "2020-07-09T09:05:27.520Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "649",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 116 Tranding.bid - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 46,
+    "fields": {
+        "action_time": "2020-07-09T09:05:57.772Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "650",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 117 Clickadilla - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 47,
+    "fields": {
+        "action_time": "2020-07-09T09:06:26.312Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "651",
+        "object_repr": "6 User69, PUSH traff, [451] Rummy Circle CPL - $2.4, 118 PushAds - @shaman_fm (\u041c\u0438\u0445\u0430\u0438\u043b) User69",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 48,
+    "fields": {
+        "action_time": "2020-07-09T09:08:39.209Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "652",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 13 RichPush - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 49,
+    "fields": {
+        "action_time": "2020-07-09T09:11:14.506Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "653",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 14 PropellerAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 50,
+    "fields": {
+        "action_time": "2020-07-09T09:12:11.383Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "654",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 15 EvaDav - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 51,
+    "fields": {
+        "action_time": "2020-07-09T09:12:50.318Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "655",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 16 Push.house - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 52,
+    "fields": {
+        "action_time": "2020-07-09T09:13:14.439Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "656",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 17 ByMyAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 53,
+    "fields": {
+        "action_time": "2020-07-09T09:13:54.272Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "657",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 18 DatsPush  -  @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 54,
+    "fields": {
+        "action_time": "2020-07-09T09:14:29.392Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "658",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 45 ZeroPark - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 55,
+    "fields": {
+        "action_time": "2020-07-09T09:14:53.799Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "659",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 46 Megapu.sh - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 56,
+    "fields": {
+        "action_time": "2020-07-09T09:15:58.302Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "660",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 51 Push.House - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 57,
+    "fields": {
+        "action_time": "2020-07-09T09:16:31.481Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "661",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 65 Ad-Maven - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 58,
+    "fields": {
+        "action_time": "2020-07-09T09:17:08.466Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "662",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 70 TacoLoco - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 59,
+    "fields": {
+        "action_time": "2020-07-09T09:17:33.327Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "663",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 71 ActiveRevenue - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 60,
+    "fields": {
+        "action_time": "2020-07-09T09:17:58.841Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "664",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 72 HilltopAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 61,
+    "fields": {
+        "action_time": "2020-07-09T09:18:23.571Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "665",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 73 Adskeeper - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 62,
+    "fields": {
+        "action_time": "2020-07-09T09:18:49.538Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "666",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 75 DaoPush - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 63,
+    "fields": {
+        "action_time": "2020-07-09T09:19:16.006Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "667",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 109 Tranding.bid - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 64,
+    "fields": {
+        "action_time": "2020-07-09T09:19:34.153Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "668",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 110 Clickadilla - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 65,
+    "fields": {
+        "action_time": "2020-07-09T09:20:11.726Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "669",
+        "object_repr": "7 User67, PUSH traff, [447] Magic Red Mobile CPL - $4, 111 PushAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 66,
+    "fields": {
+        "action_time": "2020-07-09T09:21:12.408Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "670",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 13 RichPush - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 67,
+    "fields": {
+        "action_time": "2020-07-09T09:21:45.898Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "671",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 14 PropellerAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 68,
+    "fields": {
+        "action_time": "2020-07-09T09:22:40.066Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "672",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 15 EvaDav - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 69,
+    "fields": {
+        "action_time": "2020-07-09T09:23:15.373Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "673",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 16 Push.house - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 70,
+    "fields": {
+        "action_time": "2020-07-09T09:23:58.599Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "674",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 17 ByMyAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 71,
+    "fields": {
+        "action_time": "2020-07-09T09:24:30.111Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "675",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 18 DatsPush  -  @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 72,
+    "fields": {
+        "action_time": "2020-07-09T09:25:08.544Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "676",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 45 ZeroPark - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 73,
+    "fields": {
+        "action_time": "2020-07-09T09:25:28.731Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "677",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 46 Megapu.sh - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 74,
+    "fields": {
+        "action_time": "2020-07-09T09:26:00.172Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "678",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 51 Push.House - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 75,
+    "fields": {
+        "action_time": "2020-07-09T09:26:37.055Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "679",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 65 Ad-Maven - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 76,
+    "fields": {
+        "action_time": "2020-07-09T09:27:30.121Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "680",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 67 DatsPush  -  @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 77,
+    "fields": {
+        "action_time": "2020-07-09T09:27:56.223Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "680",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 67 DatsPush  -  @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 78,
+    "fields": {
+        "action_time": "2020-07-09T09:28:03.640Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "681",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 70 TacoLoco - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 79,
+    "fields": {
+        "action_time": "2020-07-09T09:28:23.809Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "682",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 71 ActiveRevenue - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 80,
+    "fields": {
+        "action_time": "2020-07-09T09:28:44.566Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "683",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 72 HilltopAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 81,
+    "fields": {
+        "action_time": "2020-07-09T09:29:06.805Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "684",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 73 Adskeeper - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 82,
+    "fields": {
+        "action_time": "2020-07-09T09:29:27.194Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "685",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 75 DaoPush - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 83,
+    "fields": {
+        "action_time": "2020-07-09T09:29:51.991Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "686",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 109 Tranding.bid - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 84,
+    "fields": {
+        "action_time": "2020-07-09T09:30:10.164Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "687",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 110 Clickadilla - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 85,
+    "fields": {
+        "action_time": "2020-07-09T09:30:58.040Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "688",
+        "object_repr": "7 User67, PUSH traff, [451] Rummy Circle CPL - $2.4, 111 PushAds - @adrDev (\u0410\u043d\u0434\u0440\u0435\u0439) User67",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 86,
+    "fields": {
+        "action_time": "2020-07-09T10:26:52.794Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "689",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 48 PropellerAds - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 87,
+    "fields": {
+        "action_time": "2020-07-09T10:27:12.364Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "690",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 54 EvaDav - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 88,
+    "fields": {
+        "action_time": "2020-07-09T10:27:37.748Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "691",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 66 ByMyAds - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 89,
+    "fields": {
+        "action_time": "2020-07-09T10:28:09.109Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "692",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 67 DatsPush  -  @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 90,
+    "fields": {
+        "action_time": "2020-07-09T10:28:26.543Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "693",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 99 Megapu.sh - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 91,
+    "fields": {
+        "action_time": "2020-07-09T10:28:48.620Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "694",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 119 PushAds - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 92,
+    "fields": {
+        "action_time": "2020-07-09T10:29:15.440Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "695",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 120 Push.house - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 93,
+    "fields": {
+        "action_time": "2020-07-09T10:29:42.437Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "696",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 127 Kadam - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 94,
+    "fields": {
+        "action_time": "2020-07-09T10:30:00.089Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "697",
+        "object_repr": "4 User100, PUSH traff, [447] Magic Red Mobile CPL - $4, 131 AdvertLink - @morzhh (\u041c\u0430\u043a\u0441\u0438\u043c) User100",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 95,
+    "fields": {
+        "action_time": "2020-07-13T08:59:24.317Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "698",
+        "object_repr": "Test object (698)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 96,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.242Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "708",
+        "object_repr": "Test object (708)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 97,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.247Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "707",
+        "object_repr": "Test object (707)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 98,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.249Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "706",
+        "object_repr": "Test object (706)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 99,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.251Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "705",
+        "object_repr": "Test object (705)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 100,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.256Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "704",
+        "object_repr": "Test object (704)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 101,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.258Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "703",
+        "object_repr": "Test object (703)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 102,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.261Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "702",
+        "object_repr": "Test object (702)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 103,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.264Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "701",
+        "object_repr": "Test object (701)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 104,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.267Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "700",
+        "object_repr": "Test object (700)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 105,
+    "fields": {
+        "action_time": "2020-07-13T08:59:49.270Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "699",
+        "object_repr": "Test object (699)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 106,
+    "fields": {
+        "action_time": "2020-07-13T09:07:45.890Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "709",
+        "object_repr": "Test object (709)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 107,
+    "fields": {
+        "action_time": "2020-07-13T09:08:48.812Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "710",
+        "object_repr": "Test object (710)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 108,
+    "fields": {
+        "action_time": "2020-07-13T09:09:54.182Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "711",
+        "object_repr": "Test object (711)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 109,
+    "fields": {
+        "action_time": "2020-07-13T09:10:47.022Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "712",
+        "object_repr": "Test object (712)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 110,
+    "fields": {
+        "action_time": "2020-07-15T11:21:25.908Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "763",
+        "object_repr": "Test object (763)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 111,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.248Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "773",
+        "object_repr": "Test object (773)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 112,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.255Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "772",
+        "object_repr": "Test object (772)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 113,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.258Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "771",
+        "object_repr": "Test object (771)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 114,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.263Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "770",
+        "object_repr": "Test object (770)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 115,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.267Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "769",
+        "object_repr": "Test object (769)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 116,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.269Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "768",
+        "object_repr": "Test object (768)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 117,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.272Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "767",
+        "object_repr": "Test object (767)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 118,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.276Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "766",
+        "object_repr": "Test object (766)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 119,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.278Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "765",
+        "object_repr": "Test object (765)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 120,
+    "fields": {
+        "action_time": "2020-07-15T11:21:49.280Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "764",
+        "object_repr": "Test object (764)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 121,
+    "fields": {
+        "action_time": "2020-07-20T09:32:24.628Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "774",
+        "object_repr": "Test object (774)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 122,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.250Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "784",
+        "object_repr": "Test object (784)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 123,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.255Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "783",
+        "object_repr": "Test object (783)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 124,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.257Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "782",
+        "object_repr": "Test object (782)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 125,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.260Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "781",
+        "object_repr": "Test object (781)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 126,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.262Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "780",
+        "object_repr": "Test object (780)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 127,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.264Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "779",
+        "object_repr": "Test object (779)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 128,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.266Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "778",
+        "object_repr": "Test object (778)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 129,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.268Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "777",
+        "object_repr": "Test object (777)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 130,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.269Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "776",
+        "object_repr": "Test object (776)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 131,
+    "fields": {
+        "action_time": "2020-07-20T09:33:13.271Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "775",
+        "object_repr": "Test object (775)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 132,
+    "fields": {
+        "action_time": "2020-07-23T04:26:24.602Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "785",
+        "object_repr": "Test object (785)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 133,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.614Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "795",
+        "object_repr": "Test object (795)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 134,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.621Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "794",
+        "object_repr": "Test object (794)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 135,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.624Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "793",
+        "object_repr": "Test object (793)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 136,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.627Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "792",
+        "object_repr": "Test object (792)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 137,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.629Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "791",
+        "object_repr": "Test object (791)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 138,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.631Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "790",
+        "object_repr": "Test object (790)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 139,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.635Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "789",
+        "object_repr": "Test object (789)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 140,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.637Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "788",
+        "object_repr": "Test object (788)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 141,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.639Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "787",
+        "object_repr": "Test object (787)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 142,
+    "fields": {
+        "action_time": "2020-07-23T04:26:58.642Z",
+        "user": 1,
+        "content_type": 10,
+        "object_id": "786",
+        "object_repr": "Test object (786)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 143,
+    "fields": {
+        "action_time": "2020-07-23T07:16:20.395Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "796",
+        "object_repr": "Test object (796)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 144,
+    "fields": {
+        "action_time": "2020-07-23T07:17:53.874Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "797",
+        "object_repr": "Test object (797)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 145,
+    "fields": {
+        "action_time": "2020-07-23T07:18:49.909Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "798",
+        "object_repr": "Test object (798)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 146,
+    "fields": {
+        "action_time": "2020-07-23T07:19:51.925Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "799",
+        "object_repr": "Test object (799)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 147,
+    "fields": {
+        "action_time": "2020-07-23T07:21:58.519Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "800",
+        "object_repr": "Test object (800)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 148,
+    "fields": {
+        "action_time": "2020-07-23T07:22:32.295Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "801",
+        "object_repr": "Test object (801)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 149,
+    "fields": {
+        "action_time": "2020-07-23T07:23:46.061Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "802",
+        "object_repr": "Test object (802)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 150,
+    "fields": {
+        "action_time": "2020-07-23T07:24:21.257Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "803",
+        "object_repr": "Test object (803)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 151,
+    "fields": {
+        "action_time": "2020-07-23T07:25:10.283Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "804",
+        "object_repr": "Test object (804)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 152,
+    "fields": {
+        "action_time": "2020-07-23T07:26:29.030Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "805",
+        "object_repr": "Test object (805)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 153,
+    "fields": {
+        "action_time": "2020-07-23T07:26:59.148Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "806",
+        "object_repr": "Test object (806)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 154,
+    "fields": {
+        "action_time": "2020-07-23T07:27:24.928Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "807",
+        "object_repr": "Test object (807)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 155,
+    "fields": {
+        "action_time": "2020-07-23T07:28:12.957Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "808",
+        "object_repr": "Test object (808)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 156,
+    "fields": {
+        "action_time": "2020-07-23T07:28:44.445Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "809",
+        "object_repr": "Test object (809)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 157,
+    "fields": {
+        "action_time": "2020-07-23T07:50:32.075Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "804",
+        "object_repr": "Test object (804)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"budget\", \"balance\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 158,
+    "fields": {
+        "action_time": "2020-07-23T08:31:18.463Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "805",
+        "object_repr": "Test object (805)",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"budget\", \"balance\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 159,
+    "fields": {
+        "action_time": "2020-07-23T08:33:26.053Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "810",
+        "object_repr": "Test object (810)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 160,
+    "fields": {
+        "action_time": "2020-07-23T08:33:59.893Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "811",
+        "object_repr": "Test object (811)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 161,
+    "fields": {
+        "action_time": "2020-07-23T08:34:39.841Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "812",
+        "object_repr": "Test object (812)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 162,
+    "fields": {
+        "action_time": "2020-07-23T08:35:53.414Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "813",
+        "object_repr": "Test object (813)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 163,
+    "fields": {
+        "action_time": "2020-07-23T08:37:22.278Z",
+        "user": 2,
+        "content_type": 10,
+        "object_id": "814",
+        "object_repr": "Test object (814)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+}
 ]
