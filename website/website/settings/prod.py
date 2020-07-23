@@ -2,7 +2,6 @@ from website.settings.base import *
 
 
 DEBUG = False
-SECRET_KEY = os.getenv("SECRET_KEY")
 
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
