@@ -1,6 +1,9 @@
 import os
 
 
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "..")
 
 ALLOWED_HOSTS = []
@@ -70,3 +73,9 @@ INTERNAL_IPS = [
     "127.0.0.1",
     "localhost",
 ]
+
+BINOM_API_KEY = os.getenv("BINOM_API_KEY")
+TRACKER_URL = "https://fcttrk.com/"
+
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")

@@ -3,14 +3,12 @@ from .base import *
 
 DEBUG = True
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "fctools_info",
-        "USER": os.getenv("DATABASE_USER"),
-        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "USER": DATABASE_USER,
+        "PASSWORD": DATABASE_PASSWORD,
         "HOST": "localhost",
         "PORT": "",
     }

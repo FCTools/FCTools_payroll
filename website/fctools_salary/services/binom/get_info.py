@@ -1,18 +1,15 @@
-import os
 from datetime import date
 from decimal import Decimal
 from typing import List, Dict
 from urllib.parse import urlencode
 
 import requests
+from django.conf import settings
 
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
 from fctools_salary.domains.accounts.user import User
-
-_binom_api_key = os.environ.get("BINOM_API_KEY")
-_tracker_url = "https://fcttrk.com/"
 
 
 def get_users():
@@ -23,7 +20,7 @@ def get_users():
     :rtype: List[User]
     """
 
-    response = requests.get(_tracker_url, params={"page": "Users", "api_key": _binom_api_key}).json()
+    response = requests.get(settings.TRACKER_URL, params={"page": "Users", "api_key": settings.BINOM_API_KEY}).json()
     return [User(id=int(user["id"]), login=user["login"]) for user in response]
 
 
@@ -36,7 +33,8 @@ def get_offers():
     """
 
     response = requests.get(
-        _tracker_url, params={"page": "Offers", "api_key": _binom_api_key, "group": "all", "status": "all"}
+        settings.TRACKER_URL,
+        params={"page": "Offers", "api_key": settings.BINOM_API_KEY, "group": "all", "status": "all"},
     ).json()
 
     return [
@@ -61,14 +59,19 @@ def get_traffic_sources():
 
     result = []
     all_traffic_sources = requests.get(
-        _tracker_url, params={"page": "Traffic_Sources", "api_key": _binom_api_key, "status": "all"}
+        settings.TRACKER_URL, params={"page": "Traffic_Sources", "api_key": settings.BINOM_API_KEY, "status": "all"}
     ).json()
     all_traffic_sources_number = len(all_traffic_sources)
 
     for user in User.objects.all():
         user_traffic_sources = requests.get(
-            _tracker_url,
-            params={"page": "Traffic_Sources", "api_key": _binom_api_key, "user_group": user.id, "status": "all"},
+            settings.TRACKER_URL,
+            params={
+                "page": "Traffic_Sources",
+                "api_key": settings.BINOM_API_KEY,
+                "user_group": user.id,
+                "status": "all",
+            },
         ).json()
 
         if user_traffic_sources and len(user_traffic_sources) != all_traffic_sources_number:
@@ -99,10 +102,15 @@ def get_offers_ids_by_campaign(campaign: Campaign):
 
     result = []
 
-    requests_url = _tracker_url + "arm.php"
+    requests_url = settings.TRACKER_URL + "arm.php"
     response = requests.get(
         requests_url,
-        params={"page": "Campaigns", "api_key": _binom_api_key, "action": "campaign@get_full", "id": campaign.id},
+        params={
+            "page": "Campaigns",
+            "api_key": settings.BINOM_API_KEY,
+            "action": "campaign@get_full",
+            "id": campaign.id,
+        },
     ).json()
 
     for path in response["routing"]["paths"]:
@@ -136,11 +144,11 @@ def get_campaigns(start_date, end_date, user):
         "status": "all",
         "date_s": str(start_date),
         "date_e": str(end_date),
-        "api_key": _binom_api_key,
+        "api_key": settings.BINOM_API_KEY,
     }
 
     campaigns_db = list(Campaign.objects.all())
-    campaigns_tracker = requests.get(f"{_tracker_url}?timezone=+3:00&{urlencode(params)}").json()
+    campaigns_tracker = requests.get(f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}").json()
 
     result = [
         {
