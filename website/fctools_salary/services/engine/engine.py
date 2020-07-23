@@ -255,7 +255,7 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
 
             test_balance += test_campaign.profit
 
-        if commit and test_balance != start_balance:
+        if commit and (test_balance != start_balance or test_balance <= 0):
 
             if test_balance > 0:
                 test.balance = test_balance
@@ -336,11 +336,13 @@ def _save_user_balances(user, balances):
     """
 
     user.admin_balance = balances["ADMIN"] if "ADMIN" in balances and balances["ADMIN"] < 0 else 0
-    user.admin_balance = balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
-    user.admin_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
-    user.admin_balance = balances["NATIVE traff"] if "NATIVE traff" in balances and balances["NATIVE traff"] < 0 else 0
-    user.admin_balance = balances["POP traff"] if "POP traff" in balances and balances["POP traff"] < 0 else 0
-    user.admin_balance = balances["PUSH traff"] if "PUSH traff" in balances and balances["PUSH traff"] < 0 else 0
+    user.fpa_hsa_pwa_balance = (
+        balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
+    )
+    user.inapp_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
+    user.native_balance = balances["NATIVE traff"] if "NATIVE traff" in balances and balances["NATIVE traff"] < 0 else 0
+    user.pop_balance = balances["POP traff"] if "POP traff" in balances and balances["POP traff"] < 0 else 0
+    user.push_balance = balances["PUSH traff"] if "PUSH traff" in balances and balances["PUSH traff"] < 0 else 0
 
     user.save()
 
