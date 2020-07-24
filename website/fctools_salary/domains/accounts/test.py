@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils.html import format_html
 
+from fctools_salary.domains.accounts.user import User
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
-from fctools_salary.domains.accounts.user import User
 
 
 class Test(models.Model):

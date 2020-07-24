@@ -18,7 +18,7 @@ class PercentDependency(models.Model):
         User, related_name="user_to", on_delete=models.CASCADE, verbose_name="To", null=False, blank=False,
     )
 
-    percent = models.FloatField(verbose_name="Percent", null=False, blank=False,)
+    percent = models.FloatField(verbose_name="Percent", null=False, blank=False, )
 
     class Meta:
         verbose_name = "Percent dependency"

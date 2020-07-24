@@ -8,11 +8,11 @@ class User(models.Model):
     some additional parameters (salary group and balances for each traffic group).
     """
 
-    id = models.IntegerField(primary_key=True, verbose_name="ID", null=False, blank=False, unique=True,)
+    id = models.IntegerField(primary_key=True, verbose_name="ID", null=False, blank=False, unique=True, )
 
-    login = models.CharField(max_length=128, verbose_name="Login", blank=True, null=True,)
+    login = models.CharField(max_length=128, verbose_name="Login", blank=True, null=True, )
 
-    is_lead = models.BooleanField(verbose_name="Teamlead", null=False, blank=False, default=False,)
+    is_lead = models.BooleanField(verbose_name="Teamlead", null=False, blank=False, default=False, )
 
     """
     This field represents user salary group. Now there are 2 groups: 1 and 2. 
