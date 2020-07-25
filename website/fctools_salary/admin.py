@@ -174,6 +174,7 @@ split_tests_by_traffic_sources.short_description = "Split selected tests by traf
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
     list_display = [
+        "id",
         "offers_str",
         "user",
         "traffic_sources_str",

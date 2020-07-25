@@ -6,38 +6,44 @@ import traceback
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView as DJLogoutView
 from django.db import transaction
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from fctools_salary.services.binom.update import update_basic_info
 from fctools_salary.services.engine.engine import calculate_user_salary
 from .forms import ReportInfoForm
 
-
 _logger = logging.getLogger(__name__)
 
 
-def _return(json_object, status_code=200):
+def _return(request, error_message, traceback_, status_code=200):
     """
-    :param json_object: json-object with error message and traceback
+    :param request: request
+    :param error_message: error message
+    :param traceback_: formatted traceback
     :param status_code: response status code
-    :return: Readable json response with error message and traceback (support cyrillic symbols)
+
+    :return: Readable http-response with error message and traceback (support cyrillic symbols)
     """
 
-    return JsonResponse(json_object, status=status_code, safe=not isinstance(json_object, list),
-                        json_dumps_params={'ensure_ascii': False, 'indent': 4})
+    template = "error.html"
+
+    return render(request, template,
+                  context={"title": "Server Error", "error_message": error_message,
+                           "traceback": traceback_,
+                           "status_code": status_code})
 
 
-def error_response(exception):
+def error_response(request, exception):
     """
-    Form json-object with error message and traceback.
+    Form error message and traceback.
 
     :param exception: exception
-    :return: _return-method, that returns json response with json-object with error and traceback
+    :param request: request
+
+    :return: return-method, that returns rendered http-response with error, traceback and status_code
     """
 
-    result = {"error_message": str(exception), "traceback": traceback.format_exc()}
-    return _return(result, status_code=500)
+    return _return(request, str(exception), traceback.format_exc(), status_code=500)
 
 
 def base_view(view):
@@ -55,7 +61,7 @@ def base_view(view):
                 return view(request, *args, **kwargs)
         except Exception as exception:
             _logger.error(str(exception))
-            return error_response(exception)
+            return error_response(request, exception)
 
     return inner
 

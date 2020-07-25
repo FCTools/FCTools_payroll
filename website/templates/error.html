@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block headers %}
+    <style>
+        .text_red {
+            background-color: #ffffff;
+            color: #ff0000;
+        }
+    </style>
+{% endblock %}
+
+{% block body_class %}text-center{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h4 class="text_red">Error:</h4> <p class="text_red">{{ error_message }}</p>
+    <br>
+    <br>
+    <br>
+    <h4>Traceback:</h4> <p>{{ traceback }}</p>
+    <br>
+    <h4>Status code:</h4> {{ status_code }}
+</div>
+
+<footer class="container">
+    <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
+</footer>
+{% endblock %}

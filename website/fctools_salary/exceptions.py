@@ -10,3 +10,17 @@ class UpdateError(Exception):
 
     def __str__(self):
         return self.message
+
+
+class TestNotSplitError(Exception):
+    """
+    This error raises when some test doesn't split by traffic sources.
+    """
+
+    def __init__(self, test_id):
+        self.message = f"Test {test_id} has more than 1 traffic sources, " \
+                       f"but one_budget_for_all_traffic_sources set to False. " \
+                       f"Please, set flag to True or split this test by traffic sources."
+
+    def __str__(self):
+        return self.message

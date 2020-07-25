@@ -9,7 +9,7 @@ from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
-from fctools_salary.exceptions import UpdateError
+from fctools_salary.exceptions import UpdateError, TestNotSplitError
 from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
 
@@ -223,10 +223,17 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
 
     with transaction.atomic():
         for test in tests_list:
+            if test.traffic_group not in traffic_groups:
+                continue
+
             test_campaigns_list = []
 
             test_offers_ids = {offer.id for offer in list(test.offers.all())}
             test_traffic_sources_ids = [ts.id for ts in list(test.traffic_sources.all())]
+
+            if len(test_traffic_sources_ids) > 1 and not test.one_budget_for_all_traffic_sources:
+                _logger.error(f"Test with id {test.id} doesn't split.")
+                raise TestNotSplitError(test_id=test.id)
 
             start_balance = test.balance
             test_balance = test.balance
