@@ -9,6 +9,7 @@ from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
+from fctools_salary.exceptions import UpdateError
 from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
 
@@ -71,6 +72,10 @@ def _calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
     result = {traffic_group: 0.0 for traffic_group in traffic_groups}
 
     current_campaigns_tracker = get_campaigns(start_date, end_date, user)
+
+    if not current_campaigns_tracker:
+        raise UpdateError(message=f"Can't get campaigns from {start_date} to {end_date} for user {user}")
+
     profit = _calculate_profit_for_period(current_campaigns_tracker, traffic_groups)[1]
 
     tests_list = list(Test.objects.filter(user=user))
@@ -263,7 +268,6 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
                 test_balance += test_campaign.profit
 
             if commit and (test_balance != start_balance or test_balance <= 0):
-
                 if test_balance > 0:
                     test.balance = test_balance
                     test.save()
@@ -378,8 +382,12 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
                     try:
                         offer = Offer.objects.get(id=offer_id)
                     except Offer.DoesNotExist:
-                        update_offers()
-                        offer = Offer.objects.get(id=offer_id)
+                        offers_updated_successfully = update_offers()
+
+                        if offers_updated_successfully:
+                            offer = Offer.objects.get(id=offer_id)
+                        else:
+                            raise UpdateError(message="Can't update offers.")
 
                     campaign["instance"].offers_list.add(offer)
 
@@ -450,8 +458,8 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     final_percent = _calculate_final_percent(total_revenue, user.salary_group)
 
     _logger.info(f"Final percent: {final_percent}")
-
     _logger.info(f"User is lead: {user.is_lead}")
+
     from_other_users = None
     if user.is_lead:
         from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
@@ -500,4 +508,5 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
         _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
         _logger.info("Campaigns was successfully saved.")
 
+    _logger.info(f"Final calculation: {result}")
     return round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result

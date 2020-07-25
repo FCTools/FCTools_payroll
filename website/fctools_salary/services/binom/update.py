@@ -16,7 +16,8 @@ def _update_users():
     """
     Synchronize Users table in tracker and database.
 
-    :return: None
+    :return: status (True/False)
+    :rtype: bool
     """
 
     _logger.info("Start to sync users.")
@@ -41,7 +42,8 @@ def update_offers():
     """
     Synchronize Offers table in tracker and database.
 
-    :return: None
+    :return: status (True/False)
+    :rtype: bool
     """
 
     _logger.info("Start to sync offers.")
@@ -66,7 +68,8 @@ def _update_traffic_sources():
     """
     Synchronize TrafficSources table in tracker and database.
 
-    :return: None
+    :return: status (True/False)
+    :rtype: bool
     """
 
     _logger.info("Start to sync traffic sources.")
