@@ -37,7 +37,7 @@ LOGGING = {
         "file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": os.path.join('logs', 'info_log.log'),
+            "filename": 'info_log.log',
             "formatter": "verbose"}},
     "root": {
         "handlers": ["file"],
