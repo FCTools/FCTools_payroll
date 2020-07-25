@@ -56,7 +56,7 @@ def base_view(view):
 
 
 @base_view
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def base_menu(request):
     """
     Base menu, contains two buttons: edit db and count salary.
@@ -75,7 +75,7 @@ def base_menu(request):
 
 
 @base_view
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def count_view(request):
     if request.method == "POST":
         form = ReportInfoForm(request.POST)

@@ -32,7 +32,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "website.urls"
 
-# LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/"
 
 TEMPLATES = [
     {
