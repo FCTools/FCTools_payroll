@@ -25,7 +25,7 @@ def get_users():
     :rtype: List[User]
     """
 
-    _logger.info('Something')
+    _logger.info('Start getting users from tracker...')
 
     response = requests_manager.get(requests.Session(), settings.TRACKER_URL,
                                     params={"page": "Users", "api_key": settings.BINOM_API_KEY})
@@ -49,6 +49,8 @@ def get_offers():
     :return: list of offers
     :rtype: List[Offer]
     """
+
+    _logger.info("Start getting offers from tracker...")
 
     response = requests_manager.get(requests.Session(),
                                     settings.TRACKER_URL,
@@ -88,6 +90,8 @@ def get_traffic_sources():
     session = requests.Session()
 
     result = []
+
+    _logger.info("Start getting traffic sources from tracker...")
 
     all_traffic_sources = requests_manager.get(session,
                                                settings.TRACKER_URL,
@@ -216,6 +220,9 @@ def get_campaigns(start_date, end_date, user):
     }
 
     campaigns_db = list(Campaign.objects.all())
+
+    _logger.info(f"Start getting campaigns from {start_date} to {end_date} for user {user}")
+
     campaigns_tracker = requests_manager.get(requests.Session(), f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}")
 
     if not isinstance(campaigns_tracker, requests.Response):
