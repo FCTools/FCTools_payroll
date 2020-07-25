@@ -35,10 +35,16 @@ def get_users():
         return []
 
     try:
-        return [User(id=int(user["id"]), login=user["login"]) for user in response.json()]
+        response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
             f'Error occurred while trying to decode response from tracker (users updating): {decode_error.doc}')
+        return []
+
+    try:
+        return [User(id=int(user["id"]), login=user["login"]) for user in response_json]
+    except KeyError:
+        _logger.error(f"Incorrect response from tracker (users getting): {response_json}")
         return []
 
 
@@ -63,6 +69,13 @@ def get_offers():
         return []
 
     try:
+        response_json = response.json()
+    except json.JSONDecodeError as decode_error:
+        _logger.error(
+            f'Error occurred while trying to decode response from tracker (offers updating): {decode_error.doc}')
+        return []
+
+    try:
         return [
             Offer(
                 id=int(offer["id"]),
@@ -71,11 +84,10 @@ def get_offers():
                 group=offer["group_name"],
                 network=offer["network_name"],
             )
-            for offer in response.json()
+            for offer in response_json
         ]
-    except json.JSONDecodeError as decode_error:
-        _logger.error(
-            f'Error occurred while trying to decode response from tracker (offers updating): {decode_error.doc}')
+    except KeyError:
+        _logger.error(f"Incorrect response from tracker (offers getting): {response_json}")
         return []
 
 
@@ -88,7 +100,6 @@ def get_traffic_sources():
     """
 
     session = requests.Session()
-
     result = []
 
     _logger.info("Start getting traffic sources from tracker...")
@@ -127,24 +138,28 @@ def get_traffic_sources():
             continue
 
         try:
-            user_traffic_sources = user_traffic_sources.json()
+            user_traffic_sources_json = user_traffic_sources.json()
         except json.JSONDecodeError as decode_error:
             _logger.error(
                 f'Error occurred while trying to decode response from tracker (traffic sources updating): '
                 f'{decode_error.doc}')
             return []
 
-        if user_traffic_sources and len(user_traffic_sources) != all_traffic_sources_number:
-            result += [
-                TrafficSource(
-                    id=int(traffic_source["id"]),
-                    name=traffic_source["name"],
-                    campaigns=int(traffic_source["camps"]),
-                    tokens=1 if int(traffic_source["tokens"]) else 0,
-                    user=user,
-                )
-                for traffic_source in user_traffic_sources
-            ]
+        if user_traffic_sources_json and len(user_traffic_sources_json) != all_traffic_sources_number:
+            try:
+                result += [
+                    TrafficSource(
+                        id=int(traffic_source["id"]),
+                        name=traffic_source["name"],
+                        campaigns=int(traffic_source["camps"]),
+                        tokens=1 if int(traffic_source["tokens"]) else 0,
+                        user=user,
+                    )
+                    for traffic_source in user_traffic_sources_json
+                ]
+            except KeyError:
+                _logger.error(f"Incorrect response from tracker (traffic sources getting): {user_traffic_sources_json}")
+                return []
 
     return result
 
@@ -178,15 +193,19 @@ def get_offers_ids_by_campaign(campaign: Campaign):
         return []
 
     try:
-        response = response.json()
+        response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
             f'Error occurred while trying to decode response from tracker (getting campaign full info): '
             f'{decode_error.doc}')
         return []
 
-    for path in response["routing"]["paths"]:
-        result += [int(offer["id_t"]) for offer in path["offers"]]
+    try:
+        for path in response_json["routing"]["paths"]:
+            result += [int(offer["id_t"]) for offer in path["offers"]]
+    except KeyError:
+        _logger.error(f"Incorrect response from tracker (getting offers ids by campaign): {response_json}")
+        return []
 
     return result
 
@@ -223,36 +242,41 @@ def get_campaigns(start_date, end_date, user):
 
     _logger.info(f"Start getting campaigns from {start_date} to {end_date} for user {user}")
 
-    campaigns_tracker = requests_manager.get(requests.Session(), f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}")
+    campaigns_tracker = requests_manager.get(requests.Session(),
+                                             f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}")
 
     if not isinstance(campaigns_tracker, requests.Response):
         _logger.error(f"Error occurred while trying to get campaign full info from tracker: {campaigns_tracker}")
         return []
 
     try:
-        campaigns_tracker = campaigns_tracker.json()
+        campaigns_tracker_json = campaigns_tracker.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
             f'Error occurred while trying to decode response from tracker (getting info about campaigns): '
             f'{decode_error.doc}')
         return []
 
-    result = [
-        {
-            "instance": Campaign(
-                id=int(campaign["id"]),
-                name=campaign["name"],
-                traffic_group=campaign["group_name"],
-                traffic_source_id=int(campaign["ts_id"]),
-                revenue=Decimal(campaign["revenue"]),
-                cost=Decimal(campaign["cost"]),
-                profit=Decimal(campaign["profit"]),
-                user=user,
-            ),
-            "offers_list": [],
-        }
-        for campaign in campaigns_tracker
-    ]
+    try:
+        result = [
+            {
+                "instance": Campaign(
+                    id=int(campaign["id"]),
+                    name=campaign["name"],
+                    traffic_group=campaign["group_name"],
+                    traffic_source_id=int(campaign["ts_id"]),
+                    revenue=Decimal(campaign["revenue"]),
+                    cost=Decimal(campaign["cost"]),
+                    profit=Decimal(campaign["profit"]),
+                    user=user,
+                ),
+                "offers_list": [],
+            }
+            for campaign in campaigns_tracker_json
+        ]
+    except KeyError:
+        _logger.error(f"Incorrect response from tracker (campaigns getting): {campaigns_tracker_json}")
+        return []
 
     for campaign in result:
         if campaign["instance"] in campaigns_db:
