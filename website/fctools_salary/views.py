@@ -1,4 +1,5 @@
 import functools
+import logging
 import os
 import traceback
 
@@ -11,6 +12,9 @@ from django.shortcuts import render, redirect
 from fctools_salary.services.binom.update import update_basic_info
 from fctools_salary.services.engine.engine import calculate_user_salary
 from .forms import ReportInfoForm
+
+
+_logger = logging.getLogger(__name__)
 
 
 def _return(json_object, status_code=200):
@@ -50,6 +54,7 @@ def base_view(view):
             with transaction.atomic():
                 return view(request, *args, **kwargs)
         except Exception as exception:
+            _logger.error(str(exception))
             return error_response(exception)
 
     return inner
@@ -117,6 +122,7 @@ def count_view(request):
                 },
             )
         else:
+            _logger.warning("Incorrect report form.")
             return render(request, os.path.join("fctools_salary", "count.html"), {"form": form})
 
     else:
