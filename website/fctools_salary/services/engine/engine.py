@@ -1,3 +1,4 @@
+import logging
 from copy import deepcopy
 from datetime import timedelta, date
 from typing import List, Dict, Tuple
@@ -8,6 +9,9 @@ from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
+
+
+_logger = logging.getLogger(__name__)
 
 
 def _calculate_final_percent(revenue, salary_group):
@@ -410,24 +414,43 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
 ]
     """
 
+    _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
+
     result = _set_start_balances(user, traffic_groups)
     start_balances = deepcopy(result)
+
+    _logger.info("Start balances was successfully set.")
 
     prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
     prev_campaigns_tracker_list = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
     current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
 
+    _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
+
     total_revenue, profits = _calculate_profit_for_period(current_campaigns_tracker_list, traffic_groups)
+
+    _logger.info("Total revenue and profits was successfully calculated.")
+    _logger.info(f"Total revenue: {total_revenue}")
+    _logger.info(f"Profits: {profits}")
+
     deltas = _calculate_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
+
+    _logger.info(f"Deltas was successfully calculated: {deltas}")
 
     tests_list = list(Test.objects.filter(user=user))
     tests = _calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups)
 
+    _logger.info(f"Tests was successfully calculated: {tests}")
+
     final_percent = _calculate_final_percent(total_revenue, user.salary_group)
 
+    _logger.info(f"Final percent: {final_percent}")
+
+    _logger.info(f"User is lead: {user.is_lead}")
     from_other_users = None
     if user.is_lead:
         from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
+        _logger.info(f"User profit from other users (as teamlead): {from_other_users}")
 
     for traffic_group in result:
         result[traffic_group] += round(profits[traffic_group], 6)
@@ -463,8 +486,13 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
         result[traffic_group][1] = round(result[traffic_group][1], 6)
         result[traffic_group][0] += f" = {result[traffic_group][1]}"
 
+    _logger.info(f"Commit: {commit}")
+
     if commit:
         _save_user_balances(user, {traffic_group: result[traffic_group][1] for traffic_group in result})
+        _logger.info("User balances was successfully saved.")
+
         _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
+        _logger.info("Campaigns was successfully saved.")
 
     return round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result
