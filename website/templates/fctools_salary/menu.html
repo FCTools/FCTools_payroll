@@ -22,12 +22,11 @@
 
     <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-
+            <ul class="nav mr-auto">
             </ul>
-
-            <a class="btn btn-outline-success my-2 my-sm-0" role="button"
-               href="{% url 'logout' %}">Logout</a>
+            <ul class="nav justify-content-end">
+                <a class="nav-link btn" href="{% url 'logout' %}" role="button">Logout</a>
+            </ul>
 
         </div>
     </nav>

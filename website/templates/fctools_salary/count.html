@@ -25,6 +25,18 @@
 {% block body_class %}text-center{% endblock %}
 
 {% block content %}
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="nav mr-auto">
+            </ul>
+            <ul class="nav justify-content-end">
+                <a class="nav-link btn" href="{% url 'base_menu' %}" role="button">Menu</a>
+                <a class="nav-link btn" href="{% url 'logout' %}" role="button">Logout</a>
+            </ul>
+
+        </div>
+    </nav>
+
     <form class="form-count" method="post">
         {% csrf_token %}
         <input type="hidden" name="next" value="">

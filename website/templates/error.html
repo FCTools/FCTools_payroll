@@ -15,6 +15,20 @@
 {% block body_class %}text-center{% endblock %}
 
 {% block content %}
+ <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="nav mr-auto">
+                <a class="nav-link btn" href="{% url 'update_db' %}" role="button">Edit database</a>
+                <a class="nav-link btn" href="{% url 'count' %}" role="button">Count salary</a>
+            </ul>
+            <ul class="nav justify-content-end">
+                <a class="nav-link btn" href="{% url 'base_menu' %}" role="button">Menu</a>
+                <a class="nav-link btn" href="{% url 'logout' %}" role="button">Logout</a>
+            </ul>
+
+        </div>
+    </nav>
+
 <div class="container">
     <h4 class="text_red">Error:</h4> <p class="text_red">{{ error_message }}</p>
     <br>

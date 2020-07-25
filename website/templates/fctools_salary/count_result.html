@@ -36,7 +36,14 @@
     </style>
     <style>
         .col {
-            width: 11%;
+            border: solid 1px #6c757d;
+            padding: 10px;
+        }
+    </style>
+    <style>
+        .row {
+            background: #f8f9fa;
+            margin-top: 20px;
         }
     </style>
 {% endblock %}
@@ -44,6 +51,20 @@
 {% block body_class %}text-center{% endblock %}
 
 {% block content %}
+
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="nav mr-auto">
+                <a class="nav-link btn" href="{% url 'base_menu' %}" role="button">Menu</a>
+                <a class="nav-link btn" href="{% url 'count' %}" role="button">Count another</a>
+            </ul>
+            <ul class="nav justify-content-end">
+                <a class="nav-link btn" href="{% url 'logout' %}" role="button">Logout</a>
+            </ul>
+
+        </div>
+    </nav>
+
     <p>User: <b>{{ user }}</b></p>
     <p>Total revenue: <b>{{ total_revenue }}</b></p>
     <p>Final percent: <b>{{ final_percent }}</b></p>
