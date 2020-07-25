@@ -18,6 +18,9 @@ static/debug_toolbar
 *.sqlite3
 migrations/
 
+# logs directory
+logs/
+
 # Distribution / packaging
 .Python
 build/

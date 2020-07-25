@@ -1,6 +1,5 @@
 from .base import *
 
-
 DEBUG = True
 
 DATABASES = {
@@ -17,16 +16,26 @@ DATABASES = {
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler",},},
-    "root": {"handlers": ["console"], "level": "DEBUG",},
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {"console": {"class": "logging.StreamHandler", },
+                 "file": {"level": "DEBUG", "class": "logging.FileHandler",
+                          "filename": os.path.join('logs', 'debug_log.log'), "formatter": "verbose"}, },
+    "root": {"handlers": ["console", "file"], "level": "INFO", },
     "loggers": {
-        "django": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"), "propagate": False,},
+        "django": {"handlers": ["console", "file"], "level": "INFO",
+                   "propagate": False, },
         "django.db_backends": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
             "propagate": False,
         },
-        "django.db": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"), "propagate": False,},
+        "django.db": {"handlers": ["console", "file"], "level": "DEBUG",
+                      "propagate": False, },
     },
 }
 

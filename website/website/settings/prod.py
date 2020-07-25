@@ -1,6 +1,5 @@
 from website.settings.base import *
 
-
 DEBUG = False
 
 DATABASE_NAME = os.getenv("DATABASE_NAME")
@@ -28,9 +27,36 @@ DATABASES = {
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler",},},
-    "root": {"handlers": ["console"], "level": "WARNING",},
-    "loggers": {"django": {"handlers": ["console"], "level": "INFO", "propagate": False,},},
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": os.path.join('logs', 'info_log.log'),
+            "formatter": "verbose"}},
+    "root": {
+        "handlers": ["file"],
+        "level": "INFO", },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": False, },
+        "django.db_backends": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.db": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": False, },
+    },
 }
 
 STATIC_URL = "/static/"

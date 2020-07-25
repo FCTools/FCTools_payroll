@@ -25,6 +25,8 @@ def get_users():
     :rtype: List[User]
     """
 
+    _logger.info('Something')
+
     response = requests_manager.get(requests.Session(), settings.TRACKER_URL,
                                     params={"page": "Users", "api_key": settings.BINOM_API_KEY})
 
