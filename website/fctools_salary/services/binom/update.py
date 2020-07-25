@@ -1,5 +1,7 @@
 import logging
 
+from django.db import transaction
+
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
 from fctools_salary.domains.accounts.user import User
@@ -21,9 +23,10 @@ def _update_users():
     users_db = User.objects.all()
     users_tracker = get_users()
 
-    for user in users_tracker:
-        if user not in users_db:
-            user.save()
+    with transaction.atomic():
+        for user in users_tracker:
+            if user not in users_db:
+                user.save()
 
     _logger.info("Users syncing was successful.")
 
@@ -40,9 +43,10 @@ def update_offers():
     offers_db = Offer.objects.all()
     offers_tracker = get_offers()
 
-    for offer in offers_tracker:
-        if offer not in offers_db:
-            offer.save()
+    with transaction.atomic():
+        for offer in offers_tracker:
+            if offer not in offers_db:
+                offer.save()
 
     _logger.info("Offers syncing was successful.")
 
@@ -59,9 +63,10 @@ def _update_traffic_sources():
     traffic_sources_db = TrafficSource.objects.all()
     traffic_sources_tracker = get_traffic_sources()
 
-    for ts in traffic_sources_tracker:
-        if ts not in traffic_sources_db:
-            ts.save()
+    with transaction.atomic():
+        for ts in traffic_sources_tracker:
+            if ts not in traffic_sources_db:
+                ts.save()
 
     _logger.info("Traffic sources syncing was successful.")
 

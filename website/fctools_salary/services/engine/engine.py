@@ -3,6 +3,8 @@ from copy import deepcopy
 from datetime import timedelta, date
 from typing import List, Dict, Tuple
 
+from django.db import transaction
+
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
@@ -214,58 +216,59 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
 
     tests = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
 
-    for test in tests_list:
-        test_campaigns_list = []
+    with transaction.atomic():
+        for test in tests_list:
+            test_campaigns_list = []
 
-        test_offers_ids = {offer.id for offer in list(test.offers.all())}
-        test_traffic_sources_ids = [ts.id for ts in list(test.traffic_sources.all())]
+            test_offers_ids = {offer.id for offer in list(test.offers.all())}
+            test_traffic_sources_ids = [ts.id for ts in list(test.traffic_sources.all())]
 
-        start_balance = test.balance
-        test_balance = test.balance
+            start_balance = test.balance
+            test_balance = test.balance
 
-        for campaign in campaigns_list:
-            if (
-                campaign["instance"].traffic_group in traffic_groups
-                and campaign["instance"].traffic_source.id in test_traffic_sources_ids
-                and len(test_offers_ids & set(campaign["offers_list"])) != 0
-            ):
-                test_campaigns_list.append(campaign["instance"])
+            for campaign in campaigns_list:
+                if (
+                    campaign["instance"].traffic_group in traffic_groups
+                    and campaign["instance"].traffic_source.id in test_traffic_sources_ids
+                    and len(test_offers_ids & set(campaign["offers_list"])) != 0
+                ):
+                    test_campaigns_list.append(campaign["instance"])
 
-        for test_campaign in test_campaigns_list:
-            if test_campaign.profit >= 0:
-                continue
+            for test_campaign in test_campaigns_list:
+                if test_campaign.profit >= 0:
+                    continue
 
-            if test_balance >= 0 > test_balance + test_campaign.profit:
-                if tests[test_campaign.traffic_group][1] > 0:
-                    tests[test_campaign.traffic_group][0] += (
-                        f" + {round(float(test_balance), 6)} " f"[{test_campaign.id}]"
-                    )
+                if test_balance >= 0 > test_balance + test_campaign.profit:
+                    if tests[test_campaign.traffic_group][1] > 0:
+                        tests[test_campaign.traffic_group][0] += (
+                            f" + {round(float(test_balance), 6)} " f"[{test_campaign.id}]"
+                        )
+                    else:
+                        tests[test_campaign.traffic_group][0] += f"{round(float(test_balance), 6)} " f"[{test_campaign.id}]"
+
+                    tests[test_campaign.traffic_group][1] += round(float(test_balance), 6)
+
+                elif test_balance + test_campaign.profit >= 0:
+                    if tests[test_campaign.traffic_group][1] > 0:
+                        tests[test_campaign.traffic_group][0] += (
+                            f" + {-round(float(test_campaign.profit), 6)} " f"[{test_campaign.id}]"
+                        )
+                    else:
+                        tests[test_campaign.traffic_group][0] += (
+                            f"{-round(float(test_campaign.profit), 6)} " f"[{test_campaign.id}]"
+                        )
+
+                    tests[test_campaign.traffic_group][1] -= round(float(test_campaign.profit), 6)
+
+                test_balance += test_campaign.profit
+
+            if commit and (test_balance != start_balance or test_balance <= 0):
+
+                if test_balance > 0:
+                    test.balance = test_balance
+                    test.save()
                 else:
-                    tests[test_campaign.traffic_group][0] += f"{round(float(test_balance), 6)} " f"[{test_campaign.id}]"
-
-                tests[test_campaign.traffic_group][1] += round(float(test_balance), 6)
-
-            elif test_balance + test_campaign.profit >= 0:
-                if tests[test_campaign.traffic_group][1] > 0:
-                    tests[test_campaign.traffic_group][0] += (
-                        f" + {-round(float(test_campaign.profit), 6)} " f"[{test_campaign.id}]"
-                    )
-                else:
-                    tests[test_campaign.traffic_group][0] += (
-                        f"{-round(float(test_campaign.profit), 6)} " f"[{test_campaign.id}]"
-                    )
-
-                tests[test_campaign.traffic_group][1] -= round(float(test_campaign.profit), 6)
-
-            test_balance += test_campaign.profit
-
-        if commit and (test_balance != start_balance or test_balance <= 0):
-
-            if test_balance > 0:
-                test.balance = test_balance
-                test.save()
-            else:
-                test.delete()
+                    test.delete()
 
     for traffic_group in tests:
         tests[traffic_group][1] = round(tests[traffic_group][1], 6)
@@ -339,16 +342,17 @@ def _save_user_balances(user, balances):
     :rtype: None
     """
 
-    user.admin_balance = balances["ADMIN"] if "ADMIN" in balances and balances["ADMIN"] < 0 else 0
-    user.fpa_hsa_pwa_balance = (
-        balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
-    )
-    user.inapp_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
-    user.native_balance = balances["NATIVE traff"] if "NATIVE traff" in balances and balances["NATIVE traff"] < 0 else 0
-    user.pop_balance = balances["POP traff"] if "POP traff" in balances and balances["POP traff"] < 0 else 0
-    user.push_balance = balances["PUSH traff"] if "PUSH traff" in balances and balances["PUSH traff"] < 0 else 0
+    with transaction.atomic():
+        user.admin_balance = balances["ADMIN"] if "ADMIN" in balances and balances["ADMIN"] < 0 else 0
+        user.fpa_hsa_pwa_balance = (
+            balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
+        )
+        user.inapp_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
+        user.native_balance = balances["NATIVE traff"] if "NATIVE traff" in balances and balances["NATIVE traff"] < 0 else 0
+        user.pop_balance = balances["POP traff"] if "POP traff" in balances and balances["POP traff"] < 0 else 0
+        user.push_balance = balances["PUSH traff"] if "PUSH traff" in balances and balances["PUSH traff"] < 0 else 0
 
-    user.save()
+        user.save()
 
 
 def _save_campaigns(campaigns_to_save, campaigns_db):
@@ -365,20 +369,21 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
     :rtype: None
     """
 
-    for campaign in campaigns_to_save:
-        if campaign["instance"] not in campaigns_db:
+    with transaction.atomic():
+        for campaign in campaigns_to_save:
+            if campaign["instance"] not in campaigns_db:
+                campaign["instance"].save()
+
+                for offer_id in campaign["offers_list"]:
+                    try:
+                        offer = Offer.objects.get(id=offer_id)
+                    except Offer.DoesNotExist:
+                        update_offers()
+                        offer = Offer.objects.get(id=offer_id)
+
+                    campaign["instance"].offers_list.add(offer)
+
             campaign["instance"].save()
-
-            for offer_id in campaign["offers_list"]:
-                try:
-                    offer = Offer.objects.get(id=offer_id)
-                except Offer.DoesNotExist:
-                    update_offers()
-                    offer = Offer.objects.get(id=offer_id)
-
-                campaign["instance"].offers_list.add(offer)
-
-        campaign["instance"].save()
 
 
 def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
