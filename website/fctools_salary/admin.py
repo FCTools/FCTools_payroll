@@ -11,6 +11,7 @@ from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
 from fctools_salary.domains.accounts.user import User
+from fctools_salary.domains.tracker.geo import Geo
 
 
 @admin.register(User)
@@ -97,6 +98,7 @@ class TestForm(forms.ModelForm):
             "traffic_group",
             "balance",
             "one_budget_for_all_traffic_sources",
+            "geo",
         ]
 
     def clean_traffic_sources(self):
@@ -193,6 +195,7 @@ class TestAdmin(admin.ModelAdmin):
     filter_horizontal = [
         "offers",
         "traffic_sources",
+        "geo",
     ]
     actions = [split_tests_by_traffic_sources]
 
@@ -241,4 +244,12 @@ class PercentDependencyAdmin(admin.ModelAdmin):
     list_select_related = [
         "from_user",
         "to_user",
+    ]
+
+
+@admin.register(Geo)
+class Geo(admin.ModelAdmin):
+    list_display = [
+        "country",
+        "iso_code",
     ]

@@ -1,10 +1,6 @@
 from django.db import models
 from django.utils.html import format_html
 
-from fctools_salary.domains.accounts.user import User
-from fctools_salary.domains.tracker.offer import Offer
-from fctools_salary.domains.tracker.traffic_source import TrafficSource
-
 
 class Test(models.Model):
     """
@@ -21,17 +17,19 @@ class Test(models.Model):
     If user reaches a non-positive balance for some test (test amount spent), that test will be removed.
     """
 
-    budget = models.DecimalField(verbose_name="Budget", null=False, blank=False, decimal_places=6, max_digits=13, )
+    budget = models.DecimalField(verbose_name="Budget", null=False, blank=False, decimal_places=6, max_digits=13,)
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="user", null=False, blank=False, )
+    user = models.ForeignKey("User", on_delete=models.CASCADE, verbose_name="user", null=False, blank=False,)
 
-    traffic_sources = models.ManyToManyField(TrafficSource, verbose_name="Traffic sources", related_name="tests_list", )
+    traffic_sources = models.ManyToManyField(
+        "TrafficSource", verbose_name="Traffic sources", related_name="tests_list",
+    )
 
     one_budget_for_all_traffic_sources = models.BooleanField(
         verbose_name="One budget for all traffic sources", default=False,
     )
 
-    offers = models.ManyToManyField(Offer, verbose_name="Offers", related_name="tests_list")
+    offers = models.ManyToManyField("Offer", verbose_name="Offers", related_name="tests_list")
 
     traffic_group = models.CharField(
         max_length=64,
@@ -48,7 +46,9 @@ class Test(models.Model):
         ),
     )
 
-    balance = models.DecimalField(verbose_name="Balance", blank=False, null=False, decimal_places=6, max_digits=13, )
+    balance = models.DecimalField(verbose_name="Balance", blank=False, null=False, decimal_places=6, max_digits=13,)
+
+    geo = models.ManyToManyField("Geo", verbose_name="GEO", blank=True, null=True,)
 
     def budget_rounded(self):
         return round(self.budget, 4)

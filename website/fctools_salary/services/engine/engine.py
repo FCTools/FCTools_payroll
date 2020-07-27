@@ -6,7 +6,7 @@ from typing import List, Dict, Tuple
 from django.db import transaction
 from reportlab.lib import colors
 from reportlab.lib.colors import darkgray
-from reportlab.lib.pagesizes import landscape, letter, A4
+from reportlab.lib.pagesizes import landscape, A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 

@@ -1,7 +1,5 @@
 from django.db import models
 
-from fctools_salary.domains.accounts.user import User
-
 
 class PercentDependency(models.Model):
     """
@@ -11,14 +9,14 @@ class PercentDependency(models.Model):
     """
 
     from_user = models.ForeignKey(
-        User, related_name="user_from", on_delete=models.CASCADE, verbose_name="From", null=False, blank=False,
+        "User", related_name="user_from", on_delete=models.CASCADE, verbose_name="From", null=False, blank=False,
     )
 
     to_user = models.ForeignKey(
-        User, related_name="user_to", on_delete=models.CASCADE, verbose_name="To", null=False, blank=False,
+        "User", related_name="user_to", on_delete=models.CASCADE, verbose_name="To", null=False, blank=False,
     )
 
-    percent = models.FloatField(verbose_name="Percent", null=False, blank=False, )
+    percent = models.FloatField(verbose_name="Percent", null=False, blank=False,)
 
     class Meta:
         verbose_name = "Percent dependency"

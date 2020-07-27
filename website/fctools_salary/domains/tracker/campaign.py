@@ -1,10 +1,6 @@
 from django.db import models
 from django.utils.html import format_html
 
-from fctools_salary.domains.accounts.user import User
-from fctools_salary.domains.tracker.offer import Offer
-from fctools_salary.domains.tracker.traffic_source import TrafficSource
-
 
 class Campaign(models.Model):
     """
@@ -12,9 +8,9 @@ class Campaign(models.Model):
     In addition, there is offers_list - many to many field with Offer model.
     """
 
-    id = models.IntegerField(primary_key=True, verbose_name="ID", unique=True, blank=False, null=False, )
+    id = models.IntegerField(primary_key=True, verbose_name="ID", unique=True, blank=False, null=False,)
 
-    name = models.CharField(max_length=256, verbose_name="Name", null=True, blank=True, )
+    name = models.CharField(max_length=256, verbose_name="Name", null=True, blank=True,)
 
     traffic_group = models.CharField(
         max_length=16,
@@ -32,18 +28,18 @@ class Campaign(models.Model):
     )
 
     traffic_source = models.ForeignKey(
-        TrafficSource, on_delete=models.CASCADE, verbose_name="Traffic source", blank=False, null=False,
+        "TrafficSource", on_delete=models.CASCADE, verbose_name="Traffic source", blank=False, null=False,
     )
 
-    revenue = models.DecimalField(verbose_name="Revenue", null=False, blank=False, decimal_places=6, max_digits=12, )
+    revenue = models.DecimalField(verbose_name="Revenue", null=False, blank=False, decimal_places=6, max_digits=12,)
 
-    cost = models.DecimalField(verbose_name="Cost", null=False, blank=False, decimal_places=6, max_digits=12, )
+    cost = models.DecimalField(verbose_name="Cost", null=False, blank=False, decimal_places=6, max_digits=12,)
 
-    profit = models.DecimalField(verbose_name="Profit", null=False, blank=False, decimal_places=6, max_digits=12, )
+    profit = models.DecimalField(verbose_name="Profit", null=False, blank=False, decimal_places=6, max_digits=12,)
 
-    user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE, null=True, blank=False, )
+    user = models.ForeignKey("User", verbose_name="User", on_delete=models.CASCADE, null=True, blank=False,)
 
-    offers_list = models.ManyToManyField(Offer, related_name="campaigns_list", verbose_name="Offers", )
+    offers_list = models.ManyToManyField("Offer", related_name="campaigns_list", verbose_name="Offers",)
 
     def profit_colored(self):
         if self.profit < 0:
