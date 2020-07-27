@@ -48,7 +48,7 @@ class Test(models.Model):
 
     balance = models.DecimalField(verbose_name="Balance", blank=False, null=False, decimal_places=6, max_digits=13,)
 
-    geo = models.ManyToManyField("Geo", verbose_name="GEO", blank=True, null=True,)
+    geo = models.ManyToManyField("Geo", verbose_name="GEO", blank=True,)
 
     def budget_rounded(self):
         return round(self.budget, 4)
