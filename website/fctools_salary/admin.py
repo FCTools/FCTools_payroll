@@ -248,7 +248,7 @@ class PercentDependencyAdmin(admin.ModelAdmin):
 
 
 @admin.register(Geo)
-class Geo(admin.ModelAdmin):
+class GeoAdmin(admin.ModelAdmin):
     list_display = [
         "country",
         "iso_code",
