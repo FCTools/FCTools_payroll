@@ -12,3 +12,6 @@ class Geo(models.Model):
     class Meta:
         verbose_name = "GEO"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return f"{self.country}; {self.iso_code}"
