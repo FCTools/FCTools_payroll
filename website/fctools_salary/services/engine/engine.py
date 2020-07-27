@@ -1,18 +1,22 @@
 import logging
-from copy import deepcopy
+from copy import deepcopy, copy
 from datetime import timedelta, date
 from typing import List, Dict, Tuple
 
 from django.db import transaction
+from reportlab.lib import colors
+from reportlab.lib.colors import darkgray
+from reportlab.lib.pagesizes import landscape, letter, A4
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
-from fctools_salary.domains.tracker.campaign import Campaign
-from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
+from fctools_salary.domains.tracker.campaign import Campaign
+from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.exceptions import UpdateError, TestNotSplitError
 from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
-
 
 _logger = logging.getLogger(__name__)
 
@@ -256,7 +260,9 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
                             f" + {round(float(test_balance), 6)} " f"[{test_campaign.id}]"
                         )
                     else:
-                        tests[test_campaign.traffic_group][0] += f"{round(float(test_balance), 6)} " f"[{test_campaign.id}]"
+                        tests[test_campaign.traffic_group][0] += (
+                            f"{round(float(test_balance), 6)} " f"[{test_campaign.id}]"
+                        )
 
                     tests[test_campaign.traffic_group][1] += round(float(test_balance), 6)
 
@@ -359,7 +365,9 @@ def _save_user_balances(user, balances):
             balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
         )
         user.inapp_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
-        user.native_balance = balances["NATIVE traff"] if "NATIVE traff" in balances and balances["NATIVE traff"] < 0 else 0
+        user.native_balance = (
+            balances["NATIVE traff"] if "NATIVE traff" in balances and balances["NATIVE traff"] < 0 else 0
+        )
         user.pop_balance = balances["POP traff"] if "POP traff" in balances and balances["POP traff"] < 0 else 0
         user.push_balance = balances["PUSH traff"] if "PUSH traff" in balances and balances["PUSH traff"] < 0 else 0
 
@@ -399,6 +407,82 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
                     campaign["instance"].offers_list.add(offer)
 
             campaign["instance"].save()
+
+
+def _generate_result_table(
+    total_revenue,
+    final_percent,
+    start_balances,
+    profits,
+    deltas,
+    tests,
+    from_other_users,
+    result,
+    user,
+    start_date,
+    end_date,
+):
+    def _format_count_string(string, count_border):
+        counter = 0
+        string_copy = list(copy(string))
+
+        for index, s in enumerate(string_copy):
+            if s == "+":
+                if counter == count_border:
+                    string_copy[index] = "#"
+                    counter = 0
+                else:
+                    counter += 1
+
+        return "".join(string_copy).replace("#", "+\n+")
+
+    pdf = SimpleDocTemplate(f'{str(user).replace(" ", "_")}.pdf', pagesize=landscape(A4),)
+
+    content = [
+        Paragraph(f"User: {user}", style=ParagraphStyle(name="style", alignment=1)),
+        Paragraph(f"Period: {start_date} - {end_date}", style=ParagraphStyle(name="style", alignment=1)),
+        Paragraph(f"Total revenue: {total_revenue}", style=ParagraphStyle(name="style", alignment=1)),
+        Paragraph(f"Percent: {final_percent}", style=ParagraphStyle(name="style", alignment=1)),
+        Spacer(height=15, width=600),
+    ]
+
+    count_border = 8 // len(result) - 1
+
+    data = [
+        ["--------"] + [traffic_group for traffic_group in result],
+        ["Start balance"] + [start_balances[traffic_group] for traffic_group in start_balances],
+        ["Profit"] + [profits[traffic_group] for traffic_group in profits],
+        ["Previous period"]
+        + [_format_count_string(deltas[traffic_group][0], count_border) for traffic_group in deltas],
+        ["Tests"] + [_format_count_string(tests[traffic_group][0], count_border) for traffic_group in tests],
+    ]
+
+    if user.is_lead:
+        data.append(
+            ["From other users"]
+            + [
+                _format_count_string(from_other_users[traffic_group][0], count_border)
+                for traffic_group in from_other_users
+            ]
+        )
+
+    data.append(
+        ["Summary"] + [_format_count_string(result[traffic_group][0], count_border) for traffic_group in result]
+    )
+
+    table = Table(data, colWidths=[80] + [600 // len(result) for _ in range(len(result))])
+
+    ts = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),])
+    table.setStyle(ts)
+
+    pdf.build(
+        content
+        + [table]
+        + [
+            Spacer(width=600, height=50),
+            Paragraph("© FC Tools 2020", style=ParagraphStyle(name="style", alignment=1, textColor=darkgray)),
+        ]
+    )
 
 
 def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
@@ -516,4 +600,19 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
         _logger.info("Campaigns was successfully saved.")
 
     _logger.info(f"Final calculation: {result}")
+
+    # _generate_result_table(
+    #     round(total_revenue, 6),
+    #     final_percent,
+    #     start_balances,
+    #     profits,
+    #     deltas,
+    #     tests,
+    #     from_other_users,
+    #     result,
+    #     user,
+    #     start_date,
+    #     end_date,
+    # )
+
     return round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result
