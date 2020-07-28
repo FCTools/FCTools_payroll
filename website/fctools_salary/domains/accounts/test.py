@@ -50,6 +50,8 @@ class Test(models.Model):
 
     geo = models.ManyToManyField("Geo", verbose_name="GEO", blank=True,)
 
+    one_budget_for_all_geo = models.BooleanField(verbose_name="One budget for all geo", default=False)
+
     def budget_rounded(self):
         return round(self.budget, 4)
 
@@ -71,3 +73,8 @@ class Test(models.Model):
         return " ||| ".join(sorted([str(ts) for ts in self.traffic_sources.all()]))
 
     traffic_sources_str.short_description = "Traffic sources"
+
+    def geo_str(self):
+        return " ||| ".join(sorted([str(geo.iso_code) for geo in self.geo.all()]))
+
+    geo_str.short_description = "GEO"

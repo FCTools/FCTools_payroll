@@ -15,7 +15,7 @@ from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.exceptions import UpdateError, TestNotSplitError
-from fctools_salary.services.binom.get_info import get_campaigns
+from fctools_salary.services.binom.get_info import get_campaigns, get_campaign_main_geo
 from fctools_salary.services.binom.update import update_offers
 
 _logger = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ def _calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
     profit = _calculate_profit_for_period(current_campaigns_tracker, traffic_groups)[1]
 
     tests_list = list(Test.objects.filter(user=user))
-    tests = _calculate_tests(tests_list, current_campaigns_tracker, False, traffic_groups)
+    tests = _calculate_tests(tests_list, current_campaigns_tracker, False, traffic_groups, start_date, end_date)
 
     for traffic_group in result:
         result[traffic_group] += profit[traffic_group] + tests[traffic_group][1]
@@ -202,7 +202,7 @@ def _calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups)
     return deltas
 
 
-def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
+def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups, start_date, end_date):
     """
     Calculates the amount that should be returned to employee (user)
     analyzing the statistics of the test campaigns for the period.
@@ -234,6 +234,7 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
 
             test_offers_ids = {offer.id for offer in list(test.offers.all())}
             test_traffic_sources_ids = [ts.id for ts in list(test.traffic_sources.all())]
+            test_geos = [geo.country for geo in list(test.geo.all())]
 
             if len(test_traffic_sources_ids) > 1 and not test.one_budget_for_all_traffic_sources:
                 _logger.error(f"Test with id {test.id} doesn't split.")
@@ -248,7 +249,16 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups):
                     and campaign["instance"].traffic_source.id in test_traffic_sources_ids
                     and len(test_offers_ids & set(campaign["offers_list"])) != 0
                 ):
-                    test_campaigns_list.append(campaign["instance"])
+                    if test_geos:
+                        max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
+
+                        if max_clicks_geo == -1:
+                            raise UpdateError(f"Can't get campaign {campaign.id} main geo.")
+
+                        if max_clicks_geo in test_geos:
+                            test_campaigns_list.append(campaign["instance"])
+                    else:
+                        test_campaigns_list.append(campaign["instance"])
 
             for test_campaign in test_campaigns_list:
                 if test_campaign.profit >= 0:
@@ -542,7 +552,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     _logger.info(f"Deltas was successfully calculated: {deltas}")
 
     tests_list = list(Test.objects.filter(user=user))
-    tests = _calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups)
+    tests = _calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups, start_date, end_date)
 
     _logger.info(f"Tests was successfully calculated: {tests}")
 

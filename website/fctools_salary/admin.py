@@ -99,6 +99,7 @@ class TestForm(forms.ModelForm):
             "balance",
             "one_budget_for_all_traffic_sources",
             "geo",
+            "one_budget_for_all_geo",
         ]
 
     def clean_traffic_sources(self):
@@ -146,31 +147,73 @@ class TestForm(forms.ModelForm):
             )
             offers_list = " ||| ".join(sorted([str(offer) for offer in self.cleaned_data["offers"].all()]))
             ts_list = " ||| ".join(sorted([str(ts) for ts in traffic_sources_list]))
+            geo_list = " ||| ".join(sorted([str(geo.iso_code) for geo in self.cleaned_data["geo"].all()]))
 
             for test in related_tests:
-                if test.offers_str() == offers_list and test.traffic_sources_str() == ts_list:
+                if (
+                    test.offers_str() == offers_list
+                    and test.traffic_sources_str() == ts_list
+                    and geo_list == test.geo_str()
+                ):
                     raise ValidationError("This test already exists.")
 
         super(TestForm, self).clean()
 
 
-def split_tests_by_traffic_sources(modeladmin, request, queryset):
+def split_tests(modeladmin, request, queryset):
     for test in queryset:
-        if not test.one_budget_for_all_traffic_sources:
-            for traffic_source in test.traffic_sources.all():
-                new_test = Test(
-                    user=test.user, budget=test.budget, balance=test.balance, traffic_group=test.traffic_group
-                )
-                new_test.save()
+        test_offers = list(test.offers.all())
+        test_traffic_sources = list(test.traffic_sources.all())
+        test_geo = list(test.geo.all())
 
-                new_test.offers.add(*test.offers.all())
-                new_test.traffic_sources.add(traffic_source)
-                new_test.save()
+        if not test.one_budget_for_all_traffic_sources:
+            for traffic_source in test_traffic_sources:
+                new_test_ts = Test(
+                    user=test.user,
+                    budget=test.budget,
+                    balance=test.balance,
+                    traffic_group=test.traffic_group,
+                    one_budget_for_all_geo=test.one_budget_for_all_geo,
+                )
+                new_test_ts.save()
+
+                new_test_ts.offers.add(*test_offers)
+                new_test_ts.geo.add(*test_geo)
+                new_test_ts.traffic_sources.add(traffic_source)
+                new_test_ts.save()
+
+                if not test.one_budget_for_all_geo:
+                    for geo in test_geo:
+                        new_test_geo = Test(
+                            user=test.user, budget=test.budget, balance=test.balance, traffic_group=test.traffic_group,
+                        )
+                        new_test_geo.save()
+                        new_test_geo.offers.add(*test_offers)
+                        new_test_geo.traffic_sources.add(traffic_source)
+                        new_test_geo.geo.add(geo)
+                        new_test_geo.save()
+                    new_test_ts.delete()
 
             test.delete()
 
+        elif not test.one_budget_for_all_geo:
+            for geo in test.geo.all():
+                new_test_geo = Test(
+                    user=test.user,
+                    budget=test.budget,
+                    balance=test.balance,
+                    traffic_group=test.traffic_group,
+                    one_budget_for_all_traffic_sources=test.one_budget_for_all_traffic_sources,
+                )
+                new_test_geo.save()
+                new_test_geo.offers.add(*test_offers)
+                new_test_geo.traffic_sources.add(*test_traffic_sources)
+                new_test_geo.geo.add(geo)
+                new_test_geo.save()
+            test.delete()
 
-split_tests_by_traffic_sources.short_description = "Split selected tests by traffic sources"
+
+split_tests.short_description = "Split selected tests"
 
 
 @admin.register(Test)
@@ -183,6 +226,7 @@ class TestAdmin(admin.ModelAdmin):
         "traffic_group",
         "budget_rounded",
         "balance_colored",
+        "geo_str",
     ]
     list_filter = [
         "user",
@@ -197,7 +241,7 @@ class TestAdmin(admin.ModelAdmin):
         "traffic_sources",
         "geo",
     ]
-    actions = [split_tests_by_traffic_sources]
+    actions = [split_tests]
 
 
 @admin.register(Campaign)

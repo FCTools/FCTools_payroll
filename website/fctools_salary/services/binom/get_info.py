@@ -25,10 +25,11 @@ def get_users():
     :rtype: List[User]
     """
 
-    _logger.info('Start getting users from tracker...')
+    _logger.info("Start getting users from tracker...")
 
-    response = requests_manager.get(requests.Session(), settings.TRACKER_URL,
-                                    params={"page": "Users", "api_key": settings.BINOM_API_KEY})
+    response = requests_manager.get(
+        requests.Session(), settings.TRACKER_URL, params={"page": "Users", "api_key": settings.BINOM_API_KEY}
+    )
 
     if not isinstance(response, requests.Response):
         _logger.error(f"Error occurred while trying to get users from tracker: {response}")
@@ -38,7 +39,8 @@ def get_users():
         response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f'Error occurred while trying to decode response from tracker (users updating): {decode_error.doc}')
+            f"Error occurred while trying to decode response from tracker (users updating): {decode_error.doc}"
+        )
         return []
 
     try:
@@ -58,11 +60,11 @@ def get_offers():
 
     _logger.info("Start getting offers from tracker...")
 
-    response = requests_manager.get(requests.Session(),
-                                    settings.TRACKER_URL,
-                                    params={"page": "Offers", "api_key": settings.BINOM_API_KEY, "group": "all",
-                                            "status": "all"},
-                                    )
+    response = requests_manager.get(
+        requests.Session(),
+        settings.TRACKER_URL,
+        params={"page": "Offers", "api_key": settings.BINOM_API_KEY, "group": "all", "status": "all"},
+    )
 
     if not isinstance(response, requests.Response):
         _logger.error(f"Error occurred while trying to get offers from tracker: {response}")
@@ -72,7 +74,8 @@ def get_offers():
         response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f'Error occurred while trying to decode response from tracker (offers updating): {decode_error.doc}')
+            f"Error occurred while trying to decode response from tracker (offers updating): {decode_error.doc}"
+        )
         return []
 
     try:
@@ -104,11 +107,11 @@ def get_traffic_sources():
 
     _logger.info("Start getting traffic sources from tracker...")
 
-    all_traffic_sources = requests_manager.get(session,
-                                               settings.TRACKER_URL,
-                                               params={"page": "Traffic_Sources", "api_key": settings.BINOM_API_KEY,
-                                                       "status": "all"}
-                                               )
+    all_traffic_sources = requests_manager.get(
+        session,
+        settings.TRACKER_URL,
+        params={"page": "Traffic_Sources", "api_key": settings.BINOM_API_KEY, "status": "all"},
+    )
 
     if not isinstance(all_traffic_sources, requests.Response):
         _logger.error(f"Error occurred while trying to get traffic_sources from tracker: {all_traffic_sources}")
@@ -118,20 +121,22 @@ def get_traffic_sources():
         all_traffic_sources_number = len(all_traffic_sources.json())
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f'Error occurred while trying to decode response from tracker (traffic sources updating): '
-            f'{decode_error.doc}')
+            f"Error occurred while trying to decode response from tracker (traffic sources updating): "
+            f"{decode_error.doc}"
+        )
         return []
 
     for user in User.objects.all():
-        user_traffic_sources = requests_manager.get(session,
-                                                    settings.TRACKER_URL,
-                                                    params={
-                                                        "page": "Traffic_Sources",
-                                                        "api_key": settings.BINOM_API_KEY,
-                                                        "user_group": user.id,
-                                                        "status": "all",
-                                                    },
-                                                    )
+        user_traffic_sources = requests_manager.get(
+            session,
+            settings.TRACKER_URL,
+            params={
+                "page": "Traffic_Sources",
+                "api_key": settings.BINOM_API_KEY,
+                "user_group": user.id,
+                "status": "all",
+            },
+        )
 
         if not isinstance(user_traffic_sources, requests.Response):
             _logger.error(f"Error occurred while trying to get traffic sources from tracker: {user_traffic_sources}")
@@ -141,8 +146,9 @@ def get_traffic_sources():
             user_traffic_sources_json = user_traffic_sources.json()
         except json.JSONDecodeError as decode_error:
             _logger.error(
-                f'Error occurred while trying to decode response from tracker (traffic sources updating): '
-                f'{decode_error.doc}')
+                f"Error occurred while trying to decode response from tracker (traffic sources updating): "
+                f"{decode_error.doc}"
+            )
             return []
 
         if user_traffic_sources_json and len(user_traffic_sources_json) != all_traffic_sources_number:
@@ -178,15 +184,16 @@ def get_offers_ids_by_campaign(campaign: Campaign):
     result = []
 
     requests_url = settings.TRACKER_URL + "arm.php"
-    response = requests_manager.get(requests.Session(),
-                                    requests_url,
-                                    params={
-                                        "page": "Campaigns",
-                                        "api_key": settings.BINOM_API_KEY,
-                                        "action": "campaign@get_full",
-                                        "id": campaign.id,
-                                    },
-                                    )
+    response = requests_manager.get(
+        requests.Session(),
+        requests_url,
+        params={
+            "page": "Campaigns",
+            "api_key": settings.BINOM_API_KEY,
+            "action": "campaign@get_full",
+            "id": campaign.id,
+        },
+    )
 
     if not isinstance(response, requests.Response):
         _logger.error(f"Error occurred while trying to get campaign full info from tracker: {response}")
@@ -196,8 +203,9 @@ def get_offers_ids_by_campaign(campaign: Campaign):
         response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f'Error occurred while trying to decode response from tracker (getting campaign full info): '
-            f'{decode_error.doc}')
+            f"Error occurred while trying to decode response from tracker (getting campaign full info): "
+            f"{decode_error.doc}"
+        )
         return []
 
     try:
@@ -242,8 +250,9 @@ def get_campaigns(start_date, end_date, user):
 
     _logger.info(f"Start getting campaigns from {start_date} to {end_date} for user {user}")
 
-    campaigns_tracker = requests_manager.get(requests.Session(),
-                                             f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}")
+    campaigns_tracker = requests_manager.get(
+        requests.Session(), f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}"
+    )
 
     if not isinstance(campaigns_tracker, requests.Response):
         _logger.error(f"Error occurred while trying to get campaign full info from tracker: {campaigns_tracker}")
@@ -253,8 +262,9 @@ def get_campaigns(start_date, end_date, user):
         campaigns_tracker_json = campaigns_tracker.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f'Error occurred while trying to decode response from tracker (getting info about campaigns): '
-            f'{decode_error.doc}')
+            f"Error occurred while trying to decode response from tracker (getting info about campaigns): "
+            f"{decode_error.doc}"
+        )
         return []
 
     try:
@@ -291,3 +301,40 @@ def get_campaigns(start_date, end_date, user):
             campaign["offers_list"] = offers_ids
 
     return result
+
+
+def get_campaign_main_geo(campaign, start_date, end_date):
+    campaign_geos = []
+
+    params = urlencode(
+        {
+            "page": "Stats",
+            "camp_id": campaign.id,
+            "api_key": settings.BINOM_API_KEY,
+            "group1": 19,
+            "group2": 1,
+            "group3": 1,
+            "date": 12,
+            "date_s": str(start_date),
+            "date_e": str(end_date),
+        }
+    )
+
+    campaign_statistics = requests_manager.get(requests.Session(), f"{settings.TRACKER_URL}?{params}&timezone=+3:00")
+
+    if not isinstance(campaign_statistics, requests.Response):
+        _logger.error(f"Error occurred while trying to get campaign statistics from tracker: {campaign_statistics}")
+        return -1
+
+    try:
+        campaign_statistics_json = campaign_statistics.json()
+    except json.JSONDecodeError as decode_error:
+        _logger.error(f"Incorrect response from tracker (campaigns getting): {decode_error.doc}")
+        return -1
+
+    for geo in campaign_statistics_json:
+        campaign_geos.append({"country": geo["name"], "clicks": int(geo["clicks"])})
+
+    max_clicks_geo = max(campaign_geos, key=lambda x: x["clicks"])["country"]
+
+    return max_clicks_geo
