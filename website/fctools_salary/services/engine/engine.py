@@ -249,9 +249,9 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups, start_d
 
             for campaign in campaigns_list:
                 if (
-                    campaign["instance"].traffic_group in traffic_groups
-                    and campaign["instance"].traffic_source.id in test_traffic_sources_ids
-                    and len(test_offers_ids & set(campaign["offers_list"])) != 0
+                        campaign["instance"].traffic_group in traffic_groups
+                        and campaign["instance"].traffic_source.id in test_traffic_sources_ids
+                        and len(test_offers_ids & set(campaign["offers_list"])) != 0
                 ):
                     if test_geos:
                         max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
@@ -424,17 +424,17 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
 
 
 def _generate_result_table(
-    total_revenue,
-    final_percent,
-    start_balances,
-    profits,
-    deltas,
-    tests,
-    from_other_users,
-    result,
-    user,
-    start_date,
-    end_date,
+        total_revenue,
+        final_percent,
+        start_balances,
+        profits,
+        deltas,
+        tests,
+        from_other_users,
+        result,
+        user,
+        start_date,
+        end_date,
 ):
     def _format_count_string(string, count_border):
         counter = 0
@@ -450,50 +450,113 @@ def _generate_result_table(
 
         return "".join(string_copy).replace("#", "+\n+")
 
-    pdf = SimpleDocTemplate(f'{str(user).replace(" ", "_")}.pdf', pagesize=landscape(A4),)
+    pdf = SimpleDocTemplate(f'{str(user).replace(" ", "_")}.pdf', pagesize=landscape(A4), )
 
     content = [
-        Paragraph(f"User: {user}", style=ParagraphStyle(name="style", alignment=1)),
-        Paragraph(f"Period: {start_date} - {end_date}", style=ParagraphStyle(name="style", alignment=1)),
-        Paragraph(f"Total revenue: {total_revenue}", style=ParagraphStyle(name="style", alignment=1)),
-        Paragraph(f"Percent: {final_percent}", style=ParagraphStyle(name="style", alignment=1)),
-        Spacer(height=15, width=600),
+        Paragraph(f"<b>User:</b> {user}", style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
+        Spacer(height=10, width=600),
+        Paragraph(f"<b>Period:</b> {start_date} - {end_date}",
+                  style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
+        Spacer(height=10, width=600),
+        Paragraph(f"<b>Total revenue:</b> {total_revenue}",
+                  style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
+        Spacer(height=10, width=600),
+        Paragraph(f"<b>Percent:</b> {final_percent}", style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
+        Spacer(height=10, width=600),
     ]
 
     count_border = 8 // len(result) - 1
 
-    data = [
-        ["--------"] + [traffic_group for traffic_group in result],
-        ["Start balance"] + [start_balances[traffic_group] for traffic_group in start_balances],
-        ["Profit"] + [profits[traffic_group] for traffic_group in profits],
+    data = [["--------"] + [traffic_group for traffic_group in result]]
+
+    start_balances_data = ["Start balance"]
+    for traffic_group in start_balances:
+        if start_balances[traffic_group] > 0:
+            start_balances_data.append(Paragraph(f"<font color=green>{start_balances[traffic_group]}</font>",
+                                                 style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
+        elif start_balances[traffic_group] < 0:
+            start_balances_data.append(Paragraph(f"<font color=red>{start_balances[traffic_group]}</font>",
+                                                 style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
+        else:
+            start_balances_data.append(Paragraph(str(start_balances[traffic_group]),
+                                                 style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
+
+    data.append(start_balances_data)
+
+    profits_data = ["Profit"]
+    for traffic_group in profits:
+        if profits[traffic_group] > 0:
+            profits_data.append(Paragraph(f"<font color=green>{profits[traffic_group]}</font>",
+                                          style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
+        elif profits[traffic_group] < 0:
+            profits_data.append(Paragraph(f"<font color=red>{profits[traffic_group]}</font>",
+                                          style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
+        else:
+            profits_data.append(Paragraph(str(profits[traffic_group]),
+                                          style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
+
+    data.append(profits_data)
+
+    data += [
         ["Previous period"]
-        + [_format_count_string(deltas[traffic_group][0], count_border) for traffic_group in deltas],
-        ["Tests"] + [_format_count_string(tests[traffic_group][0], count_border) for traffic_group in tests],
+        + [Paragraph(deltas[traffic_group][0],
+                     style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15))
+           for traffic_group in deltas],
     ]
+
+    tests_data = ["Tests"]
+    for traffic_group in tests:
+        count_string = tests[traffic_group][0] \
+            .replace(f' = {tests[traffic_group][1]}', f' = <font color=green>{tests[traffic_group][1]}</font>')
+        tests_data.append(
+            Paragraph(copy(count_string), style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)))
+
+    data.append(tests_data)
 
     if user.is_lead:
         data.append(
             ["From other users"]
             + [
-                _format_count_string(from_other_users[traffic_group][0], count_border)
+                Paragraph(from_other_users[traffic_group][0],
+                          style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15))
                 for traffic_group in from_other_users
             ]
         )
 
-    data.append(
-        ["Summary"] + [_format_count_string(result[traffic_group][0], count_border) for traffic_group in result]
-    )
+    summary_data = ["Summary"]
+    for traffic_group in result:
+        count_string = result[traffic_group][0]
+        if result[traffic_group][1] > 0:
+            count_string = count_string \
+                .replace(f' = {result[traffic_group][1]}', f' = <font color=green>{result[traffic_group][1]}</font>')
+        elif result[traffic_group][1] < 0:
+            count_string = count_string \
+                .replace(f' = {result[traffic_group][1]}', f' = <font color=red>{result[traffic_group][1]}</font>')
+        summary_data.append(
+            Paragraph(copy(count_string), style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)))
 
-    table = Table(data, colWidths=[80] + [600 // len(result) for _ in range(len(result))])
+    data.append(summary_data)
 
-    ts = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),])
+    cols_number = len(result)
+    col_widths = [120] + [650 // len(result) for _ in range(cols_number)]
+    row_heights = [25, 25, 25, 50, 120]
+
+    if user.is_lead:
+        row_heights.append(50)
+    row_heights.append(25)
+
+    table = Table(data, colWidths=col_widths, rowHeights=row_heights)
+
+    ts = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                     ('FONTSIZE', (0, 0), (-1, -1), 12), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                     ('LEADING', (0, 0), (-1, -1), 15)])
     table.setStyle(ts)
 
     pdf.build(
         content
         + [table]
         + [
-            Spacer(width=600, height=50),
+            Spacer(width=600, height=15),
             Paragraph("© FC Tools 2020", style=ParagraphStyle(name="style", alignment=1, textColor=darkgray)),
         ]
     )
