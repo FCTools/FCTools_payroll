@@ -28,7 +28,7 @@ def _return(request, error_message, traceback_, status_code=200):
     template = "error.html"
 
     return render(request, template,
-                  context={"title": "Server Error", "error_message": error_message,
+                  context={"title": "Internal Server Error", "error_message": error_message,
                            "traceback": traceback_,
                            "status_code": status_code})
 
@@ -99,35 +99,11 @@ def count_view(request):
             traffic_groups = form.cleaned_data["traffic_groups"]
 
             update_basic_info()
-            (
-                total_revenue,
-                final_percent,
-                start_balances,
-                profits,
-                from_rev_period,
-                tests,
-                from_other,
-                result,
-                report_name
-            ) = calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups)
 
             return render(
                 request,
                 os.path.join("fctools_salary", "count_result.html"),
-                context={
-                    "start_balances": start_balances,
-                    "profits": profits,
-                    "from_prev_period": from_rev_period,
-                    "tests": tests,
-                    "result": result,
-                    "total_revenue": total_revenue,
-                    "final_percent": final_percent,
-                    "user": user,
-                    "start_date": start_date,
-                    "end_date": end_date,
-                    "from_other_users": from_other,
-                    "report_name": report_name,
-                },
+                context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups),
             )
         else:
             _logger.warning("Incorrect report form.")

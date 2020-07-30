@@ -430,7 +430,7 @@ def _generate_result_table(
         final_percent,
         start_balances,
         profits,
-        deltas,
+        from_prev_period,
         tests,
         from_other_users,
         result,
@@ -438,125 +438,140 @@ def _generate_result_table(
         start_date,
         end_date,
 ):
+    """
+    Generates pdf report with result table and returns report's filename.
+
+    :param total_revenue: Total revenue per period.
+    :type total_revenue: float
+
+    :param final_percent: final percent (depends on total revenue per period)
+    :type final_percent: float
+
+    :param start_balances: user's start balances from database split by traffic sources
+    :type start_balances: Dict[str, float]
+
+    :param profits: user's profits from tracker for this period split by traffic sources
+    :type profits: Dict[str, float]
+
+    :param from_prev_period: user's deltas from previous period split by traffic sources
+    :type from_prev_period: Dict[str, List[Union[str, float]]]
+
+    :param tests: tests calculation split by traffic sources
+    :type tests: Dict[str, List[Union[str, float]]]
+
+    :param from_other_users: user's profit from other users (only for teamleads)
+    :type from_other_users: Dict[str, List[Union[str, float]]]
+
+    :param result: final calculation
+    :type result: Dict[str, List[Union[str, float]]]
+
+    :param user: user
+    :type user: User
+
+    :param start_date: period start date
+    :type start_date: date
+
+    :param end_date: period end date
+    :type end_date: date
+
+    :return: generated report filename
+    :rtype: str
+    """
+
+    def colored_value(value):
+        if value > 0:
+            return f"<font color=green>{value}</font>"
+        elif value < 0:
+            return f"<font color=red>{value}</font>"
+
+        return str(value)
+
     if not os.path.exists("media"):
         os.mkdir("media")
+        os.mkdir(os.path.join("media", "reports"))
+    elif not os.path.exists(os.path.join("media", "reports")):
+        os.mkdir(os.path.join("media", "reports"))
 
-    filename = os.path.join("media", f'{uuid4()}.pdf')
-    pdf = SimpleDocTemplate(filename, pagesize=landscape(A4), )
+    report_filename = os.path.join("media", "reports", f"{uuid4()}.pdf")
+    pdf = SimpleDocTemplate(report_filename, pagesize=landscape(A4), )
 
-    content = [
-        Paragraph(f"<b>User:</b> {user}", style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
-        Spacer(height=10, width=600),
+    paragraph_style_font_11 = ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)
+    paragraph_style_font_12 = ParagraphStyle(name="style", alignment=1, fontSize=12, leading=15)
+
+    meta_content = [
+        Paragraph(f"<b>User:</b> {user}", style=paragraph_style_font_12),
+        Spacer(height=7, width=600),
         Paragraph(f"<b>Period:</b> {start_date} - {end_date}",
-                  style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
-        Spacer(height=10, width=600),
+                  style=paragraph_style_font_12),
+        Spacer(height=7, width=600),
         Paragraph(f"<b>Total revenue:</b> {total_revenue}",
-                  style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
-        Spacer(height=10, width=600),
-        Paragraph(f"<b>Percent:</b> {final_percent}", style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
-        Spacer(height=10, width=600),
+                  style=paragraph_style_font_12),
+        Spacer(height=7, width=600),
+        Paragraph(f"<b>Percent:</b> {final_percent}", style=paragraph_style_font_12),
+        Spacer(height=7, width=600),
     ]
-
-    data = [["--------"] + [traffic_group for traffic_group in result]]
 
     start_balances_data = ["Start balance"]
-    for traffic_group in start_balances:
-        if start_balances[traffic_group] > 0:
-            start_balances_data.append(Paragraph(f"<font color=green>{start_balances[traffic_group]}</font>",
-                                                 style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
-        elif start_balances[traffic_group] < 0:
-            start_balances_data.append(Paragraph(f"<font color=red>{start_balances[traffic_group]}</font>",
-                                                 style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
-        else:
-            start_balances_data.append(Paragraph(str(start_balances[traffic_group]),
-                                                 style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
-
-    data.append(start_balances_data)
-
     profits_data = ["Profit"]
-    for traffic_group in profits:
-        if profits[traffic_group] > 0:
-            profits_data.append(Paragraph(f"<font color=green>{profits[traffic_group]}</font>",
-                                          style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
-        elif profits[traffic_group] < 0:
-            profits_data.append(Paragraph(f"<font color=red>{profits[traffic_group]}</font>",
-                                          style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
-        else:
-            profits_data.append(Paragraph(str(profits[traffic_group]),
-                                          style=ParagraphStyle(name="style", alignment=1, fontSize=11)))
-
-    data.append(profits_data)
-
-    data += [
-        ["Previous period"]
-        + [Paragraph(deltas[traffic_group][0],
-                     style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15))
-           for traffic_group in deltas],
-    ]
-
+    previous_period_data = ["Previous period"]
     tests_data = ["Tests"]
-    for traffic_group in tests:
-        count_string = tests[traffic_group][0] \
-            .replace(f' = {tests[traffic_group][1]}', f' = <font color=green>{tests[traffic_group][1]}</font>')
-        tests_data.append(
-            Paragraph(copy(count_string), style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)))
-
-    data.append(tests_data)
-
-    if user.is_lead:
-        data.append(
-            ["From other users"]
-            + [
-                Paragraph(from_other_users[traffic_group][0],
-                          style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15))
-                for traffic_group in from_other_users
-            ]
-        )
-
+    from_other_users_data = ["From other users"]
     summary_data = ["Summary"]
-    for traffic_group in result:
-        count_string = result[traffic_group][0]
-        if result[traffic_group][1] > 0:
-            count_string = count_string \
-                .replace(f' = {result[traffic_group][1]}', f' = <font color=green>{result[traffic_group][1]}</font>')
-        elif result[traffic_group][1] < 0:
-            count_string = count_string \
-                .replace(f' = {result[traffic_group][1]}', f' = <font color=red>{result[traffic_group][1]}</font>')
-        summary_data.append(
-            Paragraph(copy(count_string), style=ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)))
 
-    data.append(summary_data)
+    for traffic_group in start_balances:
+        start_balances_data.append(Paragraph(colored_value(start_balances[traffic_group]),
+                                             style=paragraph_style_font_11))
+        profits_data.append(Paragraph(colored_value(profits[traffic_group]),
+                                      style=paragraph_style_font_11))
+        previous_period_data.append(Paragraph(from_prev_period[traffic_group][0],
+                                              style=paragraph_style_font_11))
+        tests_count_string = tests[traffic_group][0] \
+            .replace(f' = {tests[traffic_group][1]}', f' = <font color=green>{tests[traffic_group][1]}</font>')
+        tests_data.append(Paragraph(copy(tests_count_string), style=paragraph_style_font_11))
+
+        if user.is_lead:
+            from_other_users_data.append(Paragraph(from_other_users[traffic_group][0], style=paragraph_style_font_11))
+
+        colored_total_amount = colored_value(result[traffic_group][1])
+        summary_data.append(Paragraph(copy(result[traffic_group][0].replace(f' = {result[traffic_group][1]}',
+                                                                            f' = {colored_total_amount}')),
+                                      style=paragraph_style_font_11))
+
+    data = [["--------"] + [traffic_group for traffic_group in result],
+            start_balances_data,
+            profits_data,
+            previous_period_data,
+            tests_data,
+            from_other_users_data,
+            summary_data]
 
     cols_number = len(result)
-    col_widths = [120] + [650 // len(result) for _ in range(cols_number)]
+    col_widths = [120] + [650 // cols_number for _ in range(cols_number)]
     row_heights = [25, 25, 25, 50, 120]
 
     if user.is_lead:
         row_heights.append(50)
     row_heights.append(25)
 
-    table = Table(data, colWidths=col_widths, rowHeights=row_heights)
+    result_table = Table(data, colWidths=col_widths, rowHeights=row_heights)
 
-    ts = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                     ('FONTSIZE', (0, 0), (-1, -1), 12), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                     ('LEADING', (0, 0), (-1, -1), 15)])
-    table.setStyle(ts)
+    table_style = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                              ("FONTSIZE", (0, 0), (-1, -1), 12), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                              ("LEADING", (0, 0), (-1, -1), 15)])
+    result_table.setStyle(table_style)
 
-    pdf.build(
-        content
-        + [table]
-        + [
-            Spacer(width=600, height=15),
-            Paragraph("© FC Tools 2020", style=ParagraphStyle(name="style", alignment=1, textColor=darkgray)),
-        ]
-    )
+    footer = [Spacer(width=600, height=15),
+              Paragraph("© FC Tools 2020", style=ParagraphStyle(name="style", alignment=1, textColor=darkgray))]
 
-    return filename
+    pdf.build([*meta_content, result_table, *footer])
+
+    return report_filename
 
 
-def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
+def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) -> dict:
     """
-    Calculates user salary for the period from start_date to end_date by selected traffic groups.
+    Calculates user salary for the period from start_date to end_date by selected traffic groups. Generates
+    pdf-file with result-table.
 
     :param user: user
     :type user: User
@@ -575,16 +590,12 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     :type traffic_groups: List[str]
 
     :return:
-    :rtype: Tuple[
-    float,
+    :rtype: Dict[str, Union[
     float,
     Dict[str, float],
-    Dict[str, float],
-    Dict[str, List[Union[str, float]]],
     Dict[str, List[Union[str, float]]],
     Optional[Dict[str, List[Union[str, float]]]],
-    Dict[str, float],
-]
+    str]
     """
 
     _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
@@ -670,19 +681,20 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
 
     _logger.info(f"Final calculation: {result}")
 
-    report_name = _generate_result_table(
-        round(total_revenue, 6),
-        final_percent,
-        start_balances,
-        profits,
-        deltas,
-        tests,
-        from_other_users,
-        result,
-        user,
-        start_date,
-        end_date,
-    )
+    calculation_items = {
+        "start_balances": start_balances,
+        "profits": profits,
+        "from_prev_period": deltas,
+        "tests": tests,
+        "result": result,
+        "total_revenue": round(total_revenue, 6),
+        "final_percent": final_percent,
+        "user": user,
+        "start_date": start_date,
+        "end_date": end_date,
+        "from_other_users": from_other_users,
+    }
 
-    return (round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result,
-            report_name)
+    calculation_items['report_name'] = _generate_result_table(**calculation_items)
+
+    return calculation_items
