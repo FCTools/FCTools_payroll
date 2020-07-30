@@ -237,7 +237,11 @@ def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups, start_d
             test_geos = [geo.country for geo in list(test.geo.all())]
 
             if len(test_traffic_sources_ids) > 1 and not test.one_budget_for_all_traffic_sources:
-                _logger.error(f"Test with id {test.id} doesn't split.")
+                _logger.error(f"Test with id {test.id} doesn't split by traffic sources.")
+                raise TestNotSplitError(test_id=test.id)
+
+            if len(test_geos) > 1 and not test.one_budget_for_all_geo:
+                _logger.error(f"Test with id {test.id} doesn't split by geo.")
                 raise TestNotSplitError(test_id=test.id)
 
             start_balance = test.balance

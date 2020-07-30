@@ -14,13 +14,13 @@ class UpdateError(Exception):
 
 class TestNotSplitError(Exception):
     """
-    This error raises when some test doesn't split by traffic sources.
+    This error raises when some test doesn't split by traffic sources or by geo.
     """
 
     def __init__(self, test_id):
-        self.message = f"Test {test_id} has more than 1 traffic sources, " \
-                       f"but one_budget_for_all_traffic_sources set to False. " \
-                       f"Please, set flag to True or split this test by traffic sources."
+        self.message = f"Test {test_id} has more than 1 traffic sources (or geo), " \
+                       f"but one_budget_for_all_traffic_sources (one_budget_for_all_geo) set to False. " \
+                       f"Please, set flag to True or split this test by traffic sources (or/and by geo)."
 
     def __str__(self):
         return self.message
