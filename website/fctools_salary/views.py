@@ -108,6 +108,7 @@ def count_view(request):
                 tests,
                 from_other,
                 result,
+                report_name
             ) = calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups)
 
             return render(
@@ -125,6 +126,7 @@ def count_view(request):
                     "start_date": start_date,
                     "end_date": end_date,
                     "from_other_users": from_other,
+                    "report_name": report_name,
                 },
             )
         else:

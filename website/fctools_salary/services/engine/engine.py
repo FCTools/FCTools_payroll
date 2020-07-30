@@ -1,7 +1,9 @@
 import logging
+import os
 from copy import deepcopy, copy
 from datetime import timedelta, date
 from typing import List, Dict, Tuple
+from uuid import uuid4
 
 from django.db import transaction
 from reportlab.lib import colors
@@ -436,21 +438,8 @@ def _generate_result_table(
         start_date,
         end_date,
 ):
-    def _format_count_string(string, count_border):
-        counter = 0
-        string_copy = list(copy(string))
-
-        for index, s in enumerate(string_copy):
-            if s == "+":
-                if counter == count_border:
-                    string_copy[index] = "#"
-                    counter = 0
-                else:
-                    counter += 1
-
-        return "".join(string_copy).replace("#", "+\n+")
-
-    pdf = SimpleDocTemplate(f'{str(user).replace(" ", "_")}.pdf', pagesize=landscape(A4), )
+    filename = os.path.join("media", f'{uuid4()}.pdf')
+    pdf = SimpleDocTemplate(filename, pagesize=landscape(A4), )
 
     content = [
         Paragraph(f"<b>User:</b> {user}", style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
@@ -464,8 +453,6 @@ def _generate_result_table(
         Paragraph(f"<b>Percent:</b> {final_percent}", style=ParagraphStyle(name="style", alignment=1, fontSize=12)),
         Spacer(height=10, width=600),
     ]
-
-    count_border = 8 // len(result) - 1
 
     data = [["--------"] + [traffic_group for traffic_group in result]]
 
@@ -560,6 +547,8 @@ def _generate_result_table(
             Paragraph("© FC Tools 2020", style=ParagraphStyle(name="style", alignment=1, textColor=darkgray)),
         ]
     )
+
+    return filename
 
 
 def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
@@ -678,18 +667,19 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
 
     _logger.info(f"Final calculation: {result}")
 
-    # _generate_result_table(
-    #     round(total_revenue, 6),
-    #     final_percent,
-    #     start_balances,
-    #     profits,
-    #     deltas,
-    #     tests,
-    #     from_other_users,
-    #     result,
-    #     user,
-    #     start_date,
-    #     end_date,
-    # )
+    report_name = _generate_result_table(
+        round(total_revenue, 6),
+        final_percent,
+        start_balances,
+        profits,
+        deltas,
+        tests,
+        from_other_users,
+        result,
+        user,
+        start_date,
+        end_date,
+    )
 
-    return round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result
+    return (round(total_revenue, 6), final_percent, start_balances, profits, deltas, tests, from_other_users, result,
+            report_name)

@@ -7,7 +7,8 @@ from django.urls import path, include
 from fctools_salary.views import base_menu, count_view, update_db, LogoutView
 
 
-urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
+urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
+              static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path("", base_menu, name="base_menu"),
     path("count/", count_view, name="count"),
     path("logout/", LogoutView.as_view(), name="logout"),
