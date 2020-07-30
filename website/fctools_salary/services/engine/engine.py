@@ -438,6 +438,9 @@ def _generate_result_table(
         start_date,
         end_date,
 ):
+    if not os.path.exists("media"):
+        os.mkdir("media")
+
     filename = os.path.join("media", f'{uuid4()}.pdf')
     pdf = SimpleDocTemplate(filename, pagesize=landscape(A4), )
 
