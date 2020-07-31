@@ -3,9 +3,9 @@ from django.db import models
 
 class PercentDependency(models.Model):
     """
-    Each teamlead has employees in his own structure. This teamlead gets some percent from salary of these employees
-    every time we calculate salary (in the end of the period). This model represents relations between users
-    (from - to - how much).
+    Each teamlead has employees in his own structure. Teamlead gets some percent from salary
+    (exactly not salary, profits and tests) of these employees every time we calculate salary
+    (in the end of the period). This model represents relations between users (from user - to user - percent).
     """
 
     from_user = models.ForeignKey(
@@ -23,4 +23,4 @@ class PercentDependency(models.Model):
         verbose_name_plural = "Percent dependencies"
 
     def __str__(self):
-        return f"id: {self.id}, from_user: {self.from_user}, to_user: {self.to_user}"
+        return f"{self.from_user} gets {self.percent} from {self.to_user}"

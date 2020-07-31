@@ -14,7 +14,7 @@ class Test(models.Model):
 
     Note: each user has balance for each test. E.g. if test amount is 50$ and user profit is -20$,
     his balance for this test will be 30$.
-    If user reaches a non-positive balance for some test (test amount spent), that test will be removed.
+    If user reaches a non-positive balance for some test (test amount spent), that test removes.
     """
 
     budget = models.DecimalField(verbose_name="Budget", null=False, blank=False, decimal_places=6, max_digits=13,)
@@ -25,6 +25,12 @@ class Test(models.Model):
         "TrafficSource", verbose_name="Traffic sources", related_name="tests_list",
     )
 
+    """
+    If this flag set to True, than test budget will be split between all traffic sources.
+    If this flag is False (as default), you need to "split" this test in django admin interface. Split action creates 
+    test object for each traffic source, then it removes this object. 
+    If system finds test with more than 1 traffic source and this flag set to False, it raises TestNotSplitError.
+    """
     one_budget_for_all_traffic_sources = models.BooleanField(
         verbose_name="One budget for all traffic sources", default=False,
     )
@@ -50,6 +56,12 @@ class Test(models.Model):
 
     geo = models.ManyToManyField("Geo", verbose_name="GEO", blank=True,)
 
+    """
+    If this flag set to True, than test budget will be split between all countries.
+    If this flag is False (as default), you need to "split" this test in django admin interface. Split action creates 
+    test object for each geo, then it removes this object. 
+    If system finds test with more than 1 geo and this flag set to False, it raises TestNotSplitError.
+    """
     one_budget_for_all_geo = models.BooleanField(verbose_name="One budget for all geo", default=False)
 
     def budget_rounded(self):
