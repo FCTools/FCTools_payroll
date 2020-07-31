@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 def _update_users():
     """
-    Synchronize Users table in tracker and database.
+    Synchronize users table in tracker with database.
 
     :return: status (True/False)
     :rtype: bool
@@ -40,7 +40,7 @@ def _update_users():
 
 def update_offers():
     """
-    Synchronize Offers table in tracker and database.
+    Synchronize offers table in tracker with database.
 
     :return: status (True/False)
     :rtype: bool
@@ -66,7 +66,7 @@ def update_offers():
 
 def _update_traffic_sources():
     """
-    Synchronize TrafficSources table in tracker and database.
+    Synchronize traffic sources table in tracker with database.
 
     :return: status (True/False)
     :rtype: bool
@@ -92,7 +92,7 @@ def _update_traffic_sources():
 
 def update_basic_info():
     """
-    Synchronize Users, Offers and TrafficSources tables in tracker and database.
+    Synchronize users, offers and traffic sources tables in tracker with database.
 
     :return: None
     """

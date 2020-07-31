@@ -5,10 +5,10 @@ from django.utils.html import format_html
 class Test(models.Model):
     """
     This model represents Test.
-    This object is formed from test budget, user, some traffic sources and some offers.
+    This object is formed from test budget, user, some traffic sources, some offers and geo (optional).
 
     The meaning of this object: this is the amount that an employee can spend free of charge
-    on implementing these offers with these traffic sources.
+    on implementing these offers with these traffic sources and these geo.
     If the profit is negative, but is covered by the test budget,
     this negative profit is not deducted from the employee's salary.
 
