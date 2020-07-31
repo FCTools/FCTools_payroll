@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
+
 import os
 import sys
 

@@ -1,3 +1,8 @@
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin

@@ -1,10 +1,13 @@
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
+
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 
 
-# TODO: add table with salary groups (fields: id, rules). Maybe you need to create table for rules and use it
-# TODO: with table for salary groups as m2m field
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency

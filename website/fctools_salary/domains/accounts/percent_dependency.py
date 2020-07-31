@@ -1,3 +1,8 @@
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
+
 from django.db import models
 
 
@@ -16,7 +21,7 @@ class PercentDependency(models.Model):
         "User", related_name="user_to", on_delete=models.CASCADE, verbose_name="To", null=False, blank=False,
     )
 
-    percent = models.FloatField(verbose_name="Percent", null=False, blank=False,)
+    percent = models.FloatField(verbose_name="Percent", null=False, blank=False, )
 
     class Meta:
         verbose_name = "Percent dependency"

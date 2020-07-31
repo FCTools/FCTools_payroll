@@ -1,3 +1,8 @@
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
+
 from fctools_salary.domains.accounts.user import User
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency

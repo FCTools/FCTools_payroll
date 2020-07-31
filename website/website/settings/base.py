@@ -1,8 +1,11 @@
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
+
 import os
 
-
 SECRET_KEY = os.getenv("SECRET_KEY")
-
 
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "..")
 
@@ -53,10 +56,10 @@ TEMPLATES = [
 WSGI_APPLICATION = "website.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 LANGUAGE_CODE = "en-us"
@@ -73,6 +76,15 @@ INTERNAL_IPS = [
     "127.0.0.1",
     "localhost",
 ]
+
+TRAFFIC_GROUPS = (
+    ("ADMIN", "ADMIN"),
+    ("FPA/HSA/PWA", "FPA/HSA/PWA"),
+    ("INAPP traff", "INAPP traff"),
+    ("NATIVE traff", "NATIVE traff"),
+    ("POP traff", "POP traff"),
+    ("PUSH traff", "PUSH traff"),
+)
 
 BINOM_API_KEY = os.getenv("BINOM_API_KEY")
 TRACKER_URL = "https://fcttrk.com/"

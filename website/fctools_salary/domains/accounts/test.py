@@ -1,3 +1,8 @@
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
+
 from django.db import models
 from django.utils.html import format_html
 
@@ -17,9 +22,9 @@ class Test(models.Model):
     If user reaches a non-positive balance for some test (test amount spent), that test removes.
     """
 
-    budget = models.DecimalField(verbose_name="Budget", null=False, blank=False, decimal_places=6, max_digits=13,)
+    budget = models.DecimalField(verbose_name="Budget", null=False, blank=False, decimal_places=6, max_digits=13, )
 
-    user = models.ForeignKey("User", on_delete=models.CASCADE, verbose_name="user", null=False, blank=False,)
+    user = models.ForeignKey("User", on_delete=models.CASCADE, verbose_name="user", null=False, blank=False, )
 
     traffic_sources = models.ManyToManyField(
         "TrafficSource", verbose_name="Traffic sources", related_name="tests_list",
@@ -52,9 +57,9 @@ class Test(models.Model):
         ),
     )
 
-    balance = models.DecimalField(verbose_name="Balance", blank=False, null=False, decimal_places=6, max_digits=13,)
+    balance = models.DecimalField(verbose_name="Balance", blank=False, null=False, decimal_places=6, max_digits=13, )
 
-    geo = models.ManyToManyField("Geo", verbose_name="GEO", blank=True,)
+    geo = models.ManyToManyField("Geo", verbose_name="GEO", blank=True, )
 
     """
     If this flag set to True, than test budget will be split between all countries.
