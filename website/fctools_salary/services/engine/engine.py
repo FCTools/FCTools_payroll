@@ -4,26 +4,21 @@ Author: German Yakimov
 """
 
 import logging
-import os
-from copy import deepcopy, copy
+from copy import deepcopy
 from datetime import timedelta, date
-from typing import List, Dict, Tuple
-from uuid import uuid4
+from typing import List, Dict
 
 from django.db import transaction
-from reportlab.lib import colors
-from reportlab.lib.colors import darkgray
-from reportlab.lib.pagesizes import landscape, A4
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
-from fctools_salary.exceptions import UpdateError, TestNotSplitError
-from fctools_salary.services.binom.get_info import get_campaigns, get_campaign_main_geo
+from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
+from fctools_salary.services.engine.tests_manager import TestsManager
+from fctools_salary.services.engine.tracker_manager import TrackerManager
+from fctools_salary.services.helpers.pdf_generator import PDFGenerator
 
 _logger = logging.getLogger(__name__)
 
@@ -60,44 +55,6 @@ def _calculate_final_percent(revenue, salary_group):
     return percent
 
 
-def _calculate_profit_with_tests(user, start_date, end_date, traffic_groups):
-    """
-    Calculates user profit for the period including tests
-
-    :param user: User
-    :type user: User
-
-    :param start_date: date
-    :type start_date: date
-
-    :param end_date: date
-    :type end_date: date
-
-    :param traffic_groups: User
-    :type traffic_groups: List[str]
-
-    :return user profit from start_date to end_date including tests
-    :rtype: Dict[str, float]
-    """
-
-    result = {traffic_group: 0.0 for traffic_group in traffic_groups}
-
-    current_campaigns_tracker = get_campaigns(start_date, end_date, user)
-
-    if not current_campaigns_tracker:
-        raise UpdateError(message=f"Can't get campaigns from {start_date} to {end_date} for user {user}")
-
-    profit = _calculate_profit_for_period(current_campaigns_tracker, traffic_groups)[1]
-
-    tests_list = list(Test.objects.filter(user=user))
-    tests = _calculate_tests(tests_list, current_campaigns_tracker, False, traffic_groups, start_date, end_date)
-
-    for traffic_group in result:
-        result[traffic_group] += profit[traffic_group] + tests[traffic_group][1]
-
-    return result
-
-
 def _set_start_balances(user, traffic_groups):
     """
     Gets user balances for selected traffic groups from database.
@@ -130,194 +87,6 @@ def _set_start_balances(user, traffic_groups):
     return result
 
 
-def _calculate_profit_for_period(campaigns_list, traffic_groups):
-    """
-    Calculates profit for the period without tests (just sum profit for all user campaigns).
-
-    :param campaigns_list: list of campaigns for period with current traffic statistics
-    :type campaigns_list: List[CampaignTracker]
-
-    :param traffic_groups: traffic groups that includes in calculation
-    :type traffic_groups: List[str]
-
-    :return: total revenue and profit for this period (split by traffic groups)
-    :rtype: Tuple[float, Dict[str, float]]
-    """
-
-    profit = {traffic_group: 0.0 for traffic_group in traffic_groups}
-    total_revenue = 0.0
-
-    for campaign in campaigns_list:
-        total_revenue += float(campaign["instance"].revenue)
-
-        if campaign["instance"].traffic_group in traffic_groups:
-            profit[campaign["instance"].traffic_group] += float(campaign["instance"].profit)
-
-    for traffic_group in traffic_groups:
-        profit[traffic_group] = round(profit[traffic_group], 6)
-
-    return total_revenue, profit
-
-
-def _calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
-    """
-    Calculates deltas from previous period. Delta - a profit that relates to the previous period,
-    but was not available at the time of calculation.
-
-    :param campaigns_tracker_list: campaigns list for the period with current traffic statistics
-    :type campaigns_tracker_list: List[CampaignTracker]
-
-    :param campaigns_db_list: campaigns list for the period with traffic statistics from last report
-    :type campaigns_db_list: List[Campaign]
-
-    :param traffic_groups: traffic groups that includes in calculation
-    :type traffic_groups: List[str]
-
-    :return: deltas with detailed calculation for the period (split by traffic groups)
-    :rtype: Dict[str, List[Union[str, float]]]
-    """
-
-    deltas = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
-
-    for campaign_tracker in campaigns_tracker_list:
-        campaign = campaign_tracker["instance"]
-
-        if campaign.traffic_group not in traffic_groups:
-            continue
-
-        if campaign in campaigns_db_list:
-            campaign_db_profit = [x for x in campaigns_db_list if x.id == campaign.id][0].profit
-
-            if campaign.profit > campaign_db_profit:
-                diff = float(campaign.profit - campaign_db_profit)
-
-                if deltas[campaign.traffic_group][1] > 0:
-                    deltas[campaign.traffic_group][0] += f" + {diff} [{campaign.id}]"
-                else:
-                    deltas[campaign.traffic_group][0] = f"{diff} [{campaign.id}]"
-                deltas[campaign.traffic_group][1] += diff
-
-    for traffic_group in deltas:
-        deltas[traffic_group][1] = round(deltas[traffic_group][1], 6)
-
-        if deltas[traffic_group][1] == 0.0:
-            deltas[traffic_group][0] = "0.0"
-
-        elif "+" in deltas[traffic_group][0]:
-            deltas[traffic_group][0] = f"{deltas[traffic_group][0]} = " f"{deltas[traffic_group][1]}"
-
-    return deltas
-
-
-def _calculate_tests(tests_list, campaigns_list, commit, traffic_groups, start_date, end_date):
-    """
-    Calculates the amount that should be returned to employee (user)
-    analyzing the statistics of the test campaigns for the period.
-
-    :param tests_list: list of user tests
-    :type tests_list: List[Test]
-
-    :param campaigns_list: list of user campaigns with current statistics
-    :type campaigns_list: List[CampaignTracker]
-
-    :param commit: if set to True, than all changes will be committed to database (e.g. tests balances)
-    :type commit: bool
-
-    :param traffic_groups: traffic groups that includes in calculation
-    :type traffic_groups: List[str]
-
-    :return: amounts with detailed calculation for the period (split by traffic sources)
-    :rtype: Dict[str, List[Union[str, float]]]
-    """
-
-    tests = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
-
-    with transaction.atomic():
-        for test in tests_list:
-            if test.traffic_group not in traffic_groups:
-                continue
-
-            test_campaigns_list = []
-
-            test_offers_ids = {offer.id for offer in list(test.offers.all())}
-            test_traffic_sources_ids = [ts.id for ts in list(test.traffic_sources.all())]
-            test_geos = [geo.country for geo in list(test.geo.all())]
-
-            if len(test_traffic_sources_ids) > 1 and not test.one_budget_for_all_traffic_sources:
-                _logger.error(f"Test with id {test.id} doesn't split by traffic sources.")
-                raise TestNotSplitError(test_id=test.id)
-
-            if len(test_geos) > 1 and not test.one_budget_for_all_geo:
-                _logger.error(f"Test with id {test.id} doesn't split by geo.")
-                raise TestNotSplitError(test_id=test.id)
-
-            start_balance = test.balance
-            test_balance = test.balance
-
-            for campaign in campaigns_list:
-                if (
-                        campaign["instance"].traffic_group in traffic_groups
-                        and campaign["instance"].traffic_source.id in test_traffic_sources_ids
-                        and len(test_offers_ids & set(campaign["offers_list"])) != 0
-                ):
-                    if test_geos:
-                        max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
-
-                        if max_clicks_geo == -1:
-                            raise UpdateError(f"Can't get campaign {campaign.id} main geo.")
-
-                        if max_clicks_geo in test_geos:
-                            test_campaigns_list.append(campaign["instance"])
-                    else:
-                        test_campaigns_list.append(campaign["instance"])
-
-            for test_campaign in test_campaigns_list:
-                if test_campaign.profit >= 0:
-                    continue
-
-                if test_balance >= 0 > test_balance + test_campaign.profit:
-                    if tests[test_campaign.traffic_group][1] > 0:
-                        tests[test_campaign.traffic_group][0] += (
-                            f" + {round(float(test_balance), 6)} " f"[{test_campaign.id}]"
-                        )
-                    else:
-                        tests[test_campaign.traffic_group][0] += (
-                            f"{round(float(test_balance), 6)} " f"[{test_campaign.id}]"
-                        )
-
-                    tests[test_campaign.traffic_group][1] += round(float(test_balance), 6)
-
-                elif test_balance + test_campaign.profit >= 0:
-                    if tests[test_campaign.traffic_group][1] > 0:
-                        tests[test_campaign.traffic_group][0] += (
-                            f" + {-round(float(test_campaign.profit), 6)} " f"[{test_campaign.id}]"
-                        )
-                    else:
-                        tests[test_campaign.traffic_group][0] += (
-                            f"{-round(float(test_campaign.profit), 6)} " f"[{test_campaign.id}]"
-                        )
-
-                    tests[test_campaign.traffic_group][1] -= round(float(test_campaign.profit), 6)
-
-                test_balance += test_campaign.profit
-
-            if commit and (test_balance != start_balance or test_balance <= 0):
-                if test_balance > 0:
-                    test.balance = test_balance
-                    test.save()
-                else:
-                    test.delete()
-
-    for traffic_group in tests:
-        tests[traffic_group][1] = round(tests[traffic_group][1], 6)
-        if tests[traffic_group][1] == 0.0:
-            tests[traffic_group][0] = "0.0"
-        elif "+" in tests[traffic_group][0]:
-            tests[traffic_group][0] = f"{tests[traffic_group][0]} = {tests[traffic_group][1]}"
-
-    return tests
-
-
 def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups):
     """
     Calculates teamlead profit from other users.
@@ -343,7 +112,8 @@ def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traf
     dependencies_list = PercentDependency.objects.all().filter(to_user=user)
 
     for dependency in dependencies_list:
-        profit_with_tests = _calculate_profit_with_tests(dependency.from_user, start_date, end_date, traffic_groups)
+        profit_with_tests = TestsManager.calculate_profit_with_tests(dependency.from_user, start_date, end_date,
+                                                                     traffic_groups)
 
         for traffic_group in profit_with_tests:
             profit_from_user = round(profit_with_tests[traffic_group] * dependency.percent, 6)
@@ -418,159 +188,12 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
                     try:
                         offer = Offer.objects.get(id=offer_id)
                     except Offer.DoesNotExist:
-                        offers_updated_successfully = update_offers()
-
-                        if offers_updated_successfully:
-                            offer = Offer.objects.get(id=offer_id)
-                        else:
-                            raise UpdateError(message="Can't update offers.")
+                        update_offers()
+                        offer = Offer.objects.get(id=offer_id)
 
                     campaign["instance"].offers_list.add(offer)
 
             campaign["instance"].save()
-
-
-def _generate_result_table(
-        total_revenue,
-        final_percent,
-        start_balances,
-        profits,
-        from_prev_period,
-        tests,
-        from_other_users,
-        result,
-        user,
-        start_date,
-        end_date,
-):
-    """
-    Generates pdf report with result table and returns report's filename.
-
-    :param total_revenue: Total revenue per period.
-    :type total_revenue: float
-
-    :param final_percent: final percent (depends on total revenue per period)
-    :type final_percent: float
-
-    :param start_balances: user's start balances from database split by traffic sources
-    :type start_balances: Dict[str, float]
-
-    :param profits: user's profits from tracker for this period split by traffic sources
-    :type profits: Dict[str, float]
-
-    :param from_prev_period: user's deltas from previous period split by traffic sources
-    :type from_prev_period: Dict[str, List[Union[str, float]]]
-
-    :param tests: tests calculation split by traffic sources
-    :type tests: Dict[str, List[Union[str, float]]]
-
-    :param from_other_users: user's profit from other users (only for teamleads)
-    :type from_other_users: Dict[str, List[Union[str, float]]]
-
-    :param result: final calculation
-    :type result: Dict[str, List[Union[str, float]]]
-
-    :param user: user
-    :type user: User
-
-    :param start_date: period start date
-    :type start_date: date
-
-    :param end_date: period end date
-    :type end_date: date
-
-    :return: generated report filename
-    :rtype: str
-    """
-
-    def colored_value(value):
-        if value > 0:
-            return f"<font color=green>{value}</font>"
-        elif value < 0:
-            return f"<font color=red>{value}</font>"
-
-        return str(value)
-
-    if not os.path.exists("media"):
-        os.mkdir("media")
-        os.mkdir(os.path.join("media", "reports"))
-    elif not os.path.exists(os.path.join("media", "reports")):
-        os.mkdir(os.path.join("media", "reports"))
-
-    report_filename = os.path.join("media", "reports", f"{uuid4()}.pdf")
-    pdf = SimpleDocTemplate(report_filename, pagesize=landscape(A4), )
-
-    paragraph_style_font_11 = ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)
-    paragraph_style_font_12 = ParagraphStyle(name="style", alignment=1, fontSize=12, leading=15)
-
-    meta_content = [
-        Paragraph(f"<b>User:</b> {user}", style=paragraph_style_font_12),
-        Spacer(height=7, width=600),
-        Paragraph(f"<b>Period:</b> {start_date} - {end_date}",
-                  style=paragraph_style_font_12),
-        Spacer(height=7, width=600),
-        Paragraph(f"<b>Total revenue:</b> {total_revenue}",
-                  style=paragraph_style_font_12),
-        Spacer(height=7, width=600),
-        Paragraph(f"<b>Percent:</b> {final_percent}", style=paragraph_style_font_12),
-        Spacer(height=7, width=600),
-    ]
-
-    start_balances_data = ["Start balance"]
-    profits_data = ["Profit"]
-    previous_period_data = ["Previous period"]
-    tests_data = ["Tests"]
-    from_other_users_data = ["From other users"]
-    summary_data = ["Summary"]
-
-    for traffic_group in start_balances:
-        start_balances_data.append(Paragraph(colored_value(start_balances[traffic_group]),
-                                             style=paragraph_style_font_11))
-        profits_data.append(Paragraph(colored_value(profits[traffic_group]),
-                                      style=paragraph_style_font_11))
-        previous_period_data.append(Paragraph(from_prev_period[traffic_group][0],
-                                              style=paragraph_style_font_11))
-        tests_count_string = tests[traffic_group][0] \
-            .replace(f' = {tests[traffic_group][1]}', f' = <font color=green>{tests[traffic_group][1]}</font>')
-        tests_data.append(Paragraph(copy(tests_count_string), style=paragraph_style_font_11))
-
-        if user.is_lead:
-            from_other_users_data.append(Paragraph(from_other_users[traffic_group][0], style=paragraph_style_font_11))
-
-        colored_total_amount = colored_value(result[traffic_group][1])
-        summary_data.append(Paragraph(copy(result[traffic_group][0].replace(f' = {result[traffic_group][1]}',
-                                                                            f' = {colored_total_amount}')),
-                                      style=paragraph_style_font_11))
-
-    data = [["--------"] + [traffic_group for traffic_group in result],
-            start_balances_data,
-            profits_data,
-            previous_period_data,
-            tests_data,
-            from_other_users_data,
-            summary_data]
-
-    cols_number = len(result)
-    col_widths = [120] + [650 // cols_number for _ in range(cols_number)]
-    row_heights = [25, 25, 25, 50, 120]
-
-    if user.is_lead:
-        row_heights.append(50)
-    row_heights.append(25)
-
-    result_table = Table(data, colWidths=col_widths, rowHeights=row_heights)
-
-    table_style = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                              ("FONTSIZE", (0, 0), (-1, -1), 12), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                              ("LEADING", (0, 0), (-1, -1), 15)])
-    result_table.setStyle(table_style)
-
-    footer = [Spacer(width=600, height=15),
-              Paragraph("© FC Tools 2020", style=ParagraphStyle(name="style", alignment=1, textColor=darkgray))]
-
-    pdf.build([*meta_content, result_table, *footer])
-
-    return report_filename
 
 
 def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) -> dict:
@@ -616,18 +239,19 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
     _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
 
-    total_revenue, profits = _calculate_profit_for_period(current_campaigns_tracker_list, traffic_groups)
+    total_revenue, profits = TrackerManager.calculate_profit_for_period(current_campaigns_tracker_list, traffic_groups)
 
     _logger.info("Total revenue and profits was successfully calculated.")
     _logger.info(f"Total revenue: {total_revenue}")
     _logger.info(f"Profits: {profits}")
 
-    deltas = _calculate_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
+    deltas = TrackerManager.calculate_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
 
     _logger.info(f"Deltas was successfully calculated: {deltas}")
 
     tests_list = list(Test.objects.filter(user=user))
-    tests = _calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups, start_date, end_date)
+    tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups, start_date,
+                                         end_date)
 
     _logger.info(f"Tests was successfully calculated: {tests}")
 
@@ -700,6 +324,6 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
         "from_other_users": from_other_users,
     }
 
-    calculation_items['report_name'] = _generate_result_table(**calculation_items)
+    calculation_items['report_name'] = PDFGenerator.generate_report(**calculation_items)
 
     return calculation_items

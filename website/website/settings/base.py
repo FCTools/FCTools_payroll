@@ -5,6 +5,10 @@ Author: German Yakimov
 
 import os
 
+from reportlab.lib import colors
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import TableStyle
+
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "..")
@@ -85,6 +89,13 @@ TRAFFIC_GROUPS = (
     ("POP traff", "POP traff"),
     ("PUSH traff", "PUSH traff"),
 )
+
+# settings for pdf reports generating
+TABLE_STYLE = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                          ("FONTSIZE", (0, 0), (-1, -1), 12), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                          ("LEADING", (0, 0), (-1, -1), 15)])
+PARAGRAPH_STYLE_FONT_11 = ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)
+PARAGRAPH_STYLE_FONT_12 = ParagraphStyle(name="style", alignment=1, fontSize=12, leading=15)
 
 BINOM_API_KEY = os.getenv("BINOM_API_KEY")
 TRACKER_URL = "https://fcttrk.com/"

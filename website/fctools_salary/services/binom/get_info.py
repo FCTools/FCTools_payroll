@@ -17,7 +17,7 @@ from fctools_salary.domains.accounts.user import User
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
-from fctools_salary.services import requests_manager
+from fctools_salary.services.helpers import requests_manager
 
 _logger = logging.getLogger(__name__)
 
@@ -37,21 +37,24 @@ def get_users():
     )
 
     if not isinstance(response, requests.Response):
-        _logger.error(f"Error occurred while trying to get users from tracker: {response}")
+        _logger.error(f"Network error occurred while trying to get users from tracker: {response}")
         return []
 
     try:
         response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f"Error occurred while trying to decode response from tracker (users updating): {decode_error.doc}"
+            f"Can't decode response from tracker (users getting): {decode_error.doc}"
         )
         return []
 
     try:
-        return [User(id=int(user["id"]), login=user["login"]) for user in response_json]
+        users_list = [User(id=int(user["id"]), login=user["login"]) for user in response_json]
+        _logger.info("Users were successfully get.")
+
+        return users_list
     except KeyError:
-        _logger.error(f"Incorrect response from tracker (users getting): {response_json}")
+        _logger.error(f"Can't parse response from tracker (users getting): {response_json}")
         return []
 
 
@@ -72,19 +75,19 @@ def get_offers():
     )
 
     if not isinstance(response, requests.Response):
-        _logger.error(f"Error occurred while trying to get offers from tracker: {response}")
+        _logger.error(f"Network error occurred while trying to get offers from tracker: {response}")
         return []
 
     try:
         response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f"Error occurred while trying to decode response from tracker (offers updating): {decode_error.doc}"
+            f"Can't decode response from tracker (offers getting): {decode_error.doc}"
         )
         return []
 
     try:
-        return [
+        offers_list = [
             Offer(
                 id=int(offer["id"]),
                 geo=offer["geo"],
@@ -94,8 +97,11 @@ def get_offers():
             )
             for offer in response_json
         ]
+        _logger.info("Offers were successfully get.")
+
+        return offers_list
     except KeyError:
-        _logger.error(f"Incorrect response from tracker (offers getting): {response_json}")
+        _logger.error(f"Can't parse response from tracker (offers getting): {response_json}")
         return []
 
 
@@ -119,14 +125,14 @@ def get_traffic_sources():
     )
 
     if not isinstance(all_traffic_sources, requests.Response):
-        _logger.error(f"Error occurred while trying to get traffic_sources from tracker: {all_traffic_sources}")
+        _logger.error(f"Network error occurred while trying to get traffic_sources from tracker: {all_traffic_sources}")
         return []
 
     try:
         all_traffic_sources_number = len(all_traffic_sources.json())
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f"Error occurred while trying to decode response from tracker (traffic sources updating): "
+            f"Can't decode response from tracker (traffic sources getting): "
             f"{decode_error.doc}"
         )
         return []
@@ -144,14 +150,15 @@ def get_traffic_sources():
         )
 
         if not isinstance(user_traffic_sources, requests.Response):
-            _logger.error(f"Error occurred while trying to get traffic sources from tracker: {user_traffic_sources}")
+            _logger.error(
+                f"Network error occurred while trying to get traffic sources from tracker: {user_traffic_sources}")
             continue
 
         try:
             user_traffic_sources_json = user_traffic_sources.json()
         except json.JSONDecodeError as decode_error:
             _logger.error(
-                f"Error occurred while trying to decode response from tracker (traffic sources updating): "
+                f"Can't decode response from tracker (traffic sources getting): "
                 f"{decode_error.doc}"
             )
             return []
@@ -169,13 +176,15 @@ def get_traffic_sources():
                     for traffic_source in user_traffic_sources_json
                 ]
             except KeyError:
-                _logger.error(f"Incorrect response from tracker (traffic sources getting): {user_traffic_sources_json}")
+                _logger.error(
+                    f"Can't parse response from tracker (traffic sources getting): {user_traffic_sources_json}")
                 return []
 
+    _logger.info("Traffic sources were successfully get.")
     return result
 
 
-def get_offers_ids_by_campaign(campaign: Campaign):
+def get_offers_ids_by_campaign(campaign):
     """
     Gets list of offers ids for taken campaign.
 
@@ -201,14 +210,14 @@ def get_offers_ids_by_campaign(campaign: Campaign):
     )
 
     if not isinstance(response, requests.Response):
-        _logger.error(f"Error occurred while trying to get campaign full info from tracker: {response}")
+        _logger.error(f"Network error occurred while trying to get campaign full info from tracker: {response}")
         return []
 
     try:
         response_json = response.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f"Error occurred while trying to decode response from tracker (getting campaign full info): "
+            f"Can't decode response from tracker (getting campaign full info): "
             f"{decode_error.doc}"
         )
         return []
@@ -217,7 +226,7 @@ def get_offers_ids_by_campaign(campaign: Campaign):
         for path in response_json["routing"]["paths"]:
             result += [int(offer["id_t"]) for offer in path["offers"]]
     except KeyError:
-        _logger.error(f"Incorrect response from tracker (getting offers ids by campaign): {response_json}")
+        _logger.error(f"Can't parse response from tracker (getting offers ids by campaign): {response_json}")
         return []
 
     return result
@@ -260,14 +269,15 @@ def get_campaigns(start_date, end_date, user):
     )
 
     if not isinstance(campaigns_tracker, requests.Response):
-        _logger.error(f"Error occurred while trying to get campaign full info from tracker: {campaigns_tracker}")
+        _logger.error(
+            f"Network error occurred while trying to get campaign full info from tracker: {campaigns_tracker}")
         return []
 
     try:
         campaigns_tracker_json = campaigns_tracker.json()
     except json.JSONDecodeError as decode_error:
         _logger.error(
-            f"Error occurred while trying to decode response from tracker (getting info about campaigns): "
+            f"Can't decode response from tracker (getting info about campaigns): "
             f"{decode_error.doc}"
         )
         return []
@@ -290,7 +300,7 @@ def get_campaigns(start_date, end_date, user):
             for campaign in campaigns_tracker_json
         ]
     except KeyError:
-        _logger.error(f"Incorrect response from tracker (campaigns getting): {campaigns_tracker_json}")
+        _logger.error(f"Can't parse response from tracker (campaigns getting): {campaigns_tracker_json}")
         return []
 
     for campaign in result:
@@ -305,6 +315,7 @@ def get_campaigns(start_date, end_date, user):
 
             campaign["offers_list"] = offers_ids
 
+    _logger.info(f"Campaigns for {user} from {start_date} to {end_date} were successfully get.")
     return result
 
 
@@ -328,13 +339,14 @@ def get_campaign_main_geo(campaign, start_date, end_date):
     campaign_statistics = requests_manager.get(requests.Session(), f"{settings.TRACKER_URL}?{params}&timezone=+3:00")
 
     if not isinstance(campaign_statistics, requests.Response):
-        _logger.error(f"Error occurred while trying to get campaign statistics from tracker: {campaign_statistics}")
+        _logger.error(
+            f"Network error occurred while trying to get campaign statistics from tracker: {campaign_statistics}")
         return -1
 
     try:
         campaign_statistics_json = campaign_statistics.json()
     except json.JSONDecodeError as decode_error:
-        _logger.error(f"Incorrect response from tracker (campaigns getting): {decode_error.doc}")
+        _logger.error(f"Can't decode response from tracker (campaigns getting): {decode_error.doc}")
         return -1
 
     for geo in campaign_statistics_json:

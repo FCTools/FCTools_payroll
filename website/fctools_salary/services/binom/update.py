@@ -11,7 +11,7 @@ from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
 from fctools_salary.domains.accounts.user import User
 from fctools_salary.exceptions import UpdateError
-from .get_info import get_users, get_offers, get_traffic_sources
+from fctools_salary.services.binom.get_info import get_users, get_offers, get_traffic_sources
 
 
 _logger = logging.getLogger(__name__)
@@ -32,7 +32,7 @@ def _update_users():
 
     if not users_tracker:
         _logger.error("Can't get users from tracker.")
-        return False
+        raise UpdateError(message="Can't sync users from tracker.")
 
     with transaction.atomic():
         for user in users_tracker:
@@ -40,7 +40,6 @@ def _update_users():
                 user.save()
 
     _logger.info("Users syncing was successful.")
-    return True
 
 
 def update_offers():
@@ -58,7 +57,7 @@ def update_offers():
 
     if not offers_tracker:
         _logger.error("Can't get offers from tracker.")
-        return False
+        raise UpdateError(message="Can't sync offers from tracker.")
 
     with transaction.atomic():
         for offer in offers_tracker:
@@ -66,7 +65,6 @@ def update_offers():
                 offer.save()
 
     _logger.info("Offers syncing was successful.")
-    return True
 
 
 def _update_traffic_sources():
@@ -84,7 +82,7 @@ def _update_traffic_sources():
 
     if not traffic_sources_tracker:
         _logger.error("Can't get traffic sources from tracker.")
-        return False
+        raise UpdateError(message="Can't sync traffic sources from tracker.")
 
     with transaction.atomic():
         for ts in traffic_sources_tracker:
@@ -92,7 +90,6 @@ def _update_traffic_sources():
                 ts.save()
 
     _logger.info("Traffic sources syncing was successful.")
-    return True
 
 
 def update_basic_info():
@@ -104,11 +101,8 @@ def update_basic_info():
 
     _logger.info("Start to sync database and tracker.")
 
-    users_updated_successfully = _update_users()
-    traffic_sources_updated_successfully = _update_traffic_sources()
-    offers_updated_successfully = update_offers()
+    _update_users()
+    _update_traffic_sources()
+    update_offers()
 
-    if users_updated_successfully and traffic_sources_updated_successfully and offers_updated_successfully:
-        _logger.info("Syncing was successful.")
-    else:
-        raise UpdateError(message="Can't sync database with tracker.")
+    _logger.info("Syncing was successful.")
