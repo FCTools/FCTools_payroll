@@ -7,14 +7,13 @@ from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 
-
-from fctools_salary.domains.tracker.campaign import Campaign
-from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
-from fctools_salary.domains.tracker.traffic_source import TrafficSource
 from fctools_salary.domains.accounts.user import User
+from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.geo import Geo
+from fctools_salary.domains.tracker.offer import Offer
+from fctools_salary.domains.tracker.traffic_source import TrafficSource
 
 
 @admin.register(User)
@@ -25,16 +24,20 @@ class UserAdmin(admin.ModelAdmin):
         "is_lead",
         "salary_group",
     ]
+
     list_display_links = [
         "id",
         "login",
     ]
+
     list_filter = [
         "is_lead",
         "salary_group",
     ]
+
     search_fields = [
         "login",
+        "id",
     ]
 
 
@@ -47,17 +50,21 @@ class OfferAdmin(admin.ModelAdmin):
         "group",
         "network",
     ]
+
     list_display_links = [
         "id",
         "name",
     ]
+
     list_filter = [
         "geo",
         "group",
         "network",
     ]
+
     search_fields = [
         "name",
+        "id",
     ]
 
 
@@ -68,18 +75,23 @@ class TrafficSourceAdmin(admin.ModelAdmin):
         "name",
         "user",
     ]
+
     list_display_links = [
         "id",
         "name",
     ]
+
     list_filter = [
         "user",
     ]
+
     list_select_related = [
         "user",
     ]
+
     search_fields = [
         "name",
+        "id",
     ]
 
 
@@ -154,9 +166,9 @@ class TestForm(forms.ModelForm):
 
             for test in related_tests:
                 if (
-                    test.offers_str() == offers_list
-                    and test.traffic_sources_str() == ts_list
-                    and geo_list == test.geo_str()
+                        test.offers_str() == offers_list
+                        and test.traffic_sources_str() == ts_list
+                        and geo_list == test.geo_str()
                 ):
                     raise ValidationError("This test already exists.")
 
@@ -231,20 +243,30 @@ class TestAdmin(admin.ModelAdmin):
         "balance_colored",
         "geo_str",
     ]
+
     list_filter = [
         "user",
         "traffic_group",
     ]
+
     list_select_related = [
         "user",
     ]
+
     form = TestForm
+
     filter_horizontal = [
         "offers",
         "traffic_sources",
         "geo",
     ]
-    actions = [split_tests]
+
+    list_display_links = [
+        "id",
+        "offers_str",
+    ]
+
+    actions = [split_tests, ]
 
 
 @admin.register(Campaign)
@@ -259,19 +281,23 @@ class CampaignAdmin(admin.ModelAdmin):
         "profit_colored",
         "user",
     ]
+
     list_display_links = [
         "id",
         "name",
     ]
+
     list_filter = [
         "traffic_group",
         "traffic_source",
         "user",
     ]
+
     list_select_related = [
         "user",
         "traffic_source",
     ]
+
     search_fields = [
         "name",
     ]
@@ -284,10 +310,12 @@ class PercentDependencyAdmin(admin.ModelAdmin):
         "to_user",
         "percent",
     ]
+
     list_filter = [
         "from_user",
         "to_user",
     ]
+
     list_select_related = [
         "from_user",
         "to_user",

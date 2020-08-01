@@ -4,6 +4,7 @@ Author: German Yakimov
 """
 
 from django import forms
+from django.conf import settings
 from tempus_dominus.widgets import DatePicker
 
 from fctools_salary.domains.accounts.user import User
@@ -22,14 +23,7 @@ class ReportInfoForm(forms.Form):
     update_db = forms.BooleanField(initial=False, required=False)
 
     traffic_groups = forms.MultipleChoiceField(
-        choices=(
-            ("ADMIN", "ADMIN"),
-            ("FPA/HSA/PWA", "FPA/HSA/PWA"),
-            ("INAPP traff", "INAPP traff"),
-            ("NATIVE traff", "NATIVE traff"),
-            ("POP traff", "POP traff"),
-            ("PUSH traff", "PUSH traff"),
-        ),
+        choices=settings.TRAFFIC_GROUPS,
         widget=forms.SelectMultiple,
         required=True,
     )

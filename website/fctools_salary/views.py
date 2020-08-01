@@ -11,7 +11,7 @@ import traceback
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView as DJLogoutView
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from fctools_salary.services.binom.update import update_basic_info
 from fctools_salary.services.engine.engine import calculate_user_salary
@@ -85,14 +85,19 @@ def base_menu(request):
     template = os.path.join("fctools_salary", "menu.html")
     user = request.user.username
 
-    context = {"user": user}
-
-    return render(request, template, context)
+    return render(request, template, context={"user": user})
 
 
 @base_view
 @login_required(login_url="/login/")
 def count_view(request):
+    """
+    View with form for report.
+
+    :param request: request
+    :return: if form is valid, calculate salary and returns result page (count_result.html)
+    """
+
     if request.method == "POST":
         form = ReportInfoForm(request.POST)
 
@@ -117,14 +122,6 @@ def count_view(request):
     else:
         form = ReportInfoForm()
         return render(request, os.path.join("fctools_salary", "count.html"), {"form": form})
-
-
-@base_view
-@login_required(login_url="/login/")
-def update_db(request):
-    update_basic_info()
-
-    return redirect("/admin/fctools_salary/")
 
 
 class LogoutView(DJLogoutView):
