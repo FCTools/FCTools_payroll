@@ -47,8 +47,4 @@ LOGGING = {
 INSTALLED_APPS += ["debug_toolbar"]
 MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
 
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
-
 STATICFILES_DIRS = ["static", os.path.join(BASE_DIR, "static/")]
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
