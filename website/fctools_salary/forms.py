@@ -10,7 +10,7 @@ from tempus_dominus.widgets import DatePicker
 from fctools_salary.domains.accounts.user import User
 
 
-class ReportInfoForm(forms.Form):
+class CalculationForm(forms.Form):
     """
     This form created for calculation configuration on /count page. Here you can select user,
     period and other parameters.

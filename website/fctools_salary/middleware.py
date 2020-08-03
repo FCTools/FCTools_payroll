@@ -4,6 +4,13 @@ from fctools_salary.services.binom.update import update_basic_info
 
 
 class UpdateDatabaseMiddleware:
+    """
+    Middleware for database updating.
+    If request's path is "/admin/fctools_salary" (user is going to edit salary database)
+    or "/count" (user is going to calculate something), this middleware updates database
+    (gets current information from tracker).
+    """
+
     def __init__(self, get_response):
         self._get_response = get_response
 

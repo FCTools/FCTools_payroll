@@ -15,7 +15,7 @@ from django.shortcuts import render
 
 from fctools_salary.services.binom.update import update_basic_info
 from fctools_salary.services.engine.engine import calculate_user_salary
-from .forms import ReportInfoForm
+from .forms import CalculationForm
 
 _logger = logging.getLogger(__name__)
 
@@ -92,14 +92,16 @@ def base_menu(request):
 @login_required(login_url="/login/")
 def count_view(request):
     """
-    View with form for report.
+    View with form for calculation configuration.
 
     :param request: request
     :return: if form is valid, calculate salary and returns result page (count_result.html)
     """
 
+    template = os.path.join("fctools_salary", "count_result.html")
+
     if request.method == "POST":
-        form = ReportInfoForm(request.POST)
+        form = CalculationForm(request.POST)
 
         if form.is_valid():
             user = form.cleaned_data["user"]
@@ -112,16 +114,16 @@ def count_view(request):
 
             return render(
                 request,
-                os.path.join("fctools_salary", "count_result.html"),
+                template,
                 context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups),
             )
         else:
             _logger.warning("Incorrect report form.")
-            return render(request, os.path.join("fctools_salary", "count.html"), {"form": form})
+            return render(request, template, {"form": form})
 
     else:
-        form = ReportInfoForm()
-        return render(request, os.path.join("fctools_salary", "count.html"), {"form": form})
+        form = CalculationForm()
+        return render(request, template, {"form": form})
 
 
 class LogoutView(DJLogoutView):
