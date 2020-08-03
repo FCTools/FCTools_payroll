@@ -147,7 +147,6 @@ def _save_user_balances(user, balances):
     :type balances: Dict[str, float]
 
     :return: None
-    :rtype: None
     """
 
     with transaction.atomic():
@@ -176,7 +175,6 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
     :type campaigns_db: List[Campaign]
 
     :return: None
-    :rtype: None
     """
 
     with transaction.atomic():
@@ -217,7 +215,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
     :param traffic_groups: traffic groups that includes in calculation
     :type traffic_groups: List[str]
 
-    :return:
+    :return: Detailed calculation
     :rtype: Dict[str, Union[
     float,
     Dict[str, float],

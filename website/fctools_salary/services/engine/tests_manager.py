@@ -140,7 +140,7 @@ class TestsManager:
         """
         Calculates user profit for the period including tests
 
-        :param user: User
+        :param user: user
         :type user: User
 
         :param start_date: date
@@ -149,7 +149,7 @@ class TestsManager:
         :param end_date: date
         :type end_date: date
 
-        :param traffic_groups: User
+        :param traffic_groups: traffic groups to calculate
         :type traffic_groups: List[str]
 
         :return user profit from start_date to end_date including tests

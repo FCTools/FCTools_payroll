@@ -12,7 +12,7 @@ class TrackerManager:
     @staticmethod
     def calculate_profit_for_period(campaigns_list, traffic_groups):
         """
-        Calculates profit for the period without tests (just sum profit for all user campaigns).
+        Calculates user's revenue and profit for the period without tests (just adds profit for all user campaigns).
 
         :param campaigns_list: list of campaigns for period with current traffic statistics
         :type campaigns_list: List[CampaignTracker]
