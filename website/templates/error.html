@@ -15,7 +15,7 @@
 {% block body_class %}text-center{% endblock %}
 
 {% block content %}
- <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-transparent">
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="nav mr-auto">
                 <a class="nav-link btn" href="/admin/fctools_salary/" role="button">Edit database</a>
@@ -29,17 +29,19 @@
         </div>
     </nav>
 
-<div class="container">
-    <h4 class="text_red">Error:</h4> <p class="text_red">{{ error_message }}</p>
-    <br>
-    <br>
-    <br>
-    <h4>Traceback:</h4> <p>{{ traceback }}</p>
-    <br>
-    <h4>Status code:</h4> {{ status_code }}
-</div>
+    <div class="container">
+        <h4 class="text_red">Error:</h4>
+        <p class="text_red">{{ error_message }}</p>
+        <br>
+        <br>
+        <br>
+        <h4>Traceback:</h4>
+        <p>{{ traceback }}</p>
+        <br>
+        <h4>Status code:</h4> {{ status_code }}
+    </div>
 
-<footer class="container">
-    <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
-</footer>
+    <footer class="container">
+        <p class="mt-5 mb-3 text-muted">© FC Tools 2020</p>
+    </footer>
 {% endblock %}

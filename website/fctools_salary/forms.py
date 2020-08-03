@@ -29,11 +29,11 @@ class CalculationForm(forms.Form):
     )
 
     start_date = forms.DateField(
-        required=True, widget=DatePicker(attrs={"append": "fa fa-calendar", "icon_toggle": True,})
+        required=True, widget=DatePicker(attrs={"append": "fa fa-calendar", "icon_toggle": True, })
     )
 
     end_date = forms.DateField(
-        required=True, widget=DatePicker(attrs={"append": "fa fa-calendar", "icon_toggle": True,})
+        required=True, widget=DatePicker(attrs={"append": "fa fa-calendar", "icon_toggle": True, })
     )
 
     def clean(self):

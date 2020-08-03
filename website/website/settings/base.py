@@ -25,7 +25,7 @@ INSTALLED_APPS = [
 
     "crispy_forms",
     "tempus_dominus",
-    
+
     "fctools_salary",
 ]
 

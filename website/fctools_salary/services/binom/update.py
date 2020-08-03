@@ -7,12 +7,11 @@ import logging
 
 from django.db import transaction
 
+from fctools_salary.domains.accounts.user import User
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
-from fctools_salary.domains.accounts.user import User
 from fctools_salary.exceptions import UpdateError
 from fctools_salary.services.binom.get_info import get_users, get_offers, get_traffic_sources
-
 
 _logger = logging.getLogger(__name__)
 
