@@ -320,6 +320,22 @@ def get_campaigns(start_date, end_date, user):
 
 
 def get_campaign_main_geo(campaign, start_date, end_date):
+    """
+    Get campaign's geo statistics and finds main geo (max clicks geo) based on period.
+
+    :param campaign: campaign
+    :type campaign: Campaign
+
+    :param start_date: period start date
+    :type start_date: date
+
+    :param end_date: period end date
+    :type end_date: date
+
+    :return: main geo for this campaign, if success, else -1
+    :rtype: Union[int, str]
+    """
+
     campaign_geos = []
 
     params = urlencode(
