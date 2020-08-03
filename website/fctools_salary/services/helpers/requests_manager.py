@@ -36,12 +36,12 @@ def catch_network_errors(method):
 @catch_network_errors
 def get(session, *args, **kwargs):
     """
-    Make GET-request using given session.
+    Make GET-request using given session with errors catching.
 
     :param session: session to make request
     :param args: args
     :param kwargs: kwargs
-    :return: response
+    :return: response if success, else exception
     """
 
     return session.get(*args, **kwargs)
@@ -55,7 +55,7 @@ def post(session, *args, **kwargs):
     :param session: session to make request
     :param args: args
     :param kwargs: kwargs
-    :return: response
+    :return: response if success, else exception
     """
 
     return session.post(*args, **kwargs)

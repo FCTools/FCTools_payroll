@@ -21,6 +21,12 @@ class PDFGenerator:
 
     @staticmethod
     def _check_saving_path():
+        """
+        Directory for reports is media/reports.
+        This method check this path existing and create it, if it doesn't exist.
+
+        :return: None
+        """
         if not os.path.exists("media"):
             os.mkdir("media")
             os.mkdir(os.path.join("media", "reports"))
@@ -91,7 +97,9 @@ class PDFGenerator:
 
         PDFGenerator._check_saving_path()
 
+        # reports filenames are randomly generated UUID4 (for safety)
         report_filename = os.path.join("media", "reports", f"{uuid4()}.pdf")
+
         pdf = SimpleDocTemplate(report_filename, pagesize=landscape(A4), )
 
         meta_content = [
