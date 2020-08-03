@@ -98,7 +98,8 @@ def count_view(request):
     :return: if form is valid, calculate salary and returns result page (count_result.html)
     """
 
-    template = os.path.join("fctools_salary", "count_result.html")
+    form_template = os.path.join("fctools_salary", "count.html")
+    result_template = os.path.join("fctools_salary", "count_result.html")
 
     if request.method == "POST":
         form = CalculationForm(request.POST)
@@ -114,16 +115,16 @@ def count_view(request):
 
             return render(
                 request,
-                template,
+                result_template,
                 context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups),
             )
         else:
             _logger.warning("Incorrect report form.")
-            return render(request, template, {"form": form})
+            return render(request, form_template, {"form": form})
 
     else:
         form = CalculationForm()
-        return render(request, template, {"form": form})
+        return render(request, form_template, {"form": form})
 
 
 class LogoutView(DJLogoutView):
