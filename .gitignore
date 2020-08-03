@@ -9,6 +9,7 @@ __pycache__/
 # PyCharm project folder
 .idea/
 
+
 # static files
 static/admin
 static/debug_toolbar
