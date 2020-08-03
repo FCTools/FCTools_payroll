@@ -328,3 +328,8 @@ class GeoAdmin(admin.ModelAdmin):
         "country",
         "iso_code",
     ]
+
+    list_display_links = [
+        "country",
+        "iso_code",
+    ]
