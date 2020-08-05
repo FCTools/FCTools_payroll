@@ -440,7 +440,7 @@
     "fields": {
         "login": "User420",
         "is_lead": false,
-        "salary_group": -1,
+        "salary_group": 3,
         "admin_balance": "0.000000",
         "fpa_hsa_pwa_balance": "0.000000",
         "inapp_balance": "0.000000",

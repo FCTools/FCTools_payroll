@@ -36,6 +36,7 @@ def _calculate_final_percent(revenue, salary_group):
     :return final percent based on user salary group and total revenue
     :rtype: float
     """
+    percent = 0
 
     if salary_group == 1:
         percent = 0.5
@@ -44,13 +45,15 @@ def _calculate_final_percent(revenue, salary_group):
             percent = 0.6
         elif revenue > 5000:
             percent = 0.55
-    else:
+    elif salary_group == 2:
         percent = 0.3
 
         if revenue > 20000:
             percent = 0.4
         elif revenue > 10000:
             percent = 0.35
+    elif salary_group == 3:
+        percent = 0.15
 
     return percent
 

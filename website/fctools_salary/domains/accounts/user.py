@@ -20,12 +20,12 @@ class User(models.Model):
     is_lead = models.BooleanField(verbose_name="Teamlead", null=False, blank=False, default=False, )
 
     """
-    This field represents user's salary group. Now there are 2 groups: 1 and 2. 
+    This field represents user's salary group. Now there are 3 groups: 1, 2 and 3. 
     Each group has conditions (hardcoded in engine) and affects the calculations. 
     Default value is -1, this value means that user isn't active and doesn't take part in calculations. 
     """
     salary_group = models.IntegerField(
-        verbose_name="Salary group", null=True, blank=False, choices=((-1, -1), (1, 1), (2, 2),), default=-1,
+        verbose_name="Salary group", null=True, blank=False, choices=((-1, -1), (1, 1), (2, 2), (3, 3), ), default=-1,
     )
 
     """
