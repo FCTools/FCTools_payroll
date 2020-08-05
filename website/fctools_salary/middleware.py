@@ -1,6 +1,11 @@
+import logging
+
 from django.urls import reverse
 
 from fctools_salary.services.binom.update import update_basic_info
+from fctools_salary.views import error_response
+
+_logger = logging.getLogger(__name__)
 
 
 class UpdateDatabaseMiddleware:
@@ -15,7 +20,12 @@ class UpdateDatabaseMiddleware:
         self._get_response = get_response
 
     def __call__(self, request):
-        if (request.method == 'GET' and request.path == '/admin/fctools_salary/') or \
-                (request.method == 'POST' and request.path == reverse('count')):
-            update_basic_info()
+        try:
+            if (request.method == 'GET' and request.path == '/admin/fctools_salary/') or \
+                    (request.method == 'POST' and request.path == reverse('count')):
+                update_basic_info()
+        except Exception as exception:
+            _logger.error(str(exception))
+            return error_response(request, exception)
+
         return self._get_response(request)
