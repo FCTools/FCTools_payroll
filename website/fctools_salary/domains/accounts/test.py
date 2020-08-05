@@ -95,3 +95,6 @@ class Test(models.Model):
         return " ||| ".join(sorted([str(geo.iso_code) for geo in self.geo.all()]))
 
     geo_str.short_description = "GEO"
+
+    def __str__(self):
+        return f"{self.user} {self.offers_str()} {self.budget}"

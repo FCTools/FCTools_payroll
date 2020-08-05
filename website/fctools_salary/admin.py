@@ -197,7 +197,7 @@ def split_tests(modeladmin, request, queryset):
                 new_test_ts.traffic_sources.add(traffic_source)
                 new_test_ts.save()
 
-                if not test.one_budget_for_all_geo:
+                if not test.one_budget_for_all_geo and test_geo:
                     for geo in test_geo:
                         new_test_geo = Test(
                             user=test.user, budget=test.budget, balance=test.balance, traffic_group=test.traffic_group,
@@ -212,7 +212,7 @@ def split_tests(modeladmin, request, queryset):
             test.delete()
 
         elif not test.one_budget_for_all_geo:
-            for geo in test.geo.all():
+            for geo in test_geo:
                 new_test_geo = Test(
                     user=test.user,
                     budget=test.budget,
