@@ -366,7 +366,7 @@ def get_campaign_main_geo(campaign, start_date, end_date):
         return -1
 
     try:
-        if campaign_statistics_json == "no clicks":
+        if campaign_statistics_json != "no clicks":
             for geo in campaign_statistics_json:
                 campaign_geos.append({"country": geo["name"], "clicks": int(geo["clicks"])})
 
