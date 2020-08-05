@@ -365,7 +365,7 @@ def get_campaign_main_geo(campaign, start_date, end_date):
         _logger.error(f"Can't decode response from tracker (campaigns getting): {decode_error.doc}")
         return -1
 
-    _logger.error(f"{campaign.name} {str(campaign_statistics_json)}")
+    _logger.error(f"{campaign.id} {campaign.name} {str(campaign_statistics_json)}")
 
     for geo in campaign_statistics_json:
         campaign_geos.append({"country": geo["name"], "clicks": int(geo["clicks"])})
