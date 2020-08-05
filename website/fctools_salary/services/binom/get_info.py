@@ -365,11 +365,15 @@ def get_campaign_main_geo(campaign, start_date, end_date):
         _logger.error(f"Can't decode response from tracker (campaigns getting): {decode_error.doc}")
         return -1
 
-    _logger.error(f"{campaign.id} {campaign.name} {str(campaign_statistics_json)}")
+    try:
+        if campaign_statistics_json == "no clicks":
+            for geo in campaign_statistics_json:
+                campaign_geos.append({"country": geo["name"], "clicks": int(geo["clicks"])})
 
-    for geo in campaign_statistics_json:
-        campaign_geos.append({"country": geo["name"], "clicks": int(geo["clicks"])})
-
-    max_clicks_geo = max(campaign_geos, key=lambda x: x["clicks"])["country"]
-
-    return max_clicks_geo
+            max_clicks_geo = max(campaign_geos, key=lambda x: x["clicks"])["country"]
+            return max_clicks_geo
+        else:
+            return None
+    except TypeError:
+        _logger.warning(f"Can't get campaign main geo, campaign id: {campaign.id}. Maybe, this campaign is empty?")
+        return None
