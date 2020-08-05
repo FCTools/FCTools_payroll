@@ -326,7 +326,7 @@
         "inapp_balance": "0.000000",
         "native_balance": "0.000000",
         "pop_balance": "0.000000",
-        "push_balance": "0.000000"
+        "push_balance": "-0.178300"
     }
 },
 {
@@ -28091,8 +28091,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
         "revenue": "0.000000",
-        "cost": "0.000000",
-        "profit": "0.000000",
+        "cost": "0.004000",
+        "profit": "-0.004000",
         "user": 23,
         "offers_list": [
             72
@@ -28737,8 +28737,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
         "revenue": "0.000000",
-        "cost": "0.003000",
-        "profit": "-0.003000",
+        "cost": "0.006000",
+        "profit": "-0.006000",
         "user": 23,
         "offers_list": [
             72
@@ -36232,9 +36232,9 @@
         "name": "[268] T-Chrome (Medical blog) - EVADAV - 15+DAYS-MOB",
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
-        "revenue": "30.000000",
-        "cost": "8.440000",
-        "profit": "21.560000",
+        "revenue": "0.000000",
+        "cost": "0.004000",
+        "profit": "-0.004000",
         "user": 23,
         "offers_list": [
             268
@@ -36264,9 +36264,9 @@
         "name": "[268] T-Chrome (Medical blog) EVADAV 1-14 DAYS MOB",
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
-        "revenue": "30.000000",
-        "cost": "4.892000",
-        "profit": "25.108000",
+        "revenue": "0.000000",
+        "cost": "0.004000",
+        "profit": "-0.004000",
         "user": 23,
         "offers_list": [
             268
@@ -36281,8 +36281,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
         "revenue": "0.000000",
-        "cost": "0.105000",
-        "profit": "-0.105000",
+        "cost": "0.010000",
+        "profit": "-0.010000",
         "user": 23,
         "offers_list": [
             268
@@ -36297,8 +36297,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
         "revenue": "0.000000",
-        "cost": "0.710000",
-        "profit": "-0.710000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             268
@@ -36313,8 +36313,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
         "revenue": "0.000000",
-        "cost": "0.115000",
-        "profit": "-0.115000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             268
@@ -36329,8 +36329,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 135,
         "revenue": "0.000000",
-        "cost": "0.886000",
-        "profit": "-0.886000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             268
@@ -36345,8 +36345,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "0.107800",
-        "profit": "-0.107800",
+        "cost": "0.000600",
+        "profit": "-0.000600",
         "user": 23,
         "offers_list": [
             268
@@ -36361,8 +36361,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "0.007500",
-        "profit": "-0.007500",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             268
@@ -36377,8 +36377,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "0.001950",
-        "profit": "-0.001950",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             268
@@ -36409,8 +36409,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
         "revenue": "0.000000",
-        "cost": "0.006000",
-        "profit": "-0.006000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             219
@@ -36472,9 +36472,9 @@
         "name": "[361] Hammer of Thor - EVADAV - \u0434\u043e 14 \u0434\u043d\u0435\u0439",
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
-        "revenue": "36.000000",
-        "cost": "33.164000",
-        "profit": "2.836000",
+        "revenue": "0.000000",
+        "cost": "0.052000",
+        "profit": "-0.052000",
         "user": 23,
         "offers_list": [
             361
@@ -36601,8 +36601,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "10.627840",
-        "profit": "-10.627840",
+        "cost": "0.006200",
+        "profit": "-0.006200",
         "user": 23,
         "offers_list": [
             361
@@ -36616,9 +36616,9 @@
         "name": "[361] Hammer of Thor - PROPELLER - \u0412\u042b\u0421\u041e\u041a\u0410\u042f - MOB",
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
-        "revenue": "306.000000",
-        "cost": "221.549790",
-        "profit": "84.450210",
+        "revenue": "0.000000",
+        "cost": "0.066000",
+        "profit": "-0.066000",
         "user": 23,
         "offers_list": [
             361
@@ -36633,8 +36633,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 135,
         "revenue": "0.000000",
-        "cost": "0.515000",
-        "profit": "-0.515000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             361
@@ -36649,8 +36649,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
         "revenue": "0.000000",
-        "cost": "0.024000",
-        "profit": "-0.024000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             445
@@ -36681,8 +36681,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
         "revenue": "0.000000",
-        "cost": "0.368220",
-        "profit": "-0.368220",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             445
@@ -36697,8 +36697,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "0.005000",
-        "profit": "-0.005000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             445
@@ -36729,8 +36729,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
         "revenue": "0.000000",
-        "cost": "0.081000",
-        "profit": "-0.081000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             331
@@ -36760,9 +36760,9 @@
         "name": "331 Date Death PROPRLLER",
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
-        "revenue": "3.000000",
-        "cost": "2.561540",
-        "profit": "0.438460",
+        "revenue": "0.000000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             331
@@ -36777,8 +36777,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 135,
         "revenue": "0.000000",
-        "cost": "0.556000",
-        "profit": "-0.556000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             331
@@ -36793,8 +36793,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "0.004000",
-        "profit": "-0.004000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             331
@@ -36808,9 +36808,9 @@
         "name": "329 Date Death EVADAV RS",
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
-        "revenue": "2.000000",
-        "cost": "0.855000",
-        "profit": "1.145000",
+        "revenue": "0.000000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             329
@@ -36824,9 +36824,9 @@
         "name": "329 Date Death PROPELLER RS ",
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
-        "revenue": "54.000000",
-        "cost": "28.360000",
-        "profit": "25.640000",
+        "revenue": "0.000000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             329
@@ -36841,8 +36841,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 135,
         "revenue": "0.000000",
-        "cost": "1.374000",
-        "profit": "-1.374000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             329
@@ -36952,9 +36952,9 @@
         "name": "329 Date Death BMA",
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
-        "revenue": "6.000000",
-        "cost": "3.382000",
-        "profit": "2.618000",
+        "revenue": "0.000000",
+        "cost": "0.004000",
+        "profit": "-0.004000",
         "user": 23,
         "offers_list": [
             329
@@ -36984,9 +36984,9 @@
         "name": "[219] MaxiSize (censor) PROPELLER",
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
-        "revenue": "24.000000",
-        "cost": "36.720370",
-        "profit": "-12.720370",
+        "revenue": "0.000000",
+        "cost": "0.010000",
+        "profit": "-0.010000",
         "user": 23,
         "offers_list": [
             219
@@ -37083,8 +37083,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "3.717500",
-        "profit": "-3.717500",
+        "cost": "0.002500",
+        "profit": "-0.002500",
         "user": 23,
         "offers_list": [
             219
@@ -37098,9 +37098,9 @@
         "name": "[219] MaxiSize (censor) PUSH HOUSE",
         "traffic_group": "PUSH traff",
         "traffic_source": 135,
-        "revenue": "6.000000",
-        "cost": "10.300000",
-        "profit": "-4.300000",
+        "revenue": "0.000000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             219
@@ -37115,8 +37115,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 133,
         "revenue": "0.000000",
-        "cost": "1.808230",
-        "profit": "-1.808230",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             447
@@ -37131,8 +37131,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 87,
         "revenue": "0.000000",
-        "cost": "0.220000",
-        "profit": "-0.220000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             447
@@ -37179,8 +37179,8 @@
         "traffic_group": "PUSH traff",
         "traffic_source": 132,
         "revenue": "0.000000",
-        "cost": "1.860000",
-        "profit": "-1.860000",
+        "cost": "0.000000",
+        "profit": "0.000000",
         "user": 23,
         "offers_list": [
             268
@@ -42903,6 +42903,76 @@
         "name": "[461] Men's Defence - $5",
         "group": "Adult Nutra",
         "network": "Network_220"
+    }
+},
+{
+    "model": "fctools_salary.offer",
+    "pk": 462,
+    "fields": {
+        "geo": "1",
+        "name": "[462] Olymp Trade Prelander - $1.08",
+        "group": "Finance",
+        "network": "Network_260"
+    }
+},
+{
+    "model": "fctools_salary.offer",
+    "pk": 463,
+    "fields": {
+        "geo": "RO",
+        "name": "[463] Data Death v.04.08",
+        "group": "Click2call",
+        "network": "Network_50"
+    }
+},
+{
+    "model": "fctools_salary.offer",
+    "pk": 464,
+    "fields": {
+        "geo": "RO",
+        "name": "[464] Horoscope v.04.08",
+        "group": "Click2call",
+        "network": "Network_50"
+    }
+},
+{
+    "model": "fctools_salary.offer",
+    "pk": 465,
+    "fields": {
+        "geo": "HU",
+        "name": "[465] Horoscope v.04.08",
+        "group": "Click2call",
+        "network": "Network_50"
+    }
+},
+{
+    "model": "fctools_salary.offer",
+    "pk": 466,
+    "fields": {
+        "geo": "LT",
+        "name": "[466] Horoscope v.04.08",
+        "group": "Click2call",
+        "network": "Network_50"
+    }
+},
+{
+    "model": "fctools_salary.offer",
+    "pk": 467,
+    "fields": {
+        "geo": "HU",
+        "name": "[467] Finance v.04.08",
+        "group": "Click2call",
+        "network": "Network_50"
+    }
+},
+{
+    "model": "fctools_salary.offer",
+    "pk": 468,
+    "fields": {
+        "geo": "RO",
+        "name": "[468] Finance v.04.08",
+        "group": "Click2call",
+        "network": "Network_50"
     }
 },
 {
