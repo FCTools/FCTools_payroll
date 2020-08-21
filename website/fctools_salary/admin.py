@@ -115,6 +115,8 @@ class TestForm(forms.ModelForm):
             "one_budget_for_all_traffic_sources",
             "geo",
             "one_budget_for_all_geo",
+            "lifetime",
+            "archived",
         ]
 
     def clean_traffic_sources(self):
@@ -242,6 +244,9 @@ class TestAdmin(admin.ModelAdmin):
         "budget_rounded",
         "balance_colored",
         "geo_str",
+        "adding_date",
+        "lifetime",
+        "archived",
     ]
 
     list_filter = [

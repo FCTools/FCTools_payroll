@@ -2,7 +2,6 @@
 Copyright © 2020 FC Tools. All rights reserved.
 Author: German Yakimov
 """
-from datetime import datetime
 
 from django.db import models
 from django.utils.html import format_html
@@ -70,9 +69,11 @@ class Test(models.Model):
     """
     one_budget_for_all_geo = models.BooleanField(verbose_name="One budget for all geo", default=False)
 
-    adding_time = models.DateField(auto_now_add=True, verbose_name="Adding time", null=False, blank=False,)
+    adding_date = models.DateField(auto_now_add=True, verbose_name="Adding time", null=False, blank=False, )
 
-    lifetime = models.PositiveIntegerField(verbose_name="Test lifetime (days)", default=30, null=False, blank=False,)
+    lifetime = models.PositiveIntegerField(verbose_name="Test lifetime (days)", default=30, null=False, blank=False, )
+
+    archived = models.BooleanField(verbose_name="Archived", null=False, blank=False, default=False, )
 
     def budget_rounded(self):
         return round(self.budget, 4)
