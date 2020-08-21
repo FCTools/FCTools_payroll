@@ -191,6 +191,9 @@ def split_tests(modeladmin, request, queryset):
                     balance=test.balance,
                     traffic_group=test.traffic_group,
                     one_budget_for_all_geo=test.one_budget_for_all_geo,
+                    adding_date=test.adding_date,
+                    archived=test.archived,
+                    lifetime=test.lifetime,
                 )
                 new_test_ts.save()
 
@@ -202,7 +205,13 @@ def split_tests(modeladmin, request, queryset):
                 if not test.one_budget_for_all_geo and test_geo:
                     for geo in test_geo:
                         new_test_geo = Test(
-                            user=test.user, budget=test.budget, balance=test.balance, traffic_group=test.traffic_group,
+                            user=test.user,
+                            budget=test.budget,
+                            balance=test.balance,
+                            traffic_group=test.traffic_group,
+                            adding_date=test.adding_date,
+                            archived=test.archived,
+                            lifetime=test.lifetime,
                         )
                         new_test_geo.save()
                         new_test_geo.offers.add(*test_offers)
@@ -221,6 +230,9 @@ def split_tests(modeladmin, request, queryset):
                     balance=test.balance,
                     traffic_group=test.traffic_group,
                     one_budget_for_all_traffic_sources=test.one_budget_for_all_traffic_sources,
+                    adding_date=test.adding_date,
+                    archived=test.archived,
+                    lifetime=test.lifetime,
                 )
                 new_test_geo.save()
                 new_test_geo.offers.add(*test_offers)
