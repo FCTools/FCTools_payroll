@@ -264,6 +264,7 @@ class TestAdmin(admin.ModelAdmin):
     list_filter = [
         "user",
         "traffic_group",
+        "archived",
     ]
 
     list_select_related = [

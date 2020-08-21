@@ -115,6 +115,7 @@ def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traf
     dependencies_list = PercentDependency.objects.all().filter(to_user=user)
 
     for dependency in dependencies_list:
+        TestsManager.archive_user_tests(dependency.from_user)
         profit_with_tests = TestsManager.calculate_profit_with_tests(dependency.from_user, start_date, end_date,
                                                                      traffic_groups)
 
@@ -250,6 +251,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
     _logger.info(f"Deltas was successfully calculated: {deltas}")
 
+    TestsManager.archive_user_tests(user)
     tests_list = list(Test.objects.filter(user=user, archived=False))
     tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups, start_date,
                                          end_date)

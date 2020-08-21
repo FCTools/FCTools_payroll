@@ -4,6 +4,7 @@ Author: German Yakimov
 """
 
 import logging
+from datetime import datetime, timedelta
 
 from django.db import transaction
 
@@ -173,3 +174,14 @@ class TestsManager:
             result[traffic_group] += profit[traffic_group] + tests[traffic_group][1]
 
         return result
+
+    @staticmethod
+    def archive_user_tests(user):
+        tests_list = Test.objects.filter(user=user, archived=False)
+        today = datetime.utcnow().date()
+
+        with transaction.atomic():
+            for test in tests_list:
+                if today - test.adding_date >= timedelta(days=test.lifetime):
+                    test.archived = True
+                    test.save()
