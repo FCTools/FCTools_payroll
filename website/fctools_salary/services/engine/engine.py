@@ -250,7 +250,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
     _logger.info(f"Deltas was successfully calculated: {deltas}")
 
-    tests_list = list(Test.objects.filter(user=user))
+    tests_list = list(Test.objects.filter(user=user, archived=False))
     tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups, start_date,
                                          end_date)
 

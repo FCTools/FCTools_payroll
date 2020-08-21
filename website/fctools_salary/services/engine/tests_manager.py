@@ -165,7 +165,7 @@ class TestsManager:
 
         profit = TrackerManager.calculate_profit_for_period(current_campaigns_tracker, traffic_groups)[1]
 
-        tests_list = list(Test.objects.filter(user=user))
+        tests_list = list(Test.objects.filter(user=user, archived=False))
         tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker, False, traffic_groups, start_date,
                                              end_date)
 
