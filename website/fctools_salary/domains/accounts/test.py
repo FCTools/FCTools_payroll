@@ -70,7 +70,7 @@ class Test(models.Model):
     """
     one_budget_for_all_geo = models.BooleanField(verbose_name="One budget for all geo", default=False)
 
-    adding_time = models.DateField(default=datetime.utcnow().date(), verbose_name="Adding time", null=False, blank=False,)
+    adding_time = models.DateField(auto_now_add=True, verbose_name="Adding time", null=False, blank=False,)
 
     lifetime = models.PositiveIntegerField(verbose_name="Test lifetime (days)", default=30, null=False, blank=False,)
 
