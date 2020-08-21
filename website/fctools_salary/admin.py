@@ -2,6 +2,7 @@
 Copyright © 2020 FC Tools. All rights reserved.
 Author: German Yakimov
 """
+from datetime import datetime, timedelta
 
 from django import forms
 from django.contrib import admin
@@ -245,6 +246,18 @@ def split_tests(modeladmin, request, queryset):
 split_tests.short_description = "Split selected tests"
 
 
+def archive_expired_tests(modeladmin, request, queryset):
+    today = datetime.utcnow().date()
+
+    for test in queryset:
+        if today - test.adding_date >= timedelta(days=test.lifetime):
+            test.archived = True
+            test.save()
+
+
+archive_expired_tests.short_description = "Archive expired tests"
+
+
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
     list_display = [
@@ -284,7 +297,7 @@ class TestAdmin(admin.ModelAdmin):
         "offers_str",
     ]
 
-    actions = [split_tests, ]
+    actions = [split_tests, archive_expired_tests, ]
 
 
 @admin.register(Campaign)
