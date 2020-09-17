@@ -117,7 +117,7 @@ class PDFGenerator:
 
         start_balances_data = ["Start balance"]
         profits_data = ["Profit"]
-        previous_period_data = ["Previous period"]
+        previous_period_data = ["Previous periods"]
         tests_data = ["Tests"]
         from_other_users_data = ["From other users"]
         summary_data = ["Summary"]
@@ -127,7 +127,7 @@ class PDFGenerator:
                                                  style=settings.PARAGRAPH_STYLE_FONT_11))
             profits_data.append(Paragraph(colored_value(profits[traffic_group]),
                                           style=settings.PARAGRAPH_STYLE_FONT_11))
-            previous_period_data.append(Paragraph(from_prev_period[traffic_group][0],
+            previous_period_data.append(Paragraph(str(from_prev_period[traffic_group]),
                                                   style=settings.PARAGRAPH_STYLE_FONT_11))
             tests_count_string = tests[traffic_group][0] \
                 .replace(f' = {tests[traffic_group][1]}', f' = <font color=green>{tests[traffic_group][1]}</font>')

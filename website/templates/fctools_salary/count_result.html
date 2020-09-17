@@ -96,7 +96,7 @@
         </tr>
 
         <tr>
-            <td style="padding:15px">Previous period</td>
+            <td style="padding:15px">Previous periods</td>
             {% for traffic_group, profit in from_prev_period.items %}
                 {% if profit.1 > 0 %}
                     <td class="text_green" style="padding:15px">{{ profit.0 }}</td>
