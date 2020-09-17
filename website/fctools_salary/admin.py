@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.accounts.user import User
+from fctools_salary.domains.accounts.report import Report
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.geo import Geo
 from fctools_salary.domains.tracker.offer import Offer
@@ -364,3 +365,8 @@ class GeoAdmin(admin.ModelAdmin):
         "country",
         "iso_code",
     ]
+
+@admin.register(Report)
+class ReportAdmin(admin.ModelAdmin):
+    pass
+
