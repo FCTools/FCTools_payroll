@@ -3,6 +3,9 @@ Copyright © 2020 FC Tools. All rights reserved.
 Author: German Yakimov
 """
 
+from fctools_salary.models import Report
+from fctools_salary.services.binom.get_info import get_campaigns
+
 
 class TrackerManager:
     """
@@ -39,51 +42,75 @@ class TrackerManager:
         return total_revenue, profit
 
     @staticmethod
-    def calculate_deltas(campaigns_tracker_list, campaigns_db_list, traffic_groups):
+    def calculate_deltas(user, traffic_groups, commit):
         """
-        Calculates deltas from previous period. Delta - a profit that relates to the previous period,
+        Calculates deltas from previous period. Delta - a profit that relates to the previous periods,
         but was not available at the time of calculation.
-
-        :param campaigns_tracker_list: campaigns list for the period with current traffic statistics
-        :type campaigns_tracker_list: List[CampaignTracker]
-
-        :param campaigns_db_list: campaigns list for the period with traffic statistics from last report
-        :type campaigns_db_list: List[Campaign]
 
         :param traffic_groups: traffic groups that includes in calculation
         :type traffic_groups: List[str]
 
-        :return: deltas with detailed calculation for the period (split by traffic groups)
+        :param user: user
+        :type user: User
+
+        :param commit: save changes to database
+        :type commit: bool
+
+        :return: deltas for last 6 periods (split by traffic groups)
         :rtype: Dict[str, List[Union[str, float]]]
         """
 
-        deltas = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
+        deltas = {traffic_group: 0.0 for traffic_group in traffic_groups}
 
-        for campaign_tracker in campaigns_tracker_list:
-            campaign = campaign_tracker["instance"]
+        reports_list = Report.objects.filter(user=user)
 
-            if campaign.traffic_group not in traffic_groups:
-                continue
+        for report in reports_list:
+            campaigns = get_campaigns(report.start_date, report.end_date, user)
+            profits = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)
 
-            if campaign in campaigns_db_list:
-                campaign_db_profit = [x for x in campaigns_db_list if x.id == campaign.id][0].profit
+            if "ADMIN" in traffic_groups:
+                if report.profit_admin < profits["ADMIN"]:
+                    deltas["ADMIN"] += profits["ADMIN"] - report.profit_admin
 
-                if campaign.profit > campaign_db_profit:
-                    diff = float(campaign.profit - campaign_db_profit)
+                if commit:
+                    report.profit_admin = profits["ADMIN"]
 
-                    if deltas[campaign.traffic_group][1] > 0:
-                        deltas[campaign.traffic_group][0] += f" + {diff} [{campaign.id}]"
-                    else:
-                        deltas[campaign.traffic_group][0] = f"{diff} [{campaign.id}]"
-                    deltas[campaign.traffic_group][1] += diff
+            if "PUSH traff" in traffic_groups:
+                if report.profit_push < profits["PUSH traff"]:
+                    deltas["PUSH traff"] += profits["PUSH traff"] - report.profit_push
 
-        for traffic_group in deltas:
-            deltas[traffic_group][1] = round(deltas[traffic_group][1], 6)
+                if commit:
+                    report.profit_push = profits["PUSH traff"]
 
-            if deltas[traffic_group][1] == 0.0:
-                deltas[traffic_group][0] = "0.0"
+            if "POP traff" in traffic_groups:
+                if report.profit_pop < profits["POP traff"]:
+                    deltas["POP traff"] += profits["POP traff"] - report.profit_pop
 
-            elif "+" in deltas[traffic_group][0]:
-                deltas[traffic_group][0] = f"{deltas[traffic_group][0]} = " f"{deltas[traffic_group][1]}"
+                if commit:
+                    report.profit_pop = profits["POP traff"]
+
+            if "NATIVE traff" in traffic_groups:
+                if report.profit_native < profits["NATIVE traff"]:
+                    deltas["NATIVE traff"] += profits["NATIVE traff"] - report.profit_native
+
+                if commit:
+                    report.profit_native = profits["NATIVE traff"]
+
+            if "FPA/HSA/PWA" in traffic_groups:
+                if report.profit_fpa_hsa_pwa < profits["FPA/HSA/PWA"]:
+                    deltas["FPA/HSA/PWA"] += profits["FPA/HSA/PWA"] - report.profit_fpa_hsa_pwa
+
+                if commit:
+                    report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"]
+
+            if "INAPP traff" in traffic_groups:
+                if report.profit_inapp < profits["INAPP traff"]:
+                    deltas["INAPP traff"] += profits["INAPP traff"] - report.profit_inapp
+
+                if commit:
+                    report.profit_inapp = profits["INAPP traff"]
+
+            if commit:
+                report.save()
 
         return deltas

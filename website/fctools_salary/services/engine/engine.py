@@ -12,6 +12,7 @@ from django.db import transaction
 
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
 from fctools_salary.domains.accounts.test import Test
+from fctools_salary.domains.accounts.report import Report
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.services.binom.get_info import get_campaigns
@@ -247,7 +248,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
     _logger.info(f"Total revenue: {total_revenue}")
     _logger.info(f"Profits: {profits}")
 
-    deltas = TrackerManager.calculate_deltas(prev_campaigns_tracker_list, prev_campaigns_db_list, traffic_groups)
+    deltas = TrackerManager.calculate_deltas(user, traffic_groups, commit)
 
     _logger.info(f"Deltas was successfully calculated: {deltas}")
 
@@ -270,7 +271,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
     for traffic_group in result:
         result[traffic_group] += round(profits[traffic_group], 6)
-        result[traffic_group] += round(deltas[traffic_group][1], 6)
+        result[traffic_group] += round(deltas[traffic_group], 6)
         result[traffic_group] += round(tests[traffic_group][1], 6)
 
         if result[traffic_group] > 0:
@@ -285,14 +286,14 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
             result[traffic_group][0] = (
                 f"({start_balances[traffic_group]}"
                 f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
-                f" + {deltas[traffic_group][1]} + "
+                f" + {deltas[traffic_group]} + "
                 f"{tests[traffic_group][1]}) * {final_percent}"
             )
         else:
             result[traffic_group][0] = (
                 f"{start_balances[traffic_group]}"
                 f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
-                f" + {deltas[traffic_group][1]} + "
+                f" + {deltas[traffic_group]} + "
                 f"{tests[traffic_group][1]}"
             )
 
