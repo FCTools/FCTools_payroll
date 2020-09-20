@@ -237,7 +237,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
     _logger.info("Start balances was successfully set.")
 
     prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
-    prev_campaigns_tracker_list = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
+    # prev_campaigns_tracker_list = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
     current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
 
     _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")

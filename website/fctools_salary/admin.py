@@ -366,6 +366,7 @@ class GeoAdmin(admin.ModelAdmin):
         "iso_code",
     ]
 
+
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     pass

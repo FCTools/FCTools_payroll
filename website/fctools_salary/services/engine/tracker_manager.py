@@ -72,45 +72,34 @@ class TrackerManager:
                 if report.profit_admin < profits["ADMIN"]:
                     deltas["ADMIN"] += profits["ADMIN"] - report.profit_admin
 
-                if commit:
-                    report.profit_admin = profits["ADMIN"]
-
             if "PUSH traff" in traffic_groups:
                 if report.profit_push < profits["PUSH traff"]:
                     deltas["PUSH traff"] += profits["PUSH traff"] - report.profit_push
-
-                if commit:
-                    report.profit_push = profits["PUSH traff"]
 
             if "POP traff" in traffic_groups:
                 if report.profit_pop < profits["POP traff"]:
                     deltas["POP traff"] += profits["POP traff"] - report.profit_pop
 
-                if commit:
-                    report.profit_pop = profits["POP traff"]
-
             if "NATIVE traff" in traffic_groups:
                 if report.profit_native < profits["NATIVE traff"]:
                     deltas["NATIVE traff"] += profits["NATIVE traff"] - report.profit_native
-
-                if commit:
-                    report.profit_native = profits["NATIVE traff"]
 
             if "FPA/HSA/PWA" in traffic_groups:
                 if report.profit_fpa_hsa_pwa < profits["FPA/HSA/PWA"]:
                     deltas["FPA/HSA/PWA"] += profits["FPA/HSA/PWA"] - report.profit_fpa_hsa_pwa
 
-                if commit:
-                    report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"]
-
             if "INAPP traff" in traffic_groups:
                 if report.profit_inapp < profits["INAPP traff"]:
                     deltas["INAPP traff"] += profits["INAPP traff"] - report.profit_inapp
 
-                if commit:
-                    report.profit_inapp = profits["INAPP traff"]
-
             if commit:
+                report.profit_inapp = profits["INAPP traff"]
+                report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"]
+                report.profit_native = profits["NATIVE traff"]
+                report.profit_pop = profits["POP traff"]
+                report.profit_admin = profits["ADMIN"]
+                report.profit_push = profits["PUSH traff"]
+
                 report.save()
 
         return deltas
