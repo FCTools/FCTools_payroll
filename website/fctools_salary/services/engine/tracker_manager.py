@@ -66,31 +66,31 @@ class TrackerManager:
 
         for report in reports_list:
             campaigns = get_campaigns(report.start_date, report.end_date, user)
-            profits = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)
+            profits = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)[1]
 
             if "ADMIN" in traffic_groups:
-                if report.profit_admin < profits["ADMIN"]:
-                    deltas["ADMIN"] += profits["ADMIN"] - report.profit_admin
+                if float(report.profit_admin) < profits["ADMIN"]:
+                    deltas["ADMIN"] += profits["ADMIN"] - float(report.profit_admin)
 
             if "PUSH traff" in traffic_groups:
-                if report.profit_push < profits["PUSH traff"]:
-                    deltas["PUSH traff"] += profits["PUSH traff"] - report.profit_push
+                if float(report.profit_push) < profits["PUSH traff"]:
+                    deltas["PUSH traff"] += profits["PUSH traff"] - float(report.profit_push)
 
             if "POP traff" in traffic_groups:
-                if report.profit_pop < profits["POP traff"]:
-                    deltas["POP traff"] += profits["POP traff"] - report.profit_pop
+                if float(report.profit_pop) < profits["POP traff"]:
+                    deltas["POP traff"] += profits["POP traff"] - float(report.profit_pop)
 
             if "NATIVE traff" in traffic_groups:
-                if report.profit_native < profits["NATIVE traff"]:
-                    deltas["NATIVE traff"] += profits["NATIVE traff"] - report.profit_native
+                if float(report.profit_native) < profits["NATIVE traff"]:
+                    deltas["NATIVE traff"] += profits["NATIVE traff"] - float(report.profit_native)
 
             if "FPA/HSA/PWA" in traffic_groups:
-                if report.profit_fpa_hsa_pwa < profits["FPA/HSA/PWA"]:
-                    deltas["FPA/HSA/PWA"] += profits["FPA/HSA/PWA"] - report.profit_fpa_hsa_pwa
+                if float(report.profit_fpa_hsa_pwa) < profits["FPA/HSA/PWA"]:
+                    deltas["FPA/HSA/PWA"] += profits["FPA/HSA/PWA"] - float(report.profit_fpa_hsa_pwa)
 
             if "INAPP traff" in traffic_groups:
-                if report.profit_inapp < profits["INAPP traff"]:
-                    deltas["INAPP traff"] += profits["INAPP traff"] - report.profit_inapp
+                if float(report.profit_inapp) < profits["INAPP traff"]:
+                    deltas["INAPP traff"] += profits["INAPP traff"] - float(report.profit_inapp)
 
             if commit:
                 report.profit_inapp = profits["INAPP traff"]

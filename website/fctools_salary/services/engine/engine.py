@@ -5,7 +5,7 @@ Author: German Yakimov
 
 import logging
 from copy import deepcopy
-from datetime import timedelta, date
+from datetime import date
 from typing import List, Dict
 
 from django.db import transaction
