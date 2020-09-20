@@ -369,5 +369,15 @@ class GeoAdmin(admin.ModelAdmin):
 
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
-    pass
+    list_display = [
+        "user",
+        "start_date",
+        "end_date",
+        "profit_admin",
+        "profit_push",
+        "profit_pop",
+        "profit_native",
+        "profit_inapp",
+        "profit_fpa_hsa_pwa",
+    ]
 
