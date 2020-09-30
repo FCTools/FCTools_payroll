@@ -154,7 +154,7 @@ class PDFGenerator:
 
         cols_number = len(result)
         col_widths = [120] + [650 // cols_number for _ in range(cols_number)]
-        row_heights = [25, 25, 25, 50, 120]
+        row_heights = [25, 25, 25, 50, 200]
 
         if user.is_lead:
             row_heights.append(50)

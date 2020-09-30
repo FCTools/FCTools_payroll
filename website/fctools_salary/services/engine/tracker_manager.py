@@ -102,4 +102,7 @@ class TrackerManager:
 
                 report.save()
 
+        for traffic_group in deltas:
+            deltas[traffic_group] = round(deltas[traffic_group], 6)
+
         return deltas
