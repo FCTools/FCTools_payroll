@@ -93,12 +93,18 @@ class TrackerManager:
                     deltas["INAPP traff"] += profits["INAPP traff"] - float(report.profit_inapp)
 
             if commit:
-                report.profit_inapp = profits["INAPP traff"]
-                report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"]
-                report.profit_native = profits["NATIVE traff"]
-                report.profit_pop = profits["POP traff"]
-                report.profit_admin = profits["ADMIN"]
-                report.profit_push = profits["PUSH traff"]
+                if "INAPP traff" in traffic_groups:
+                    report.profit_inapp = profits["INAPP traff"]
+                if "FPA/HSA/PWA" in traffic_groups:
+                    report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"]
+                if "NATIVE traff" in traffic_groups:
+                    report.profit_native = profits["NATIVE traff"]
+                if "POP traff" in traffic_groups:
+                    report.profit_pop = profits["POP traff"]
+                if "ADMIN" in traffic_groups:
+                    report.profit_admin = profits["ADMIN"]
+                if "PUSH traff" in traffic_groups:
+                    report.profit_push = profits["PUSH traff"]
 
                 report.save()
 
