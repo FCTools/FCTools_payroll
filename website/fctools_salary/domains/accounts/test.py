@@ -71,7 +71,7 @@ class Test(models.Model):
 
     adding_date = models.DateField(auto_now_add=True, verbose_name="Adding date", null=False, blank=False, )
 
-    lifetime = models.PositiveIntegerField(verbose_name="Test lifetime (days)", default=30, null=False, blank=False, )
+    lifetime = models.PositiveIntegerField(verbose_name="Test lifetime (days)", default=60, null=False, blank=False, )
 
     archived = models.BooleanField(verbose_name="Archived", null=False, blank=False, default=False, )
 
