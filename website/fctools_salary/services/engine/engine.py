@@ -312,6 +312,22 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
         _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
         _logger.info("Campaigns was successfully saved.")
 
+        report = Report(user=user, start_date=start_date, end_date=end_date, profit_admin=0.0, profit_inapp=0.0,
+                        profit_native=0.0, profit_pop=0.0, profit_push=0.0, profit_fpa_hsa_pwa=0.0)
+
+        report.profit_admin = profits["ADMIN"] if "ADMIN" in profits and profits["ADMIN"] < 0 else 0
+        report.profit_fpa_hsa_pwa = (
+            profits["FPA/HSA/PWA"] if "FPA/HSA/PWA" in profits and profits["FPA/HSA/PWA"] < 0 else 0
+        )
+        report.profit_inapp = profits["INAPP traff"] if "INAPP traff" in profits and profits["INAPP traff"] < 0 else 0
+        report.profit_native = (
+            profits["NATIVE traff"] if "NATIVE traff" in profits and profits["NATIVE traff"] < 0 else 0
+        )
+        report.profit_pop = profits["POP traff"] if "POP traff" in profits and profits["POP traff"] < 0 else 0
+        report.profit_push = profits["PUSH traff"] if "PUSH traff" in profits and profits["PUSH traff"] < 0 else 0
+
+        report.save()
+
     _logger.info(f"Final calculation: {result}")
 
     calculation_items = {
