@@ -59,6 +59,7 @@ class Test(models.Model):
             ("POP traff", "POP traff"),
             ("PUSH traff", "PUSH traff"),
         ),
+        default="PUSH traff",
     )
 
     balance = models.DecimalField(verbose_name="Balance", blank=False, null=False, decimal_places=6, max_digits=13, )
