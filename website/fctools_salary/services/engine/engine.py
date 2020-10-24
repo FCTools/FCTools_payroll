@@ -291,9 +291,13 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
                 f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
             )
 
+            deltas_sum = 0.0
             for period in deltas:
                 if traffic_group in deltas[period]:
-                    result[traffic_group][0] += f" + {deltas[period][traffic_group]}"
+                    deltas_sum += deltas[period][traffic_group]
+
+            if deltas_sum != 0:
+                result[traffic_group][0] += f" + {deltas_sum}"
 
             result[traffic_group][0] += f" + {tests[traffic_group][1]}) * {final_percent}"
         else:
@@ -351,9 +355,9 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
                     continue
 
                 if not deltas_formatted[traffic_group]:
-                    deltas_formatted[traffic_group] = f"{deltas[period][traffic_group]}[{period}]"
+                    deltas_formatted[traffic_group] = f"{deltas[period][traffic_group]} [{period}]"
                 else:
-                    deltas_formatted[traffic_group] += f" + {deltas[period][traffic_group]}[{period}]"
+                    deltas_formatted[traffic_group] += f" + {deltas[period][traffic_group]} [{period}]"
                 deltas_sum += deltas[period][traffic_group]
 
         if not deltas_formatted[traffic_group]:

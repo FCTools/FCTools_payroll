@@ -87,14 +87,6 @@ class PDFGenerator:
         :rtype: str
         """
 
-        def colored_value(value):
-            if value > 0:
-                return f"<font color=green>{value}</font>"
-            elif value < 0:
-                return f"<font color=red>{value}</font>"
-
-            return str(value)
-
         PDFGenerator._check_saving_path()
 
         # reports filenames are randomly generated UUID4 (for safety)
@@ -123,21 +115,21 @@ class PDFGenerator:
         summary_data = ["Summary"]
 
         for traffic_group in start_balances:
-            start_balances_data.append(Paragraph(colored_value(start_balances[traffic_group]),
+            start_balances_data.append(Paragraph(str(start_balances[traffic_group]),
                                                  style=settings.PARAGRAPH_STYLE_FONT_11))
-            profits_data.append(Paragraph(colored_value(profits[traffic_group]),
+            profits_data.append(Paragraph(str(profits[traffic_group]),
                                           style=settings.PARAGRAPH_STYLE_FONT_11))
             previous_period_data.append(Paragraph(from_prev_period[traffic_group],
                                                   style=settings.PARAGRAPH_STYLE_FONT_11))
             tests_count_string = tests[traffic_group][0] \
-                .replace(f' = {tests[traffic_group][1]}', f' = <font color=green>{tests[traffic_group][1]}</font>')
+                .replace(f' = {tests[traffic_group][1]}', f' = {tests[traffic_group][1]}')
             tests_data.append(Paragraph(copy(tests_count_string), style=settings.PARAGRAPH_STYLE_FONT_11))
 
             if user.is_lead:
                 from_other_users_data.append(
                     Paragraph(from_other_users[traffic_group][0], style=settings.PARAGRAPH_STYLE_FONT_11))
 
-            colored_total_amount = colored_value(result[traffic_group][1])
+            colored_total_amount = str(result[traffic_group][1])
             summary_data.append(Paragraph(copy(result[traffic_group][0].replace(f' = {result[traffic_group][1]}',
                                                                                 f' = {colored_total_amount}')),
                                           style=settings.PARAGRAPH_STYLE_FONT_11))
