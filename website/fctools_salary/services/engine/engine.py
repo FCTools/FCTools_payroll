@@ -352,8 +352,9 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
                 if not deltas_formatted[traffic_group]:
                     deltas_formatted[traffic_group] = f"{deltas[period][traffic_group]}[{period}]"
-                deltas_formatted[traffic_group] += f" + {deltas[period][traffic_group]}[{period}]"
-                deltas_sum += deltas[period][traffic_group]
+                else:
+                    deltas_formatted[traffic_group] += f" + {deltas[period][traffic_group]}[{period}]"
+                    deltas_sum += deltas[period][traffic_group]
 
         if not deltas_formatted[traffic_group]:
             deltas_formatted[traffic_group] = "0.0"
