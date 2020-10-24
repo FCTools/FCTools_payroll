@@ -40,7 +40,11 @@ class Test(models.Model):
         verbose_name="One budget for all traffic sources", default=False,
     )
 
-    offers = models.ManyToManyField("Offer", verbose_name="Offers", related_name="tests_list")
+    offers = models.ManyToManyField("Offer", verbose_name="Offers", related_name="tests_list", )
+
+    one_budget_for_all_offers = models.BooleanField(
+        verbose_name="One budget for all offers", default=False,
+    )
 
     traffic_group = models.CharField(
         max_length=64,

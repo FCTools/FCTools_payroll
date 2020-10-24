@@ -16,6 +16,7 @@ from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.geo import Geo
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
+from fctools_salary.services.helpers.test_splitter import TestSplitter
 
 
 @admin.register(User)
@@ -111,10 +112,11 @@ class TestForm(forms.ModelForm):
             "budget",
             "user",
             "offers",
+            "one_budget_for_all_offers",
             "traffic_sources",
+            "one_budget_for_all_traffic_sources",
             "traffic_group",
             "balance",
-            "one_budget_for_all_traffic_sources",
             "geo",
             "one_budget_for_all_geo",
             "lifetime",
@@ -180,68 +182,71 @@ class TestForm(forms.ModelForm):
 
 
 def split_tests(modeladmin, request, queryset):
+    splitter = TestSplitter()
+
     for test in queryset:
-        test_offers = list(test.offers.all())
-        test_traffic_sources = list(test.traffic_sources.all())
-        test_geo = list(test.geo.all())
-
-        if not test.one_budget_for_all_traffic_sources:
-            for traffic_source in test_traffic_sources:
-                new_test_ts = Test(
-                    user=test.user,
-                    budget=test.budget,
-                    balance=test.balance,
-                    traffic_group=test.traffic_group,
-                    one_budget_for_all_geo=test.one_budget_for_all_geo,
-                    adding_date=test.adding_date,
-                    archived=test.archived,
-                    lifetime=test.lifetime,
-                )
-                new_test_ts.save()
-
-                new_test_ts.offers.add(*test_offers)
-                new_test_ts.geo.add(*test_geo)
-                new_test_ts.traffic_sources.add(traffic_source)
-                new_test_ts.save()
-
-                if not test.one_budget_for_all_geo and test_geo:
-                    for geo in test_geo:
-                        new_test_geo = Test(
-                            user=test.user,
-                            budget=test.budget,
-                            balance=test.balance,
-                            traffic_group=test.traffic_group,
-                            adding_date=test.adding_date,
-                            archived=test.archived,
-                            lifetime=test.lifetime,
-                        )
-                        new_test_geo.save()
-                        new_test_geo.offers.add(*test_offers)
-                        new_test_geo.traffic_sources.add(traffic_source)
-                        new_test_geo.geo.add(geo)
-                        new_test_geo.save()
-                    new_test_ts.delete()
-
-            test.delete()
-
-        elif not test.one_budget_for_all_geo:
-            for geo in test_geo:
-                new_test_geo = Test(
-                    user=test.user,
-                    budget=test.budget,
-                    balance=test.balance,
-                    traffic_group=test.traffic_group,
-                    one_budget_for_all_traffic_sources=test.one_budget_for_all_traffic_sources,
-                    adding_date=test.adding_date,
-                    archived=test.archived,
-                    lifetime=test.lifetime,
-                )
-                new_test_geo.save()
-                new_test_geo.offers.add(*test_offers)
-                new_test_geo.traffic_sources.add(*test_traffic_sources)
-                new_test_geo.geo.add(geo)
-                new_test_geo.save()
-            test.delete()
+        splitter.split(test)
+        # test_offers = list(test.offers.all())
+        # test_traffic_sources = list(test.traffic_sources.all())
+        # test_geo = list(test.geo.all())
+        #
+        # if not test.one_budget_for_all_traffic_sources:
+        #     for traffic_source in test_traffic_sources:
+        #         new_test_ts = Test(
+        #             user=test.user,
+        #             budget=test.budget,
+        #             balance=test.balance,
+        #             traffic_group=test.traffic_group,
+        #             one_budget_for_all_geo=test.one_budget_for_all_geo,
+        #             adding_date=test.adding_date,
+        #             archived=test.archived,
+        #             lifetime=test.lifetime,
+        #         )
+        #         new_test_ts.save()
+        #
+        #         new_test_ts.offers.add(*test_offers)
+        #         new_test_ts.geo.add(*test_geo)
+        #         new_test_ts.traffic_sources.add(traffic_source)
+        #         new_test_ts.save()
+        #
+        #         if not test.one_budget_for_all_geo and test_geo:
+        #             for geo in test_geo:
+        #                 new_test_geo = Test(
+        #                     user=test.user,
+        #                     budget=test.budget,
+        #                     balance=test.balance,
+        #                     traffic_group=test.traffic_group,
+        #                     adding_date=test.adding_date,
+        #                     archived=test.archived,
+        #                     lifetime=test.lifetime,
+        #                 )
+        #                 new_test_geo.save()
+        #                 new_test_geo.offers.add(*test_offers)
+        #                 new_test_geo.traffic_sources.add(traffic_source)
+        #                 new_test_geo.geo.add(geo)
+        #                 new_test_geo.save()
+        #             new_test_ts.delete()
+        #
+        #     test.delete()
+        #
+        # elif not test.one_budget_for_all_geo:
+        #     for geo in test_geo:
+        #         new_test_geo = Test(
+        #             user=test.user,
+        #             budget=test.budget,
+        #             balance=test.balance,
+        #             traffic_group=test.traffic_group,
+        #             one_budget_for_all_traffic_sources=test.one_budget_for_all_traffic_sources,
+        #             adding_date=test.adding_date,
+        #             archived=test.archived,
+        #             lifetime=test.lifetime,
+        #         )
+        #         new_test_geo.save()
+        #         new_test_geo.offers.add(*test_offers)
+        #         new_test_geo.traffic_sources.add(*test_traffic_sources)
+        #         new_test_geo.geo.add(geo)
+        #         new_test_geo.save()
+        #     test.delete()
 
 
 split_tests.short_description = "Split selected tests"
