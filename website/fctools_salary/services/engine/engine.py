@@ -339,10 +339,26 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
     _logger.info(f"Final calculation: {result}")
 
+    deltas_formatted = {}
+
+    for traffic_group in result:
+        deltas_sum = 0.0
+        deltas_formatted[traffic_group] = ""
+
+        for period in deltas:
+            if traffic_group in deltas[period]:
+                deltas_formatted[traffic_group] += f" + {deltas[period][traffic_group]}[{period}]"
+                deltas_sum += deltas[period][traffic_group]
+
+        if not deltas_formatted[traffic_group]:
+            deltas_formatted[traffic_group] = "0.0"
+        else:
+            deltas_formatted[traffic_group] += f" = {deltas_sum}"
+
     calculation_items = {
         "start_balances": start_balances,
         "profits": profits,
-        "from_prev_period": deltas,
+        "from_prev_period": deltas_formatted,
         "tests": tests,
         "result": result,
         "total_revenue": round(total_revenue, 6),

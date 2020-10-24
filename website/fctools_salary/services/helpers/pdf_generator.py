@@ -127,20 +127,7 @@ class PDFGenerator:
                                                  style=settings.PARAGRAPH_STYLE_FONT_11))
             profits_data.append(Paragraph(colored_value(profits[traffic_group]),
                                           style=settings.PARAGRAPH_STYLE_FONT_11))
-            deltas_count_string = ""
-            deltas_sum = 0.0
-
-            for period in from_prev_period:
-                if traffic_group in period:
-                    deltas_count_string += f" + {from_prev_period[period][traffic_group]}[{period}]"
-                    deltas_sum += from_prev_period[period][traffic_group]
-
-            if not deltas_count_string:
-                deltas_count_string = "0.0"
-            else:
-                deltas_count_string += f" = {deltas_sum}"
-
-            previous_period_data.append(Paragraph(str(deltas_count_string),
+            previous_period_data.append(Paragraph(from_prev_period[traffic_group],
                                                   style=settings.PARAGRAPH_STYLE_FONT_11))
             tests_count_string = tests[traffic_group][0] \
                 .replace(f' = {tests[traffic_group][1]}', f' = <font color=green>{tests[traffic_group][1]}</font>')

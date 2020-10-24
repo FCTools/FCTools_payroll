@@ -97,14 +97,8 @@
 
         <tr>
             <td style="padding:15px">Previous periods</td>
-            {% for traffic_group, profit in from_prev_period.items %}
-                {% if profit > 0 %}
-                    <td class="text_green" style="padding:15px">{{ profit }}</td>
-                {% elif profit < 0 %}
-                    <td class="text_red" style="padding:15px">{{ profit }}</td>
-                {% else %}
-                    <td style="padding:15px">{{ profit }}</td>
-                {% endif %}
+            {% for count_string in from_prev_period.values %}
+                <td style="padding:15px">{{ count_string }}</td>
             {% endfor %}
         </tr>
 
