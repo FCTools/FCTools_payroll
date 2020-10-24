@@ -60,37 +60,39 @@ class TrackerManager:
         :rtype: Dict[str, List[Union[str, float]]]
         """
 
-        deltas = {traffic_group: 0.0 for traffic_group in traffic_groups}
+        deltas = {}
 
         reports_list = Report.objects.filter(user=user)
 
         for report in reports_list:
+            key = f'{report.start_date} - {report.end_date}'
+            deltas[key] = {traffic_group: 0.0 for traffic_group in traffic_groups}
             campaigns = get_campaigns(report.start_date, report.end_date, user)
             profits = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)[1]
 
             if "ADMIN" in traffic_groups:
                 if float(report.profit_admin) < profits["ADMIN"]:
-                    deltas["ADMIN"] += profits["ADMIN"] - float(report.profit_admin)
+                    deltas[key]["ADMIN"] += profits["ADMIN"] - float(report.profit_admin)
 
             if "PUSH traff" in traffic_groups:
                 if float(report.profit_push) < profits["PUSH traff"]:
-                    deltas["PUSH traff"] += profits["PUSH traff"] - float(report.profit_push)
+                    deltas[key]["PUSH traff"] += profits["PUSH traff"] - float(report.profit_push)
 
             if "POP traff" in traffic_groups:
                 if float(report.profit_pop) < profits["POP traff"]:
-                    deltas["POP traff"] += profits["POP traff"] - float(report.profit_pop)
+                    deltas[key]["POP traff"] += profits["POP traff"] - float(report.profit_pop)
 
             if "NATIVE traff" in traffic_groups:
                 if float(report.profit_native) < profits["NATIVE traff"]:
-                    deltas["NATIVE traff"] += profits["NATIVE traff"] - float(report.profit_native)
+                    deltas[key]["NATIVE traff"] += profits["NATIVE traff"] - float(report.profit_native)
 
             if "FPA/HSA/PWA" in traffic_groups:
                 if float(report.profit_fpa_hsa_pwa) < profits["FPA/HSA/PWA"]:
-                    deltas["FPA/HSA/PWA"] += profits["FPA/HSA/PWA"] - float(report.profit_fpa_hsa_pwa)
+                    deltas[key]["FPA/HSA/PWA"] += profits["FPA/HSA/PWA"] - float(report.profit_fpa_hsa_pwa)
 
             if "INAPP traff" in traffic_groups:
                 if float(report.profit_inapp) < profits["INAPP traff"]:
-                    deltas["INAPP traff"] += profits["INAPP traff"] - float(report.profit_inapp)
+                    deltas[key]["INAPP traff"] += profits["INAPP traff"] - float(report.profit_inapp)
 
             if commit:
                 if "INAPP traff" in traffic_groups:
@@ -108,7 +110,8 @@ class TrackerManager:
 
                 report.save()
 
-        for traffic_group in deltas:
-            deltas[traffic_group] = round(deltas[traffic_group], 6)
+        for key in deltas:
+            for traffic_group in deltas[key]:
+                deltas[key][traffic_group] = round(deltas[key][traffic_group], 6)
 
         return deltas

@@ -237,7 +237,6 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
     _logger.info("Start balances was successfully set.")
 
     prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
-    # prev_campaigns_tracker_list = get_campaigns(start_date - timedelta(days=14), start_date - timedelta(days=1), user)
     current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
 
     _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
@@ -265,13 +264,17 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
     _logger.info(f"User is lead: {user.is_lead}")
 
     from_other_users = None
+
     if user.is_lead:
         from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
         _logger.info(f"User profit from other users (as teamlead): {from_other_users}")
 
     for traffic_group in result:
         result[traffic_group] += round(profits[traffic_group], 6)
-        result[traffic_group] += round(deltas[traffic_group], 6)
+
+        for period in deltas:
+            result[traffic_group] += round(deltas[period][traffic_group], 6)
+
         result[traffic_group] += round(tests[traffic_group][1], 6)
 
         if result[traffic_group] > 0:
@@ -286,16 +289,22 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
             result[traffic_group][0] = (
                 f"({start_balances[traffic_group]}"
                 f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
-                f" + {deltas[traffic_group]} + "
-                f"{tests[traffic_group][1]}) * {final_percent}"
             )
+
+            for period in deltas:
+                if traffic_group in deltas[period]:
+                    result[traffic_group][0] += f" + {deltas[period][traffic_group]}"
+
+            result[traffic_group][0] += f" + {tests[traffic_group][1]}) * {final_percent}"
         else:
             result[traffic_group][0] = (
-                f"{start_balances[traffic_group]}"
+                f"({start_balances[traffic_group]}"
                 f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
-                f" + {deltas[traffic_group]} + "
-                f"{tests[traffic_group][1]}"
             )
+
+            for period in deltas:
+                if traffic_group in deltas[period]:
+                    result[traffic_group][0] += f" + {deltas[period][traffic_group]}"
 
         if user.is_lead and from_other_users[traffic_group][1] > 0:
             result[traffic_group][0] += f" + {from_other_users[traffic_group][1]}"
