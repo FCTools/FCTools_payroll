@@ -306,9 +306,14 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
                 f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
             )
 
+            deltas_sum = 0.0
             for period in deltas:
                 if traffic_group in deltas[period]:
-                    result[traffic_group][0] += f" + {deltas[period][traffic_group]}"
+                    deltas_sum += deltas[period][traffic_group]
+
+            if deltas_sum != 0:
+                result[traffic_group][0] += f" + {deltas_sum}"
+            result[traffic_group][0] += ")"
 
         if user.is_lead and from_other_users[traffic_group][1] > 0:
             result[traffic_group][0] += f" + {from_other_users[traffic_group][1]}"
