@@ -87,6 +87,8 @@ def _set_start_balances(user, traffic_groups):
         result["POP traff"] = round(float(user.pop_balance), 6)
     if "PUSH traff" in traffic_groups:
         result["PUSH traff"] = round(float(user.push_balance), 6)
+    if "Tik Tok" in traffic_groups:
+        result["Tik Tok"] = round(float(user.tik_tok_balance), 6)
 
     return result
 
@@ -165,6 +167,7 @@ def _save_user_balances(user, balances):
         )
         user.pop_balance = balances["POP traff"] if "POP traff" in balances and balances["POP traff"] < 0 else 0
         user.push_balance = balances["PUSH traff"] if "PUSH traff" in balances and balances["PUSH traff"] < 0 else 0
+        user.tik_tok_balance = balances["Tik Tok"] if "Tik Tok" in balances and balances["Tik Tok"] < 0 else 0
 
         user.save()
 
@@ -343,6 +346,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
         )
         report.profit_pop = profits["POP traff"] if "POP traff" in profits and profits["POP traff"] < 0 else 0
         report.profit_push = profits["PUSH traff"] if "PUSH traff" in profits and profits["PUSH traff"] < 0 else 0
+        report.profit_push = profits["Tik Tok"] if "Tik Tok" in profits and profits["Tik Tok"] < 0 else 0
 
         report.save()
 

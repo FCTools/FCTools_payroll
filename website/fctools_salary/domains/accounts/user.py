@@ -60,6 +60,10 @@ class User(models.Model):
         verbose_name="PUSH balance", null=True, blank=False, default=0, decimal_places=6, max_digits=12,
     )
 
+    tik_tok_balance = models.DecimalField(
+        verbose_name="Tik Tok balance", null=True, blank=False, default=0, decimal_places=6, max_digits=12,
+    )
+
     def __str__(self):
         return f"{self.id} {self.login}"
 

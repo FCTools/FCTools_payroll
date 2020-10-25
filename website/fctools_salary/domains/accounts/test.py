@@ -58,6 +58,7 @@ class Test(models.Model):
             ("NATIVE traff", "NATIVE traff"),
             ("POP traff", "POP traff"),
             ("PUSH traff", "PUSH traff"),
+            ("Tik Tok", "Tik Tok"),
         ),
         default="PUSH traff",
     )

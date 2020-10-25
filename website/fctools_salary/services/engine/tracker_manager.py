@@ -94,6 +94,10 @@ class TrackerManager:
                 if float(report.profit_inapp) < profits["INAPP traff"]:
                     deltas[key]["INAPP traff"] += profits["INAPP traff"] - float(report.profit_inapp)
 
+            if "Tik Tok" in traffic_groups:
+                if float(report.profit_tik_tok) < profits["Tik Tok"]:
+                    deltas[key]["Tik Tok"] += profits["Tik Tok"] - float(report.profit_inapp)
+
             if commit:
                 if "INAPP traff" in traffic_groups:
                     report.profit_inapp = profits["INAPP traff"]
@@ -107,6 +111,8 @@ class TrackerManager:
                     report.profit_admin = profits["ADMIN"]
                 if "PUSH traff" in traffic_groups:
                     report.profit_push = profits["PUSH traff"]
+                if "Tik Tok" in traffic_groups:
+                    report.profit_tik_tok = profits["Tik Tok"]
 
                 report.save()
 

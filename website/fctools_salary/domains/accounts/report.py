@@ -29,3 +29,5 @@ class Report(models.Model):
 
     profit_inapp = models.DecimalField(verbose_name="INAPP profit", null=False, decimal_places=6, max_digits=13, )
 
+    profit_tik_tok = models.DecimalField(verbose_name="Tik Tok profit", null=False, decimal_places=6, max_digits=13, )
+
