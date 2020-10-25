@@ -25,7 +25,7 @@ class User(models.Model):
     Default value is -1, this value means that user isn't active and doesn't take part in calculations. 
     """
     salary_group = models.IntegerField(
-        verbose_name="Salary group", null=True, blank=False, choices=((-1, -1), (1, 1), (2, 2), (3, 3), ), default=-1,
+        verbose_name="Salary group", null=True, blank=False, choices=((-1, -1), (1, 1), (2, 2), (3, 3),), default=-1,
     )
 
     """

@@ -11,8 +11,8 @@ from typing import List, Dict
 from django.db import transaction
 
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
-from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.accounts.report import Report
+from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.services.binom.get_info import get_campaigns

@@ -92,12 +92,14 @@ TRAFFIC_GROUPS = (
     ("NATIVE traff", "NATIVE traff"),
     ("POP traff", "POP traff"),
     ("PUSH traff", "PUSH traff"),
+    ("Tik Tok", "Tik Tok")
 )
 
 # settings for pdf reports generating
 TABLE_STYLE = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                           ("FONTSIZE", (0, 0), (-1, -1), 12), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
                           ("LEADING", (0, 0), (-1, -1), 15)])
+
 PARAGRAPH_STYLE_FONT_11 = ParagraphStyle(name="style", alignment=1, fontSize=11, leading=15)
 PARAGRAPH_STYLE_FONT_12 = ParagraphStyle(name="style", alignment=1, fontSize=12, leading=15)
 
