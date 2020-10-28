@@ -70,6 +70,10 @@ class TestsManager:
                     _logger.error(f"Test with id {test.id} doesn't split by geo.")
                     raise TestNotSplitError(test_id=test.id)
 
+                if len(test_offers_ids) > 1 and not test.one_budget_for_all_offers:
+                    _logger.error(f"Test with id {test.id} doesn't split by offers.")
+                    raise TestNotSplitError(test_id=test.id)
+
                 start_balance = test.balance
                 test_balance = test.balance
 

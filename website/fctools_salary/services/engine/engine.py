@@ -346,7 +346,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
         )
         report.profit_pop = profits["POP traff"] if "POP traff" in profits and profits["POP traff"] < 0 else 0
         report.profit_push = profits["PUSH traff"] if "PUSH traff" in profits and profits["PUSH traff"] < 0 else 0
-        report.profit_push = profits["Tik Tok"] if "Tik Tok" in profits and profits["Tik Tok"] < 0 else 0
+        report.profit_tik_tok = profits["Tik Tok"] if "Tik Tok" in profits and profits["Tik Tok"] < 0 else 0
 
         report.save()
 
