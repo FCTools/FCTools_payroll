@@ -125,7 +125,9 @@ class TestsManager:
                         test.balance = test_balance
                         test.save()
                     else:
-                        test.delete()
+                        test.balance = 0.0
+                        test.archived = True
+                        test.save()
 
         for traffic_group in tests:
             tests[traffic_group][1] = round(tests[traffic_group][1], 6)
