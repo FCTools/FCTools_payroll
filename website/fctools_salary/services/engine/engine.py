@@ -372,7 +372,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
         if not deltas_formatted[traffic_group]:
             deltas_formatted[traffic_group] = "0.0"
         else:
-            deltas_formatted[traffic_group] += f" = {deltas_sum}"
+            deltas_formatted[traffic_group] += f" = {round(deltas_sum, 6)}"
 
     calculation_items = {
         "start_balances": start_balances,
