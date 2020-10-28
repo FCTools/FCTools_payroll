@@ -300,7 +300,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
                     deltas_sum += deltas[period][traffic_group]
 
             if deltas_sum != 0:
-                result[traffic_group][0] += f" + {deltas_sum}"
+                result[traffic_group][0] += f" + {round(deltas_sum, 6)}"
 
             result[traffic_group][0] += f" + {tests[traffic_group][1]}) * {final_percent}"
         else:
