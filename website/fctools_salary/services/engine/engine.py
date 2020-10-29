@@ -316,7 +316,8 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
             if deltas_sum != 0:
                 result[traffic_group][0] += f" + {deltas_sum}"
-            result[traffic_group][0] += ")"
+
+            result[traffic_group][0] += f" + {tests[traffic_group][1]})"
 
         if user.is_lead and from_other_users[traffic_group][1] > 0:
             result[traffic_group][0] += f" + {from_other_users[traffic_group][1]}"
