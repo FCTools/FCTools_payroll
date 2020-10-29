@@ -324,4 +324,5 @@ class ReportAdmin(admin.ModelAdmin):
         "profit_native",
         "profit_inapp",
         "profit_fpa_hsa_pwa",
+        "profit_tik_tok",
     ]

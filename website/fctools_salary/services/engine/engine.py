@@ -335,17 +335,13 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
         report = Report(user=user, start_date=start_date, end_date=end_date)
 
-        report.profit_admin = profits["ADMIN"] if "ADMIN" in profits and profits["ADMIN"] < 0 else 0
-        report.profit_fpa_hsa_pwa = (
-            profits["FPA/HSA/PWA"] if "FPA/HSA/PWA" in profits and profits["FPA/HSA/PWA"] < 0 else 0
-        )
-        report.profit_inapp = profits["INAPP traff"] if "INAPP traff" in profits and profits["INAPP traff"] < 0 else 0
-        report.profit_native = (
-            profits["NATIVE traff"] if "NATIVE traff" in profits and profits["NATIVE traff"] < 0 else 0
-        )
-        report.profit_pop = profits["POP traff"] if "POP traff" in profits and profits["POP traff"] < 0 else 0
-        report.profit_push = profits["PUSH traff"] if "PUSH traff" in profits and profits["PUSH traff"] < 0 else 0
-        report.profit_tik_tok = profits["Tik Tok"] if "Tik Tok" in profits and profits["Tik Tok"] < 0 else 0
+        report.profit_admin = profits["ADMIN"] if "ADMIN" in profits else None
+        report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"] if "FPA/HSA/PWA" in profits else None
+        report.profit_inapp = profits["INAPP traff"] if "INAPP traff" in profits else None
+        report.profit_native = profits["NATIVE traff"] if "NATIVE traff" in profits else None
+        report.profit_pop = profits["POP traff"] if "POP traff" in profits else None
+        report.profit_push = profits["PUSH traff"] if "PUSH traff" in profits else None
+        report.profit_tik_tok = profits["Tik Tok"] if "Tik Tok" in profits else None
 
         report.save()
 
