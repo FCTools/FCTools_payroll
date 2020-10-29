@@ -333,8 +333,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
         _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
         _logger.info("Campaigns was successfully saved.")
 
-        report = Report(user=user, start_date=start_date, end_date=end_date, profit_admin=0.0, profit_inapp=0.0,
-                        profit_native=0.0, profit_pop=0.0, profit_push=0.0, profit_fpa_hsa_pwa=0.0)
+        report = Report(user=user, start_date=start_date, end_date=end_date)
 
         report.profit_admin = profits["ADMIN"] if "ADMIN" in profits and profits["ADMIN"] < 0 else 0
         report.profit_fpa_hsa_pwa = (
