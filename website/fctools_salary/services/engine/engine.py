@@ -20,6 +20,8 @@ from fctools_salary.services.binom.update import update_offers
 from fctools_salary.services.engine.tests_manager import TestsManager
 from fctools_salary.services.engine.tracker_manager import TrackerManager
 from fctools_salary.services.helpers.pdf_generator import PDFGenerator
+from fctools_salary.services.helpers.report import Report as Rp
+
 
 _logger = logging.getLogger(__name__)
 
@@ -202,6 +204,50 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
             campaign["instance"].save()
 
 
+def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups):
+    report = Rp()
+
+    _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
+
+    report.start_balances = _set_start_balances(user, traffic_groups)
+
+    _logger.info("Start balances was successfully set.")
+
+    prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
+    current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
+
+    _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
+
+    report.revenues, report.profits = TrackerManager.calculate_profit_for_period_upd(current_campaigns_tracker_list,
+                                                                                     traffic_groups)
+
+    _logger.info(f"Total revenue and profits was successfully calculated. "
+                 f"Revenues: {report.revenues}. Profits: {report.profits}")
+
+    report.deltas = TrackerManager.calculate_deltas_upd(user, traffic_groups, commit)
+
+    TestsManager.archive_user_tests(user)
+    tests_list = list(Test.objects.filter(user=user, archived=False))
+
+    report.tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups,
+                                                start_date, end_date)
+
+    _logger.info(f"Tests was successfully calculated: {report.tests}")
+
+    report.final_percents = {traffic_group: _calculate_final_percent(report.revenues(traffic_group), user.salary_group)
+                             for traffic_group in traffic_groups}
+
+    _logger.info(f"Final percents: {report.final_percents}. User is lead: {user.is_lead}")
+
+    if user.is_lead:
+        report.from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
+        _logger.info(f"User profit from other users (as teamlead): {report.from_other_users}")
+
+
+def _save_report_info():
+    pass
+
+
 def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) -> dict:
     """
     Calculates user salary for the period from start_date to end_date by selected traffic groups. Generates
@@ -256,6 +302,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
 
     TestsManager.archive_user_tests(user)
     tests_list = list(Test.objects.filter(user=user, archived=False))
+
     tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups, start_date,
                                          end_date)
 
