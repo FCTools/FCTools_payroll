@@ -209,6 +209,7 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
 
     _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
 
+    report.traffic_groups = traffic_groups
     report.start_balances = _set_start_balances(user, traffic_groups)
 
     _logger.info("Start balances was successfully set.")
