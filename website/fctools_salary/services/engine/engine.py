@@ -258,7 +258,7 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
         "revenues": report.revenues,
         "final_percents": report.final_percents,
         "profits": report.profits,
-        "from_prev_periods": report.deltas,
+        "from_prev_period": report.deltas,
         "tests": report.tests,
         "result": report.result,
         "report_name": report_filename,

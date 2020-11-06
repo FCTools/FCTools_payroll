@@ -34,10 +34,12 @@ class Report:
 
             for period in self.deltas[traffic_group]:
                 if result[traffic_group][0]:
-                    result[traffic_group][0] += f" + {self.deltas[traffic_group][period]} [{period}]"
+                    result[traffic_group][0] += f" + {round(self.deltas[traffic_group][period], 6)} [{period}]"
                 else:
-                    result[traffic_group][0] += f"{self.deltas[traffic_group][period]} [{period}]"
+                    result[traffic_group][0] += f"{round(self.deltas[traffic_group][period], 0)} [{period}]"
                 result[traffic_group][1] += self.deltas[traffic_group][period]
+
+            result[traffic_group][1] = round(result[traffic_group][1], 6)
 
             if "+" in result[traffic_group][0]:
                 result[traffic_group][0] += f" = {result[traffic_group][1]}"
@@ -67,11 +69,12 @@ class Report:
                 self.result[traffic_group][0] += f" + {self.tests[traffic_group][1]}"
                 self.result[traffic_group][1] += self.tests[traffic_group][1]
 
-            if self.result[traffic_group][1] > 0:
+            if self.result[traffic_group][1] >= 0:
                 self.result[traffic_group][1] *= self.final_percents[traffic_group]
                 self.result[traffic_group][1] = round(self.result[traffic_group][1], 6)
                 self.result[traffic_group][0] = (
                     f"({self.result[traffic_group][0]}) * {self.final_percents[traffic_group]}"
                     f" = {self.result[traffic_group][1]}")
-
-        pprint(self.result)
+            else:
+                self.result[traffic_group][1] = round(self.result[traffic_group][1], 6)
+                self.result[traffic_group][0] += f" = {self.result[traffic_group][1]}"

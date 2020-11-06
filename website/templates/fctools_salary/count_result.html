@@ -97,8 +97,8 @@
 
         <tr>
             <td style="padding:15px">Previous periods</td>
-            {% for count_string in from_prev_period.values %}
-                <td style="padding:15px">{{ count_string }}</td>
+            {% for traffic_group, value in from_prev_period.items %}
+                <td style="padding:15px">{{ value.0 }}</td>
             {% endfor %}
         </tr>
 
