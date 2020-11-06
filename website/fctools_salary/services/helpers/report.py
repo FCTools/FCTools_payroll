@@ -1,5 +1,11 @@
-from pprint import pprint
+"""
+Copyright © 2020 FC Tools. All rights reserved.
+Author: German Yakimov
+"""
 
+from django.db import transaction
+
+from fctools_salary.models import Report as Rp
 from fctools_salary.services.helpers.pdf_generator import PDFGenerator
 
 
@@ -25,6 +31,48 @@ class Report:
                                                           self.profits, self.deltas, self.tests,
                                                           self.from_other_users, self.result, self.user,
                                                           self.start_date, self.end_date)
+
+    def _save_user_balances(self):
+        """
+        Saves user balances to database.
+        """
+
+        with transaction.atomic():
+            self.user.admin_balance = self.result["ADMIN"][1] if "ADMIN" in self.result and self.result["ADMIN"][
+                1] < 0 else 0
+            self.user.fpa_hsa_pwa_balance = (
+                self.result["FPA/HSA/PWA"][1] if "FPA/HSA/PWA" in self.result and self.result["FPA/HSA/PWA"][
+                    1] < 0 else 0
+            )
+            self.user.inapp_balance = self.result["INAPP traff"][1] if "INAPP traff" in self.result and self.result[
+                "INAPP traff"][1] < 0 else 0
+            self.user.native_balance = (
+                self.result["NATIVE traff"][1] if "NATIVE traff" in self.result and self.result["NATIVE traff"][
+                    1] < 0 else 0
+            )
+            self.user.pop_balance = self.result["POP traff"][1] if "POP traff" in self.result and \
+                                                                   self.result["POP traff"][1] < 0 else 0
+            self.user.push_balance = self.result["PUSH traff"][1] if "PUSH traff" in self.result and \
+                                                                     self.result["PUSH traff"][1] < 0 else 0
+            self.user.tik_tok_balance = self.result["Tik Tok"][1] if "Tik Tok" in self.result and \
+                                                                     self.result["Tik Tok"][1] < 0 else 0
+
+            self.user.save()
+
+    def save(self):
+        self._save_user_balances()
+
+        report = Rp(user=self.user, start_date=self.start_date, end_date=self.end_date)
+
+        report.profit_admin = self.profits["ADMIN"] if "ADMIN" in self.profits else None
+        report.profit_fpa_hsa_pwa = self.profits["FPA/HSA/PWA"] if "FPA/HSA/PWA" in self.profits else None
+        report.profit_inapp = self.profits["INAPP traff"] if "INAPP traff" in self.profits else None
+        report.profit_native = self.profits["NATIVE traff"] if "NATIVE traff" in self.profits else None
+        report.profit_pop = self.profits["POP traff"] if "POP traff" in self.profits else None
+        report.profit_push = self.profits["PUSH traff"] if "PUSH traff" in self.profits else None
+        report.profit_tik_tok = self.profits["Tik Tok"] if "Tik Tok" in self.profits else None
+
+        report.save()
 
     def generate_deltas_calculation(self):
         result = {}

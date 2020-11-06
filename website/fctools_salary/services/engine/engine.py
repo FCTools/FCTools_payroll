@@ -250,6 +250,10 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
     report.generate_calculation()
     report_filename = report.generate_pdf()
 
+    if commit:
+        report.save()
+        _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
+
     return {
         "user": str(user),
         "start_date": start_date,
@@ -264,10 +268,6 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
         "report_name": report_filename,
         "from_other_users": report.from_other_users if report.from_other_users else None
     }
-
-
-def _save_report_info():
-    pass
 
 
 def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) -> dict:
