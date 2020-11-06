@@ -14,7 +14,7 @@ from django.db import transaction
 from django.shortcuts import render
 
 from fctools_salary.services.binom.update import update_basic_info
-from fctools_salary.services.engine.engine import calculate_user_salary
+from fctools_salary.services.engine.engine import calculate_user_salary_upd
 from .forms import CalculationForm
 
 _logger = logging.getLogger(__name__)
@@ -116,7 +116,7 @@ def count_view(request):
             return render(
                 request,
                 result_template,
-                context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups),
+                context=calculate_user_salary_upd(user, start_date, end_date, update_db_flag, traffic_groups),
             )
         else:
             _logger.warning("Incorrect report form.")

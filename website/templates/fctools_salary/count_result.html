@@ -54,8 +54,6 @@
     </nav>
 
     <p>User: <b>{{ user }}</b></p>
-    <p>Total revenue: <b>{{ total_revenue }}</b></p>
-    <p>Final percent: <b>{{ final_percent }}</b></p>
     <p>Period: <b>{{ start_date }} - {{ end_date }}</b></p>
 
     <table id="centerLayer" border="1" cellpadding="5">
@@ -73,6 +71,20 @@
             <td style="padding:15px">Start balance</td>
             {% for traffic_group, balance in start_balances.items %}
                 <td style="padding:15px">{{ balance }}</td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td style="padding:15px">Revenue</td>
+            {% for traffic_group, revenue in revenues.items %}
+                <td style="padding:15px">{{ revenue }}</td>
+            {% endfor %}
+        </tr>
+
+        <tr>
+            <td style="padding:15px">Final percent</td>
+            {% for traffic_group, final_percent in final_percents.items %}
+                <td style="padding:15px">{{ final_percent }}</td>
             {% endfor %}
         </tr>
 

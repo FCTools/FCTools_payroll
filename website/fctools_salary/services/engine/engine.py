@@ -206,6 +206,9 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
 
 def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups):
     report = Rp()
+    report.user = user
+    report.start_date = start_date
+    report.end_date = end_date
 
     _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
 
@@ -235,7 +238,7 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
 
     _logger.info(f"Tests was successfully calculated: {report.tests}")
 
-    report.final_percents = {traffic_group: _calculate_final_percent(report.revenues(traffic_group), user.salary_group)
+    report.final_percents = {traffic_group: _calculate_final_percent(report.revenues[traffic_group], user.salary_group)
                              for traffic_group in traffic_groups}
 
     _logger.info(f"Final percents: {report.final_percents}. User is lead: {user.is_lead}")
@@ -243,6 +246,24 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
     if user.is_lead:
         report.from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
         _logger.info(f"User profit from other users (as teamlead): {report.from_other_users}")
+
+    report.generate_calculation()
+    report_filename = report.generate_pdf()
+
+    return {
+        "user": str(user),
+        "start_date": start_date,
+        "end_date": end_date,
+        "start_balances": report.start_balances,
+        "revenues": report.revenues,
+        "final_percents": report.final_percents,
+        "profits": report.profits,
+        "from_prev_periods": report.deltas,
+        "tests": report.tests,
+        "result": report.result,
+        "report_name": report_filename,
+        "from_other_users": report.from_other_users if report.from_other_users else None
+    }
 
 
 def _save_report_info():
@@ -278,6 +299,8 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) ->
     Optional[Dict[str, List[Union[str, float]]]],
     str]
     """
+
+    calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups)
 
     _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
 
