@@ -24,7 +24,7 @@ _logger = logging.getLogger(__name__)
 
 def get_users():
     """
-    Gets users from tracker.
+    Get users from tracker.
 
     :return: list of users
     :rtype: List[User]
@@ -60,7 +60,7 @@ def get_users():
 
 def get_offers():
     """
-    Gets offers from tracker.
+    Get offers from tracker.
 
     :return: list of offers
     :rtype: List[Offer]
@@ -107,7 +107,7 @@ def get_offers():
 
 def get_traffic_sources():
     """
-    Gets traffic sources from tracker.
+    Get traffic sources from tracker.
 
     :return: list of traffic sources
     :rtype: List[TrafficSource]
@@ -186,7 +186,7 @@ def get_traffic_sources():
 
 def get_offers_ids_by_campaign(campaign):
     """
-    Gets list of offers ids for taken campaign.
+    Get list of offers ids for taken campaign.
 
     :param campaign: campaign
     :type campaign: Campaign
@@ -234,7 +234,7 @@ def get_offers_ids_by_campaign(campaign):
 
 def get_campaigns(start_date, end_date, user):
     """
-    Gets user campaigns from start_date to end_date.
+    Get user campaigns from start_date to end_date.
 
     :param start_date: period start date
     :type start_date: date

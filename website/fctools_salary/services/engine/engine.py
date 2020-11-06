@@ -145,35 +145,6 @@ def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traf
     return from_other_users
 
 
-def _save_user_balances(user, balances):
-    """
-    Saves user balances to database.
-
-    :param user: user
-    :type user: User
-
-    :param balances: balances to save (split by traffic group)
-    :type balances: Dict[str, float]
-
-    :return: None
-    """
-
-    with transaction.atomic():
-        user.admin_balance = balances["ADMIN"] if "ADMIN" in balances and balances["ADMIN"] < 0 else 0
-        user.fpa_hsa_pwa_balance = (
-            balances["FPA/HSA/PWA"] if "FPA/HSA/PWA" in balances and balances["FPA/HSA/PWA"] < 0 else 0
-        )
-        user.inapp_balance = balances["INAPP traff"] if "INAPP traff" in balances and balances["INAPP traff"] < 0 else 0
-        user.native_balance = (
-            balances["NATIVE traff"] if "NATIVE traff" in balances and balances["NATIVE traff"] < 0 else 0
-        )
-        user.pop_balance = balances["POP traff"] if "POP traff" in balances and balances["POP traff"] < 0 else 0
-        user.push_balance = balances["PUSH traff"] if "PUSH traff" in balances and balances["PUSH traff"] < 0 else 0
-        user.tik_tok_balance = balances["Tik Tok"] if "Tik Tok" in balances and balances["Tik Tok"] < 0 else 0
-
-        user.save()
-
-
 def _save_campaigns(campaigns_to_save, campaigns_db):
     """
     Saves campaigns to database (or update statistics, if campaign already exists).
@@ -204,7 +175,7 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
             campaign["instance"].save()
 
 
-def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups):
+def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     report = Rp()
     report.user = user
     report.start_date = start_date
@@ -222,13 +193,13 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
 
     _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
 
-    report.revenues, report.profits = TrackerManager.calculate_profit_for_period_upd(current_campaigns_tracker_list,
-                                                                                     traffic_groups)
+    report.revenues, report.profits = TrackerManager.calculate_profit_for_period(current_campaigns_tracker_list,
+                                                                                 traffic_groups)
 
     _logger.info(f"Total revenue and profits was successfully calculated. "
                  f"Revenues: {report.revenues}. Profits: {report.profits}")
 
-    report.deltas = TrackerManager.calculate_deltas_upd(user, traffic_groups, commit)
+    report.deltas = TrackerManager.calculate_deltas(user, traffic_groups, commit)
 
     TestsManager.archive_user_tests(user)
     tests_list = list(Test.objects.filter(user=user, archived=False))
@@ -268,193 +239,3 @@ def calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups
         "report_name": report_filename,
         "from_other_users": report.from_other_users if report.from_other_users else None
     }
-
-
-def calculate_user_salary(user, start_date, end_date, commit, traffic_groups) -> dict:
-    """
-    Calculates user salary for the period from start_date to end_date by selected traffic groups. Generates
-    pdf-file with result-table.
-
-    :param user: user
-    :type user: User
-
-    :param start_date: period start date
-    :type start_date: date
-
-    :param end_date: period end date
-    :type end_date: date
-
-    :param commit: if set to True, than all changes will be committed to database (e.g. tests balances,
-    campaigns statistics and user balances)
-    :type commit: bool
-
-    :param traffic_groups: traffic groups that includes in calculation
-    :type traffic_groups: List[str]
-
-    :return: Detailed calculation
-    :rtype: Dict[str, Union[
-    float,
-    Dict[str, float],
-    Dict[str, List[Union[str, float]]],
-    Optional[Dict[str, List[Union[str, float]]]],
-    str]
-    """
-
-    calculate_user_salary_upd(user, start_date, end_date, commit, traffic_groups)
-
-    _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
-
-    result = _set_start_balances(user, traffic_groups)
-    start_balances = deepcopy(result)
-
-    _logger.info("Start balances was successfully set.")
-
-    prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
-    current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
-
-    _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
-
-    total_revenue, profits = TrackerManager.calculate_profit_for_period(current_campaigns_tracker_list, traffic_groups)
-
-    _logger.info("Total revenue and profits was successfully calculated.")
-    _logger.info(f"Total revenue: {total_revenue}")
-    _logger.info(f"Profits: {profits}")
-
-    deltas = TrackerManager.calculate_deltas(user, traffic_groups, commit)
-
-    _logger.info(f"Deltas was successfully calculated: {deltas}")
-
-    TestsManager.archive_user_tests(user)
-    tests_list = list(Test.objects.filter(user=user, archived=False))
-
-    tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups, start_date,
-                                         end_date)
-
-    _logger.info(f"Tests was successfully calculated: {tests}")
-
-    final_percent = _calculate_final_percent(total_revenue, user.salary_group)
-
-    _logger.info(f"Final percent: {final_percent}")
-    _logger.info(f"User is lead: {user.is_lead}")
-
-    from_other_users = None
-
-    if user.is_lead:
-        from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
-        _logger.info(f"User profit from other users (as teamlead): {from_other_users}")
-
-    for traffic_group in result:
-        result[traffic_group] += round(profits[traffic_group], 6)
-
-        for period in deltas:
-            result[traffic_group] += round(deltas[period][traffic_group], 6)
-
-        result[traffic_group] += round(tests[traffic_group][1], 6)
-
-        if result[traffic_group] > 0:
-            result[traffic_group] *= final_percent
-
-        if user.is_lead:
-            result[traffic_group] += from_other_users[traffic_group][1]
-
-        result[traffic_group] = ["", result[traffic_group]]
-
-        if result[traffic_group][1] >= 0:
-            result[traffic_group][0] = (
-                f"({start_balances[traffic_group]}"
-                f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
-            )
-
-            deltas_sum = 0.0
-            for period in deltas:
-                if traffic_group in deltas[period]:
-                    deltas_sum += deltas[period][traffic_group]
-
-            if deltas_sum != 0:
-                result[traffic_group][0] += f" + {round(deltas_sum, 6)}"
-
-            result[traffic_group][0] += f" + {tests[traffic_group][1]}) * {final_percent}"
-        else:
-            result[traffic_group][0] = (
-                f"({start_balances[traffic_group]}"
-                f'{f" + {profits[traffic_group]}" if profits[traffic_group] >= 0 else f" - {-profits[traffic_group]}"}'
-            )
-
-            deltas_sum = 0.0
-            for period in deltas:
-                if traffic_group in deltas[period]:
-                    deltas_sum += deltas[period][traffic_group]
-
-            if deltas_sum != 0:
-                result[traffic_group][0] += f" + {deltas_sum}"
-
-            result[traffic_group][0] += f" + {tests[traffic_group][1]})"
-
-        if user.is_lead and from_other_users[traffic_group][1] > 0:
-            result[traffic_group][0] += f" + {from_other_users[traffic_group][1]}"
-
-        result[traffic_group][1] = round(result[traffic_group][1], 6)
-        result[traffic_group][0] += f" = {result[traffic_group][1]}"
-
-    _logger.info(f"Commit: {commit}")
-
-    if commit:
-        _save_user_balances(user, {traffic_group: result[traffic_group][1] for traffic_group in result})
-        _logger.info("User balances was successfully saved.")
-
-        _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
-        _logger.info("Campaigns was successfully saved.")
-
-        report = Report(user=user, start_date=start_date, end_date=end_date)
-
-        report.profit_admin = profits["ADMIN"] if "ADMIN" in profits else None
-        report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"] if "FPA/HSA/PWA" in profits else None
-        report.profit_inapp = profits["INAPP traff"] if "INAPP traff" in profits else None
-        report.profit_native = profits["NATIVE traff"] if "NATIVE traff" in profits else None
-        report.profit_pop = profits["POP traff"] if "POP traff" in profits else None
-        report.profit_push = profits["PUSH traff"] if "PUSH traff" in profits else None
-        report.profit_tik_tok = profits["Tik Tok"] if "Tik Tok" in profits else None
-
-        report.save()
-
-    _logger.info(f"Final calculation: {result}")
-
-    deltas_formatted = {}
-
-    for traffic_group in result:
-        deltas_sum = 0.0
-        deltas_formatted[traffic_group] = ""
-
-        for period in deltas:
-            if traffic_group in deltas[period]:
-                if deltas[period][traffic_group] == 0:
-                    continue
-
-                if not deltas_formatted[traffic_group]:
-                    deltas_formatted[traffic_group] = f"{deltas[period][traffic_group]} [{period}]"
-                else:
-                    deltas_formatted[traffic_group] += f" + {deltas[period][traffic_group]} [{period}]"
-                deltas_sum += deltas[period][traffic_group]
-
-        if not deltas_formatted[traffic_group]:
-            deltas_formatted[traffic_group] = "0.0"
-        else:
-            deltas_formatted[traffic_group] += f" = {round(deltas_sum, 6)}"
-
-    calculation_items = {
-        "start_balances": start_balances,
-        "profits": profits,
-        "from_prev_period": deltas_formatted,
-        "tests": tests,
-        "result": result,
-        "total_revenue": round(total_revenue, 6),
-        "final_percent": final_percent,
-        "user": user,
-        "start_date": start_date,
-        "end_date": end_date,
-        "from_other_users": from_other_users,
-    }
-
-    calculation_items['report_name'] = PDFGenerator.generate_report(**calculation_items)
-
-    return calculation_items
