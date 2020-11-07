@@ -95,6 +95,9 @@ TRAFFIC_GROUPS = (
     ("Tik Tok", "Tik Tok")
 )
 
+REDIS_HOST = 'localhost'
+REDIS_PORT = '6214'
+
 # settings for pdf reports generating
 TABLE_STYLE = TableStyle([("GRID", (0, 0), (-1, -1), 2, colors.black), ("ALIGN", (0, 0), (-1, -1), "CENTER"),
                           ("FONTSIZE", (0, 0), (-1, -1), 12), ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),

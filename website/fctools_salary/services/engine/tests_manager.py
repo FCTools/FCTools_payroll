@@ -12,6 +12,7 @@ from fctools_salary.domains.accounts.test import Test
 from fctools_salary.exceptions import UpdateError, TestNotSplitError
 from fctools_salary.services.binom.get_info import get_campaigns, get_campaign_main_geo
 from fctools_salary.services.engine.tracker_manager import TrackerManager
+from fctools_salary.services.helpers.redis_client import RedisClient
 
 _logger = logging.getLogger(__name__)
 
@@ -50,6 +51,7 @@ class TestsManager:
         """
 
         tests = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
+        redis = RedisClient()
 
         with transaction.atomic():
             for test in tests_list:
@@ -84,7 +86,11 @@ class TestsManager:
                             and len(test_offers_ids & set(campaign["offers_list"])) != 0
                     ):
                         if test_geos:
-                            max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
+                            if not redis.exists(campaign["instance"].id):
+                                max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
+                                redis.add_campaign_main_geo(campaign["instance"].id, max_clicks_geo)
+                            else:
+                                max_clicks_geo = redis.get_campaign_main_geo(campaign["instance"].id)
 
                             if max_clicks_geo == -1:
                                 raise UpdateError(f"Can't get campaign {campaign.id} main geo.")
@@ -132,6 +138,8 @@ class TestsManager:
                         test.balance = 0.0
                         test.archived = True
                         test.save()
+
+        redis.clear()
 
         for traffic_group in tests:
             tests[traffic_group][1] = round(tests[traffic_group][1], 6)
