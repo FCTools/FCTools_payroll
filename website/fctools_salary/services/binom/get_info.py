@@ -5,6 +5,7 @@ Author: German Yakimov
 
 import json
 import logging
+from copy import deepcopy
 from datetime import date
 from decimal import Decimal
 from typing import List, Dict
@@ -232,7 +233,7 @@ def get_offers_ids_by_campaign(campaign):
     return result
 
 
-def get_campaigns(start_date, end_date, user):
+def get_campaigns(start_date, end_date, user, redis_server=None):
     """
     Get user campaigns from start_date to end_date.
 
@@ -304,16 +305,31 @@ def get_campaigns(start_date, end_date, user):
         return []
 
     for campaign in result:
-        if campaign["instance"] in campaigns_db:
-            for offer in list([x for x in campaigns_db if x.id == campaign["instance"].id][0].offers_list.all()):
-                campaign["offers_list"].append(offer.id)
+        offers_ids = []
+
+        if redis_server:
+            if not redis_server.exists(campaign["instance"].id):
+                if campaign["instance"] in campaigns_db:
+                    for offer in list(
+                            [x for x in campaigns_db if x.id == campaign["instance"].id][0].offers_list.all()):
+                        offers_ids.append(offer.id)
+                else:
+                    offers_ids = get_offers_ids_by_campaign(campaign["instance"])
+
+                redis_server.add_campaign_offers(campaign["instance"].id, offers_ids)
+            else:
+                offers_ids = redis_server.get_campaign_offers(campaign["instance"].id)
         else:
-            offers_ids = get_offers_ids_by_campaign(campaign["instance"])
+            if campaign["instance"] in campaigns_db:
+                for offer in list([x for x in campaigns_db if x.id == campaign["instance"].id][0].offers_list.all()):
+                    offers_ids.append(offer.id)
+            else:
+                offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 
-            if not offers_ids:
-                return []
+        if not offers_ids:
+            return []
 
-            campaign["offers_list"] = offers_ids
+        campaign["offers_list"] = deepcopy(offers_ids)
 
     _logger.info(f"Campaigns for {user} from {start_date} to {end_date} were successfully get.")
     return result

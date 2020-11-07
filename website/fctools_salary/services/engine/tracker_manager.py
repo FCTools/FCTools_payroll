@@ -5,6 +5,7 @@ Author: German Yakimov
 
 from fctools_salary.models import Report
 from fctools_salary.services.binom.get_info import get_campaigns
+from fctools_salary.services.helpers.redis_client import RedisClient
 
 
 class TrackerManager:
@@ -64,9 +65,11 @@ class TrackerManager:
 
         reports_list = Report.objects.filter(user=user)
 
+        redis = RedisClient()
+
         for report in reports_list:
             key = f'{report.start_date} - {report.end_date}'
-            campaigns = get_campaigns(report.start_date, report.end_date, user)
+            campaigns = get_campaigns(report.start_date, report.end_date, user, redis)
             profits = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)[1]
 
             if "ADMIN" in traffic_groups and report.profit_admin:
@@ -114,6 +117,8 @@ class TrackerManager:
                     report.profit_tik_tok = profits["Tik Tok"]
 
                 report.save()
+
+        redis.clear()
 
         for traffic_group in deltas:
             for key in deltas[traffic_group]:

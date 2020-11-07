@@ -80,6 +80,10 @@ class Report:
         for traffic_group in self.traffic_groups:
             result[traffic_group] = ["", 0.0]
 
+            if not self.deltas[traffic_group]:
+                result[traffic_group][0] = "0.0"
+                continue
+
             for period in self.deltas[traffic_group]:
                 if result[traffic_group][0]:
                     result[traffic_group][0] += f" + {round(self.deltas[traffic_group][period], 6)} [{period}]"

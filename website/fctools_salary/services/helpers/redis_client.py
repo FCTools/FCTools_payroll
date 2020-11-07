@@ -24,6 +24,18 @@ class RedisClient:
         if self.exists(campaign_id):
             return json.loads(self._server.get(campaign_id))['geo']
 
+    def get_campaign_offers(self, campaign_id):
+        campaign_id = str(campaign_id)
+
+        if self.exists(campaign_id):
+            return json.loads(self._server.get(campaign_id))['offers']
+
+    def add_campaign_offers(self, campaign_id, offers_list):
+        campaign_id = str(campaign_id)
+
+        if not self.exists(campaign_id):
+            self._server.append(campaign_id, json.dumps({'offers': offers_list}))
+
     def clear(self):
         self._server.flushdb()
 
