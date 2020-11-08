@@ -18,6 +18,7 @@ from fctools_salary.domains.tracker.geo import Geo
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
 from fctools_salary.services.helpers.test_splitter import TestSplitter
+from fctools_salary.filters import ActiveUsersFilter
 
 
 @admin.register(User)
@@ -86,7 +87,7 @@ class TrafficSourceAdmin(admin.ModelAdmin):
     ]
 
     list_filter = [
-        "user",
+        ActiveUsersFilter,
     ]
 
     list_select_related = [
@@ -221,9 +222,9 @@ class TestAdmin(admin.ModelAdmin):
     ]
 
     list_filter = [
-        "user",
         "traffic_group",
         "archived",
+        ActiveUsersFilter,
     ]
 
     list_select_related = [
@@ -245,7 +246,11 @@ class TestAdmin(admin.ModelAdmin):
 
     actions = [split_tests, archive_expired_tests, ]
 
-    search_fields = ['offers__id']
+    search_fields = ['offers__id',
+                     'user__login',
+                     'traffic_sources__id',
+                     'traffic_sources__name',
+                     'offers__name', ]
 
 
 @admin.register(Campaign)
@@ -268,17 +273,18 @@ class CampaignAdmin(admin.ModelAdmin):
 
     list_filter = [
         "traffic_group",
-        "traffic_source",
-        "user",
+        ActiveUsersFilter,
     ]
 
     list_select_related = [
-        "user",
         "traffic_source",
     ]
 
     search_fields = [
-        "name",
+        "traffic_source__name",
+        "id",
+        "offers_list__id",
+        "user__login",
     ]
 
 
