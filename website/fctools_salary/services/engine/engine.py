@@ -201,7 +201,8 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     report.deltas = TrackerManager.calculate_deltas(user, traffic_groups, commit, redis_client)
 
     TestsManager.archive_user_tests(user)
-    tests_list = list(Test.objects.filter(user=user, archived=False))
+    tests_list = list(Test.objects.filter(user=user, archived=False).prefetch_related('offers', 'traffic_sources',
+                                                                                      'geo'))
 
     redis_client.clear()
 
