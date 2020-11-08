@@ -43,7 +43,7 @@ class TrackerManager:
         return revenues, profits
 
     @staticmethod
-    def calculate_deltas(user, traffic_groups, commit):
+    def calculate_deltas(user, traffic_groups, commit, redis=None):
         """
         Calculates deltas from previous period. Delta - a profit that relates to the previous periods,
         but was not available at the time of calculation.
@@ -57,6 +57,9 @@ class TrackerManager:
         :param commit: save changes to database
         :type commit: bool
 
+        :param redis: RedisClient instance for caching
+        :type redis: RedisClient
+
         :return: deltas for last 6 periods (split by traffic groups)
         :rtype: Dict[str, List[Union[str, float]]]
         """
@@ -65,7 +68,8 @@ class TrackerManager:
 
         reports_list = Report.objects.filter(user=user)
 
-        redis = RedisClient()
+        if not redis:
+            redis = RedisClient()
 
         for report in reports_list:
             key = f'{report.start_date} - {report.end_date}'

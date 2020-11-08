@@ -246,6 +246,9 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
     :param user: user
     :type user: User
 
+    :param redis_server: RedisClient instance for caching
+    :type redis_server: RedisClient
+
     :return: list of campaigns from tracker, each campaign is dict with 2 keys: instance - Campaign class instance
     from models, offers_list - list of offers ids
     :rtype: List[Dict[str, Union[CampaignTracker, List]]]
@@ -261,7 +264,8 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
         "api_key": settings.BINOM_API_KEY,
     }
 
-    campaigns_db = list(Campaign.objects.all())
+    campaigns_db_ids = [campaign.id for campaign in
+                        list(Campaign.objects.filter(user_id=user.id).prefetch_related('offers_list'))]
 
     _logger.info(f"Start getting campaigns from {start_date} to {end_date} for user {user}")
 
@@ -305,14 +309,12 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
         return []
 
     for campaign in result:
-        offers_ids = []
-
         if redis_server:
             if not redis_server.exists(campaign["instance"].id):
-                if campaign["instance"] in campaigns_db:
-                    for offer in list(
-                            [x for x in campaigns_db if x.id == campaign["instance"].id][0].offers_list.all()):
-                        offers_ids.append(offer.id)
+                if campaign["instance"].id in campaigns_db_ids:
+                    offers_ids = [offer.id for offer in
+                                  Campaign.objects.get(id__exact=campaign["instance"].id).offers_list.all()]
+
                 else:
                     offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 
@@ -320,9 +322,10 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
             else:
                 offers_ids = redis_server.get_campaign_offers(campaign["instance"].id)
         else:
-            if campaign["instance"] in campaigns_db:
-                for offer in list([x for x in campaigns_db if x.id == campaign["instance"].id][0].offers_list.all()):
-                    offers_ids.append(offer.id)
+            if campaign["instance"].id in campaigns_db_ids:
+                offers_ids = [offer.id for offer in
+                              Campaign.objects.get(id__exact=campaign["instance"].id).offers_list.all()]
+
             else:
                 offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 

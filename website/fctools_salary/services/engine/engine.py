@@ -4,14 +4,12 @@ Author: German Yakimov
 """
 
 import logging
-from copy import deepcopy
 from datetime import date
 from typing import List, Dict
 
 from django.db import transaction
 
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
-from fctools_salary.domains.accounts.report import Report
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.offer import Offer
@@ -19,8 +17,8 @@ from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
 from fctools_salary.services.engine.tests_manager import TestsManager
 from fctools_salary.services.engine.tracker_manager import TrackerManager
-from fctools_salary.services.helpers.pdf_generator import PDFGenerator
 from fctools_salary.services.helpers.report import Report as Rp
+from fctools_salary.services.helpers.redis_client import RedisClient
 
 
 _logger = logging.getLogger(__name__)
@@ -28,7 +26,7 @@ _logger = logging.getLogger(__name__)
 
 def _calculate_final_percent(revenue, salary_group):
     """
-    Calculates final percent based on total revenue for the period and user salary group.
+    Calculate final percent based on total revenue for the period and user salary group.
 
     :param revenue: total revenue for the period
     :type revenue: float
@@ -39,6 +37,7 @@ def _calculate_final_percent(revenue, salary_group):
     :return final percent based on user salary group and total revenue
     :rtype: float
     """
+
     percent = 0
 
     if salary_group == 1:
@@ -55,15 +54,13 @@ def _calculate_final_percent(revenue, salary_group):
             percent = 0.4
         elif revenue > 10000:
             percent = 0.35
-    elif salary_group == 3:
-        percent = 0.15
 
     return percent
 
 
 def _set_start_balances(user, traffic_groups):
     """
-    Gets user balances for selected traffic groups from database.
+    Get user balances for selected traffic groups from database.
 
     :param user: user to get start balances
     :type user: User
@@ -97,7 +94,7 @@ def _set_start_balances(user, traffic_groups):
 
 def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups):
     """
-    Calculates teamlead profit from other users.
+    Calculate teamlead profit from other users.
 
     :param start_date: period start date
     :type start_date: date
@@ -147,7 +144,7 @@ def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traf
 
 def _save_campaigns(campaigns_to_save, campaigns_db):
     """
-    Saves campaigns to database (or update statistics, if campaign already exists).
+    Save campaigns to database (or update statistics, if campaign already exists).
 
     :param campaigns_to_save: campaigns to save
     :type campaigns_to_save: List[CampaignTracker]
@@ -181,6 +178,8 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     report.start_date = start_date
     report.end_date = end_date
 
+    redis_client = RedisClient()
+
     _logger.info(f"Start salary calculating from {start_date} to {end_date} for user {user}")
 
     report.traffic_groups = traffic_groups
@@ -189,7 +188,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     _logger.info("Start balances was successfully set.")
 
     prev_campaigns_db_list = list(Campaign.objects.filter(user=user))
-    current_campaigns_tracker_list = get_campaigns(start_date, end_date, user)
+    current_campaigns_tracker_list = get_campaigns(start_date, end_date, user, redis_client)
 
     _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
 
@@ -199,14 +198,15 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     _logger.info(f"Total revenue and profits was successfully calculated. "
                  f"Revenues: {report.revenues}. Profits: {report.profits}")
 
-    report.deltas = TrackerManager.calculate_deltas(user, traffic_groups, commit)
+    report.deltas = TrackerManager.calculate_deltas(user, traffic_groups, commit, redis_client)
 
     TestsManager.archive_user_tests(user)
     tests_list = list(Test.objects.filter(user=user, archived=False))
 
+    redis_client.clear()
+
     report.tests = TestsManager.calculate_tests(tests_list, current_campaigns_tracker_list, commit, traffic_groups,
                                                 start_date, end_date)
-
     _logger.info(f"Tests was successfully calculated: {report.tests}")
 
     report.final_percents = {traffic_group: _calculate_final_percent(report.revenues[traffic_group], user.salary_group)
@@ -215,7 +215,8 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     _logger.info(f"Final percents: {report.final_percents}. User is lead: {user.is_lead}")
 
     if user.is_lead:
-        report.from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups)
+        report.from_other_users = _calculate_teamlead_profit_from_other_users(start_date, end_date, user,
+                                                                              traffic_groups)
         _logger.info(f"User profit from other users (as teamlead): {report.from_other_users}")
 
     report.generate_calculation()

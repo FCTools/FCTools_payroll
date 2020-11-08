@@ -51,6 +51,7 @@ class TestsManager:
         """
 
         tests = {traffic_group: ["", 0.0] for traffic_group in traffic_groups}
+        done_campaigns_ids = set()
         redis = RedisClient()
 
         with transaction.atomic():
@@ -80,6 +81,9 @@ class TestsManager:
                 test_balance = test.balance
 
                 for campaign in campaigns_list:
+                    if campaign["instance"].id in done_campaigns_ids:
+                        continue
+
                     if (
                             campaign["instance"].traffic_group in traffic_groups
                             and campaign["instance"].traffic_source.id in test_traffic_sources_ids
@@ -129,6 +133,7 @@ class TestsManager:
                         tests[test_campaign.traffic_group][1] -= round(float(test_campaign.profit), 6)
 
                     test_balance += test_campaign.profit
+                    done_campaigns_ids.add(test_campaign.id)
 
                 if commit and (test_balance != start_balance or test_balance <= 0):
                     if test_balance > 0:
