@@ -1,5 +1,565 @@
 [
 {
+    "model": "fctools_salary.user",
+    "pk": 2,
+    "fields": {
+        "login": "Pavel_TOP",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 3,
+    "fields": {
+        "login": "User81",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 4,
+    "fields": {
+        "login": "User100",
+        "is_lead": false,
+        "salary_group": 2,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 5,
+    "fields": {
+        "login": "User35",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 6,
+    "fields": {
+        "login": "User69",
+        "is_lead": false,
+        "salary_group": 1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 7,
+    "fields": {
+        "login": "User67",
+        "is_lead": true,
+        "salary_group": 1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 8,
+    "fields": {
+        "login": "User53",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 9,
+    "fields": {
+        "login": "User80",
+        "is_lead": false,
+        "salary_group": 2,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "-645.735480",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 10,
+    "fields": {
+        "login": "User31",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 11,
+    "fields": {
+        "login": "User300",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 12,
+    "fields": {
+        "login": "User301",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 13,
+    "fields": {
+        "login": "User302",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 14,
+    "fields": {
+        "login": "Userteleg",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 15,
+    "fields": {
+        "login": "User400",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 16,
+    "fields": {
+        "login": "User401",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 17,
+    "fields": {
+        "login": "User402",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "-317.996410",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 18,
+    "fields": {
+        "login": "User403",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 19,
+    "fields": {
+        "login": "User404",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 20,
+    "fields": {
+        "login": "User405",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 21,
+    "fields": {
+        "login": "User406",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 22,
+    "fields": {
+        "login": "User407",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 23,
+    "fields": {
+        "login": "User408",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "-0.178300",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 24,
+    "fields": {
+        "login": "User409",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 25,
+    "fields": {
+        "login": "User410",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 26,
+    "fields": {
+        "login": "User411",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 27,
+    "fields": {
+        "login": "User412",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 28,
+    "fields": {
+        "login": "User413",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 30,
+    "fields": {
+        "login": "support",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 31,
+    "fields": {
+        "login": "German",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 32,
+    "fields": {
+        "login": "User420",
+        "is_lead": false,
+        "salary_group": 2,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 33,
+    "fields": {
+        "login": "User510",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 34,
+    "fields": {
+        "login": "User511",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 35,
+    "fields": {
+        "login": "Dmitriy",
+        "is_lead": false,
+        "salary_group": -1,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 36,
+    "fields": {
+        "login": "User450",
+        "is_lead": false,
+        "salary_group": 2,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
+    "model": "fctools_salary.user",
+    "pk": 37,
+    "fields": {
+        "login": "User555",
+        "is_lead": false,
+        "salary_group": 2,
+        "admin_balance": "0.000000",
+        "fpa_hsa_pwa_balance": "0.000000",
+        "inapp_balance": "0.000000",
+        "native_balance": "0.000000",
+        "pop_balance": "0.000000",
+        "push_balance": "0.000000",
+        "tik_tok_balance": "0.000000"
+    }
+},
+{
     "model": "fctools_salary.report",
     "pk": 1,
     "fields": {
@@ -73,54 +633,6 @@
         "profit_admin": "1000000.000000",
         "profit_native": "1000000.000000",
         "profit_push": "757.124060",
-        "profit_pop": "1000000.000000",
-        "profit_fpa_hsa_pwa": "1000000.000000",
-        "profit_inapp": "1000000.000000",
-        "profit_tik_tok": "1000000.000000"
-    }
-},
-{
-    "model": "fctools_salary.report",
-    "pk": 9,
-    "fields": {
-        "user": 4,
-        "start_date": "2020-08-03",
-        "end_date": "2020-08-16",
-        "profit_admin": "1000000.000000",
-        "profit_native": "1000000.000000",
-        "profit_push": "-320.359340",
-        "profit_pop": "1000000.000000",
-        "profit_fpa_hsa_pwa": "1000000.000000",
-        "profit_inapp": "1000000.000000",
-        "profit_tik_tok": "1000000.000000"
-    }
-},
-{
-    "model": "fctools_salary.report",
-    "pk": 10,
-    "fields": {
-        "user": 6,
-        "start_date": "2020-08-03",
-        "end_date": "2020-08-16",
-        "profit_admin": "1000000.000000",
-        "profit_native": "1000000.000000",
-        "profit_push": "-189.136270",
-        "profit_pop": "1000000.000000",
-        "profit_fpa_hsa_pwa": "1000000.000000",
-        "profit_inapp": "1000000.000000",
-        "profit_tik_tok": "1000000.000000"
-    }
-},
-{
-    "model": "fctools_salary.report",
-    "pk": 11,
-    "fields": {
-        "user": 7,
-        "start_date": "2020-08-03",
-        "end_date": "2020-08-16",
-        "profit_admin": "1000000.000000",
-        "profit_native": "1000000.000000",
-        "profit_push": "-278.053350",
         "profit_pop": "1000000.000000",
         "profit_fpa_hsa_pwa": "1000000.000000",
         "profit_inapp": "1000000.000000",
@@ -87664,566 +88176,6 @@
         "geo": [
             536
         ]
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 2,
-    "fields": {
-        "login": "Pavel_TOP",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 3,
-    "fields": {
-        "login": "User81",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 4,
-    "fields": {
-        "login": "User100",
-        "is_lead": false,
-        "salary_group": 2,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 5,
-    "fields": {
-        "login": "User35",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 6,
-    "fields": {
-        "login": "User69",
-        "is_lead": false,
-        "salary_group": 1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 7,
-    "fields": {
-        "login": "User67",
-        "is_lead": true,
-        "salary_group": 1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 8,
-    "fields": {
-        "login": "User53",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 9,
-    "fields": {
-        "login": "User80",
-        "is_lead": false,
-        "salary_group": 2,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "-645.735480",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 10,
-    "fields": {
-        "login": "User31",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 11,
-    "fields": {
-        "login": "User300",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 12,
-    "fields": {
-        "login": "User301",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 13,
-    "fields": {
-        "login": "User302",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 14,
-    "fields": {
-        "login": "Userteleg",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 15,
-    "fields": {
-        "login": "User400",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 16,
-    "fields": {
-        "login": "User401",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 17,
-    "fields": {
-        "login": "User402",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "-317.996410",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 18,
-    "fields": {
-        "login": "User403",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 19,
-    "fields": {
-        "login": "User404",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 20,
-    "fields": {
-        "login": "User405",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 21,
-    "fields": {
-        "login": "User406",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 22,
-    "fields": {
-        "login": "User407",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 23,
-    "fields": {
-        "login": "User408",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "-0.178300",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 24,
-    "fields": {
-        "login": "User409",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 25,
-    "fields": {
-        "login": "User410",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 26,
-    "fields": {
-        "login": "User411",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 27,
-    "fields": {
-        "login": "User412",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 28,
-    "fields": {
-        "login": "User413",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 30,
-    "fields": {
-        "login": "support",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 31,
-    "fields": {
-        "login": "German",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 32,
-    "fields": {
-        "login": "User420",
-        "is_lead": false,
-        "salary_group": 2,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 33,
-    "fields": {
-        "login": "User510",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 34,
-    "fields": {
-        "login": "User511",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 35,
-    "fields": {
-        "login": "Dmitriy",
-        "is_lead": false,
-        "salary_group": -1,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 36,
-    "fields": {
-        "login": "User450",
-        "is_lead": false,
-        "salary_group": 2,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
-    }
-},
-{
-    "model": "fctools_salary.user",
-    "pk": 37,
-    "fields": {
-        "login": "User555",
-        "is_lead": false,
-        "salary_group": 2,
-        "admin_balance": "0.000000",
-        "fpa_hsa_pwa_balance": "0.000000",
-        "inapp_balance": "0.000000",
-        "native_balance": "0.000000",
-        "pop_balance": "0.000000",
-        "push_balance": "0.000000",
-        "tik_tok_balance": "0.000000"
     }
 }
 ]
