@@ -110,3 +110,4 @@ class Test(models.Model):
 
     def __str__(self):
         return f"{self.user} {self.offers_str()} {self.budget}"
+

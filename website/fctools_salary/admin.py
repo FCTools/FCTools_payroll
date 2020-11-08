@@ -245,6 +245,8 @@ class TestAdmin(admin.ModelAdmin):
 
     actions = [split_tests, archive_expired_tests, ]
 
+    search_fields = ['offers__id']
+
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
