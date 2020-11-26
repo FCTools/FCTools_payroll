@@ -333,4 +333,11 @@ class ReportAdmin(admin.ModelAdmin):
         "profit_inapp",
         "profit_fpa_hsa_pwa",
         "profit_tik_tok",
+        "percent_admin",
+        "percent_push",
+        "percent_pop",
+        "percent_native",
+        "percent_inapp",
+        "percent_fpa_hsa_pwa",
+        "percent_tik_tok",
     ]
