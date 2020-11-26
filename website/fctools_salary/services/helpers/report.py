@@ -85,11 +85,15 @@ class Report:
                 continue
 
             for period in self.deltas[traffic_group]:
+                deltas_value = self.deltas[traffic_group][period][0]
+                percent = self.deltas[traffic_group][period][1]
+
                 if result[traffic_group][0]:
-                    result[traffic_group][0] += f" + {round(self.deltas[traffic_group][period], 6)} [{period}]"
+                    result[traffic_group][0] += f" + {deltas_value}*{percent} [{period}]"
                 else:
-                    result[traffic_group][0] += f"{round(self.deltas[traffic_group][period], 6)} [{period}]"
-                result[traffic_group][1] += self.deltas[traffic_group][period]
+                    result[traffic_group][0] += f"{deltas_value}*{percent} [{period}]"
+
+                result[traffic_group][1] += deltas_value * percent
 
             result[traffic_group][1] = round(result[traffic_group][1], 6)
 
@@ -104,32 +108,41 @@ class Report:
         for traffic_group in self.traffic_groups:
             self.result[traffic_group] = ["", 0.0]
 
-            self.result[traffic_group][0] += f"{self.start_balances[traffic_group]}"
+            # start balances
             self.result[traffic_group][1] += self.start_balances[traffic_group]
 
-            if self.profits[traffic_group] >= 0:
-                self.result[traffic_group][0] += f" + {self.profits[traffic_group]}"
-            else:
-                self.result[traffic_group][0] += f" - {-self.profits[traffic_group]}"
-
+            # profits
             self.result[traffic_group][1] += self.profits[traffic_group]
 
-            self.result[traffic_group][0] += f" + {self.deltas[traffic_group][1]}"
+            # tests
+            self.result[traffic_group][1] += self.tests[traffic_group][1]
+
+            # percent multiplying
+            if self.start_balances[traffic_group] + self.profits[traffic_group] + self.tests[traffic_group][1] > 0:
+                self.result[traffic_group][1] *= self.final_percents[traffic_group]
+
+                self.result[traffic_group][0] = "({} + {} + {}) * {}".format(
+                    self.start_balances[traffic_group],
+                    self.profits[traffic_group],
+                    self.tests[traffic_group][1],
+                    self.final_percents[traffic_group]
+                )
+            else:
+                self.result[traffic_group][0] = "{} + {} + {}".format(
+                    self.start_balances[traffic_group],
+                    self.profits[traffic_group],
+                    self.tests[traffic_group][1],
+                )
+
+            # from other users
+            self.result[traffic_group][1] += self.from_other_users[traffic_group][1]
+
+            # deltas
             self.result[traffic_group][1] += self.deltas[traffic_group][1]
 
-            if self.tests[traffic_group][1] > 0:
-                self.result[traffic_group][0] += f" + {self.tests[traffic_group][1]}"
-                self.result[traffic_group][1] += self.tests[traffic_group][1]
-
-            if traffic_group in self.from_other_users:
-                self.result[traffic_group][0] += f" + {self.from_other_users[traffic_group][1]}"
-
-            if self.result[traffic_group][1] >= 0:
-                self.result[traffic_group][1] *= self.final_percents[traffic_group]
-                self.result[traffic_group][1] = round(self.result[traffic_group][1], 6)
-                self.result[traffic_group][0] = (
-                    f"({self.result[traffic_group][0]}) * {self.final_percents[traffic_group]}"
-                    f" = {self.result[traffic_group][1]}")
-            else:
-                self.result[traffic_group][1] = round(self.result[traffic_group][1], 6)
-                self.result[traffic_group][0] += f" = {self.result[traffic_group][1]}"
+            self.result[traffic_group][0] = "{} + {} + {} = {}".format(
+                self.result[traffic_group][0],
+                self.from_other_users[traffic_group][1],
+                self.deltas[traffic_group][1],
+                self.result[traffic_group][1]
+            )

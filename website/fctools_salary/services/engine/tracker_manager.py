@@ -78,31 +78,35 @@ class TrackerManager:
 
             if "ADMIN" in traffic_groups and report.profit_admin:
                 if float(report.profit_admin) < profits["ADMIN"]:
-                    deltas["ADMIN"][key] = profits["ADMIN"] - float(report.profit_admin)
+                    deltas["ADMIN"][key] = [profits["ADMIN"] - float(report.profit_admin), report.percent_admin]
 
             if "PUSH traff" in traffic_groups and report.profit_push:
                 if float(report.profit_push) < profits["PUSH traff"]:
-                    deltas["PUSH traff"][key] = profits["PUSH traff"] - float(report.profit_push)
+                    deltas["PUSH traff"][key] = [profits["PUSH traff"] - float(report.profit_push), report.percent_push]
 
             if "POP traff" in traffic_groups and report.profit_pop:
                 if float(report.profit_pop) < profits["POP traff"]:
-                    deltas["POP traff"][key] = profits["POP traff"] - float(report.profit_pop)
+                    deltas["POP traff"][key] = [profits["POP traff"] - float(report.profit_pop), report.percent_pop]
 
             if "NATIVE traff" in traffic_groups and report.profit_native:
                 if float(report.profit_native) < profits["NATIVE traff"]:
-                    deltas["NATIVE traff"][key] = profits["NATIVE traff"] - float(report.profit_native)
+                    deltas["NATIVE traff"][key] = [profits["NATIVE traff"] - float(report.profit_native),
+                                                   report.percent_native]
 
             if "FPA/HSA/PWA" in traffic_groups and report.profit_fpa_hsa_pwa:
                 if float(report.profit_fpa_hsa_pwa) < profits["FPA/HSA/PWA"]:
-                    deltas["FPA/HSA/PWA"][key] = profits["FPA/HSA/PWA"] - float(report.profit_fpa_hsa_pwa)
+                    deltas["FPA/HSA/PWA"][key] = [profits["FPA/HSA/PWA"] - float(report.profit_fpa_hsa_pwa),
+                                                  report.percent_fpa_hsa_pwa]
 
             if "INAPP traff" in traffic_groups and report.profit_inapp:
                 if float(report.profit_inapp) < profits["INAPP traff"]:
-                    deltas["INAPP traff"][key] = profits["INAPP traff"] - float(report.profit_inapp)
+                    deltas["INAPP traff"][key] = [profits["INAPP traff"] - float(report.profit_inapp),
+                                                  report.percent_inapp]
 
             if "Tik Tok" in traffic_groups and report.profit_tik_tok:
                 if float(report.profit_tik_tok) < profits["Tik Tok"]:
-                    deltas["Tik Tok"][key] = profits["Tik Tok"] - float(report.profit_tik_tok)
+                    deltas["Tik Tok"][key] = [profits["Tik Tok"] - float(report.profit_tik_tok),
+                                              report.percent_tik_tok]
 
             if commit:
                 if "INAPP traff" in traffic_groups:
@@ -124,8 +128,8 @@ class TrackerManager:
 
         redis.clear()
 
-        for traffic_group in deltas:
-            for key in deltas[traffic_group]:
-                deltas[traffic_group][key] = round(deltas[traffic_group][key], 6)
+        # for traffic_group in deltas:
+        #     for key in deltas[traffic_group]:
+        #         deltas[traffic_group][key] = round(deltas[traffic_group][key], 6)
 
         return deltas
