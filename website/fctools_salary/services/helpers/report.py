@@ -59,11 +59,7 @@ class Report:
 
             self.user.save()
 
-    def save(self):
-        self._save_user_balances()
-
-        report = Rp(user=self.user, start_date=self.start_date, end_date=self.end_date)
-
+    def _save_profits(self, report):
         report.profit_admin = self.profits["ADMIN"] if "ADMIN" in self.profits else None
         report.profit_fpa_hsa_pwa = self.profits["FPA/HSA/PWA"] if "FPA/HSA/PWA" in self.profits else None
         report.profit_inapp = self.profits["INAPP traff"] if "INAPP traff" in self.profits else None
@@ -71,6 +67,27 @@ class Report:
         report.profit_pop = self.profits["POP traff"] if "POP traff" in self.profits else None
         report.profit_push = self.profits["PUSH traff"] if "PUSH traff" in self.profits else None
         report.profit_tik_tok = self.profits["Tik Tok"] if "Tik Tok" in self.profits else None
+
+        return report
+
+    def _save_percents(self, report):
+        report.percent_admin = self.final_percents["ADMIN"] if "ADMIN" in self.final_percents else None
+        report.percent_fpa_hsa_pwa = self.final_percents[
+            "FPA/HSA/PWA"] if "FPA/HSA/PWA" in self.final_percents else None
+        report.percent_inapp = self.final_percents["INAPP traff"] if "INAPP traff" in self.final_percents else None
+        report.percent_native = self.final_percents["NATIVE traff"] if "NATIVE traff" in self.final_percents else None
+        report.percent_pop = self.final_percents["POP traff"] if "POP traff" in self.final_percents else None
+        report.percent_push = self.final_percents["PUSH traff"] if "PUSH traff" in self.final_percents else None
+        report.percent_tik_tok = self.final_percents["Tik Tok"] if "Tik Tok" in self.final_percents else None
+
+        return report
+
+    def save(self):
+        self._save_user_balances()
+
+        report = Rp(user=self.user, start_date=self.start_date, end_date=self.end_date)
+        report = self._save_profits(report)
+        report = self._save_percents(report)
 
         report.save()
 
