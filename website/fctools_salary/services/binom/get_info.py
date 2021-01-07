@@ -285,7 +285,8 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
 
     try:
         campaigns_tracker_json = campaigns_tracker.json()
-        _logger.info('288')
+        _logger.info(f'288 Campaigns: {campaigns_tracker_json}')
+        _logger.info('289')
     except json.JSONDecodeError as decode_error:
         _logger.info(f'285 Campaigns: {decode_error.doc}')
         _logger.error(
