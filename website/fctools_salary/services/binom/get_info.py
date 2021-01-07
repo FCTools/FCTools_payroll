@@ -273,29 +273,19 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
         requests.Session(), f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}"
     )
 
-    _logger.info('276')
-
     if not isinstance(campaigns_tracker, requests.Response):
-        _logger.info(f'277 Campaigns: {campaigns_tracker}')
         _logger.error(
             f"Network error occurred while trying to get campaign full info from tracker: {campaigns_tracker}")
         return []
 
-    _logger.info('284')
-
     try:
         campaigns_tracker_json = campaigns_tracker.json()
-        _logger.info(f'288 Campaigns: {len(campaigns_tracker_json)}')
-        _logger.info('289')
     except json.JSONDecodeError as decode_error:
-        _logger.info(f'285 Campaigns: {decode_error.doc}')
         _logger.error(
             f"Can't decode response from tracker (getting info about campaigns): "
             f"{decode_error.doc}"
         )
         return []
-
-    _logger.info(f'298')
 
     try:
         result = [
@@ -315,7 +305,6 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
             for campaign in campaigns_tracker_json
         ]
     except KeyError:
-        _logger.info(f'318')
         _logger.error(f"Can't parse response from tracker (campaigns getting): {campaigns_tracker_json}")
         return []
 
@@ -340,13 +329,11 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
             else:
                 offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 
-        if not offers_ids:
-            _logger.info(f'344, campaign id: {campaign["instance"].id}')
-            return []
+        # if not offers_ids:
+        #     return []
 
         campaign["offers_list"] = deepcopy(offers_ids)
 
-    _logger.info(f'349')
     _logger.info(f"Campaigns for {user} from {start_date} to {end_date} were successfully get.")
     return result
 
