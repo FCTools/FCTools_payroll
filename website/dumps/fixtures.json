@@ -549,7 +549,7 @@
     "fields": {
         "login": "User555",
         "is_lead": false,
-        "salary_group": 2,
+        "salary_group": -1,
         "admin_balance": "0.000000",
         "fpa_hsa_pwa_balance": "0.000000",
         "inapp_balance": "0.000000",
@@ -88103,6 +88103,213 @@
         "geo": [
             536
         ]
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5321,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            159
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5322,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            160
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5323,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            171
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5324,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            172
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5325,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            177
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5326,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            178
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5327,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            180
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5328,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            181
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
+    }
+},
+{
+    "model": "fctools_salary.test",
+    "pk": 5329,
+    "fields": {
+        "budget": "30.000000",
+        "user": 36,
+        "one_budget_for_all_traffic_sources": false,
+        "one_budget_for_all_offers": false,
+        "traffic_group": "PUSH traff",
+        "balance": "30.000000",
+        "one_budget_for_all_geo": false,
+        "adding_date": "2020-11-10",
+        "lifetime": 60,
+        "archived": false,
+        "traffic_sources": [
+            183
+        ],
+        "offers": [
+            491
+        ],
+        "geo": []
     }
 }
 ]

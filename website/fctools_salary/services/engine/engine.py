@@ -165,7 +165,12 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
                         offer = Offer.objects.get(id=offer_id)
                     except Offer.DoesNotExist:
                         update_offers()
-                        offer = Offer.objects.get(id=offer_id)
+
+                        try:
+                            offer = Offer.objects.get(id=offer_id)
+                        except Offer.DoesNotExist:
+                            _logger.error(f"Campaign {campaign['instance'].id} has unknown offer: {offer_id}")
+                            continue
 
                     campaign["instance"].offers_list.add(offer)
 
