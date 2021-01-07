@@ -273,11 +273,15 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
         requests.Session(), f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}"
     )
 
+    _logger.info('276')
+
     if not isinstance(campaigns_tracker, requests.Response):
         _logger.info(f'277 Campaigns: {campaigns_tracker}')
         _logger.error(
             f"Network error occurred while trying to get campaign full info from tracker: {campaigns_tracker}")
         return []
+
+    _logger.info('284')
 
     try:
         campaigns_tracker_json = campaigns_tracker.json()
