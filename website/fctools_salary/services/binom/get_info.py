@@ -295,7 +295,7 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
         )
         return []
 
-    _logger.info(f'292 Campaigns: {campaigns_tracker_json}')
+    _logger.info(f'298')
 
     try:
         result = [
@@ -315,7 +315,7 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
             for campaign in campaigns_tracker_json
         ]
     except KeyError:
-        _logger.info(f'312 Campaigns: {campaigns_tracker_json}')
+        _logger.info(f'318')
         _logger.error(f"Can't parse response from tracker (campaigns getting): {campaigns_tracker_json}")
         return []
 
@@ -341,11 +341,12 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
                 offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 
         if not offers_ids:
-            _logger.info(f'338 Campaigns: {campaigns_tracker_json}')
+            _logger.info(f'344')
             return []
 
         campaign["offers_list"] = deepcopy(offers_ids)
 
+    _logger.info(f'349')
     _logger.info(f"Campaigns for {user} from {start_date} to {end_date} were successfully get.")
     return result
 
