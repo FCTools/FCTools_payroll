@@ -274,6 +274,7 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
     )
 
     if not isinstance(campaigns_tracker, requests.Response):
+        _logger.info(campaigns_tracker)
         _logger.error(
             f"Network error occurred while trying to get campaign full info from tracker: {campaigns_tracker}")
         return []
@@ -281,6 +282,7 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
     try:
         campaigns_tracker_json = campaigns_tracker.json()
     except json.JSONDecodeError as decode_error:
+        _logger.info(decode_error.doc)
         _logger.error(
             f"Can't decode response from tracker (getting info about campaigns): "
             f"{decode_error.doc}"
