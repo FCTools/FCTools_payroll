@@ -1,5 +1,6 @@
 """
-Copyright © 2020 FC Tools. All rights reserved.
+Copyright © 2020-2021 FC Tools.
+All rights reserved.
 Author: German Yakimov
 """
 
@@ -17,8 +18,8 @@ from fctools_salary.domains.tracker.campaign import Campaign
 from fctools_salary.domains.tracker.geo import Geo
 from fctools_salary.domains.tracker.offer import Offer
 from fctools_salary.domains.tracker.traffic_source import TrafficSource
-from fctools_salary.services.helpers.test_splitter import TestSplitter
 from fctools_salary.filters import ActiveUsersFilter
+from fctools_salary.services.helpers.test_splitter import TestSplitter
 
 
 @admin.register(User)
