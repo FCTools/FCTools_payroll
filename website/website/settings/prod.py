@@ -40,26 +40,26 @@ LOGGING = {
     },
     "handlers": {
         "file": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": 'info_log.log',
             "formatter": "verbose"}},
     "root": {
         "handlers": ["file"],
-        "level": "INFO", },
+        "level": "DEBUG", },
     "loggers": {
         "django": {
             "handlers": ["file"],
-            "level": "INFO",
+            "level": "DEBUG",
             "propagate": False, },
         "django.db_backends": {
             "handlers": ["file"],
-            "level": "INFO",
+            "level": "DEBUG",
             "propagate": False,
         },
         "django.db": {
             "handlers": ["file"],
-            "level": "INFO",
+            "level": "DEBUG",
             "propagate": False, },
     },
 }
