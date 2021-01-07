@@ -1,5 +1,6 @@
 """
-Copyright © 2020 FC Tools. All rights reserved.
+Copyright © 2020-2021 FC Tools.
+All rights reserved.
 Author: German Yakimov
 """
 
@@ -17,9 +18,8 @@ from fctools_salary.services.binom.get_info import get_campaigns
 from fctools_salary.services.binom.update import update_offers
 from fctools_salary.services.engine.tests_manager import TestsManager
 from fctools_salary.services.engine.tracker_manager import TrackerManager
-from fctools_salary.services.helpers.report import Report as Rp
 from fctools_salary.services.helpers.redis_client import RedisClient
-
+from fctools_salary.services.helpers.report import Report as Rp
 
 _logger = logging.getLogger(__name__)
 

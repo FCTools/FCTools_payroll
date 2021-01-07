@@ -1,5 +1,6 @@
 """
-Copyright © 2020 FC Tools. All rights reserved.
+Copyright © 2020-2021 FC Tools.
+All rights reserved.
 Author: German Yakimov
 """
 
@@ -47,4 +48,3 @@ class RedisClient:
     def __del__(self):
         self._server.flushdb()
         self._server.close()
-
