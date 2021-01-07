@@ -341,7 +341,7 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
                 offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 
         if not offers_ids:
-            _logger.info(f'344')
+            _logger.info(f'344, campaign id: {campaign["instance"].id}')
             return []
 
         campaign["offers_list"] = deepcopy(offers_ids)
