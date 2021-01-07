@@ -287,6 +287,8 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
         )
         return []
 
+    _logger.info(campaigns_tracker_json)
+
     try:
         result = [
             {
