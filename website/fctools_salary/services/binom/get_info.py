@@ -269,9 +269,13 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
 
     _logger.info(f"Start getting campaigns from {start_date} to {end_date} for user {user}")
 
+    _logger.info("before request")
+
     campaigns_tracker = requests_manager.get(
         requests.Session(), f"{settings.TRACKER_URL}?timezone=+3:00&{urlencode(params)}"
     )
+
+    _logger.info("after request")
 
     if not isinstance(campaigns_tracker, requests.Response):
         _logger.error(
