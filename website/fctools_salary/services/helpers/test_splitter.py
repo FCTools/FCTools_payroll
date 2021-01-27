@@ -1,7 +1,9 @@
 """
-Copyright © 2020 FC Tools. All rights reserved.
+Copyright © 2020-2021 FC Tools.
+All rights reserved.
 Author: German Yakimov
 """
+
 from fctools_salary.domains.accounts.test import Test
 
 
