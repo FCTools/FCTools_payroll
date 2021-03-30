@@ -3,7 +3,6 @@ Copyright © 2020-2021 FC Tools.
 All rights reserved.
 Author: German Yakimov
 """
-from django.conf import settings
 
 from fctools_salary.models import Report
 from fctools_salary.services.binom.get_info import get_campaigns
@@ -82,60 +81,56 @@ class TrackerManager:
             campaigns = get_campaigns(report.start_date, report.end_date, user, redis)
             profits = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)[1]
 
-            if settings.ADMIN in traffic_groups and report.profit_admin:
-                if float(report.profit_admin) < profits[settings.ADMIN]:
-                    deltas[settings.ADMIN][key] = [profits[settings.ADMIN] - float(report.profit_admin),
-                                                   report.percent_admin]
+            if "ADMIN" in traffic_groups and report.profit_admin:
+                if float(report.profit_admin) < profits["ADMIN"]:
+                    deltas["ADMIN"][key] = profits["ADMIN"] - float(report.profit_admin)
 
-            if settings.PUSH_TRAFF in traffic_groups and report.profit_push:
-                if float(report.profit_push) < profits[settings.PUSH_TRAFF]:
-                    deltas[settings.PUSH_TRAFF][key] = [profits[settings.PUSH_TRAFF] - float(report.profit_push),
-                                                        report.percent_push]
+            if "PUSH traff" in traffic_groups and report.profit_push:
+                if float(report.profit_push) < profits["PUSH traff"]:
+                    deltas["PUSH traff"][key] = profits["PUSH traff"] - float(report.profit_push)
 
-            if settings.POP_TRAFF in traffic_groups and report.profit_pop:
-                if float(report.profit_pop) < profits[settings.POP_TRAFF]:
-                    deltas[settings.POP_TRAFF][key] = [profits[settings.POP_TRAFF] - float(report.profit_pop),
-                                                       report.percent_pop]
+            if "POP traff" in traffic_groups and report.profit_pop:
+                if float(report.profit_pop) < profits["POP traff"]:
+                    deltas["POP traff"][key] = profits["POP traff"] - float(report.profit_pop)
 
-            if settings.NATIVE_TRAFF in traffic_groups and report.profit_native:
-                if float(report.profit_native) < profits[settings.NATIVE_TRAFF]:
-                    deltas[settings.NATIVE_TRAFF][key] = [profits[settings.NATIVE_TRAFF] - float(report.profit_native),
-                                                          report.percent_native]
+            if "NATIVE traff" in traffic_groups and report.profit_native:
+                if float(report.profit_native) < profits["NATIVE traff"]:
+                    deltas["NATIVE traff"][key] = profits["NATIVE traff"] - float(report.profit_native)
 
-            if settings.FPA_HSA_PWA in traffic_groups and report.profit_fpa_hsa_pwa:
-                if float(report.profit_fpa_hsa_pwa) < profits[settings.FPA_HSA_PWA]:
-                    deltas[settings.FPA_HSA_PWA][key] = [
-                        profits[settings.FPA_HSA_PWA] - float(report.profit_fpa_hsa_pwa),
-                        report.percent_fpa_hsa_pwa]
+            if "FPA/HSA/PWA" in traffic_groups and report.profit_fpa_hsa_pwa:
+                if float(report.profit_fpa_hsa_pwa) < profits["FPA/HSA/PWA"]:
+                    deltas["FPA/HSA/PWA"][key] = profits["FPA/HSA/PWA"] - float(report.profit_fpa_hsa_pwa)
 
-            if settings.INAPP_TRAFF in traffic_groups and report.profit_inapp:
-                if float(report.profit_inapp) < profits[settings.INAPP_TRAFF]:
-                    deltas[settings.INAPP_TRAFF][key] = [profits[settings.INAPP_TRAFF] - float(report.profit_inapp),
-                                                         report.percent_inapp]
+            if "INAPP traff" in traffic_groups and report.profit_inapp:
+                if float(report.profit_inapp) < profits["INAPP traff"]:
+                    deltas["INAPP traff"][key] = profits["INAPP traff"] - float(report.profit_inapp)
 
-            if settings.TIK_TOK in traffic_groups and report.profit_tik_tok:
-                if float(report.profit_tik_tok) < profits[settings.TIK_TOK]:
-                    deltas[settings.TIK_TOK][key] = [profits[settings.TIK_TOK] - float(report.profit_tik_tok),
-                                                     report.percent_tik_tok]
+            if "Tik Tok" in traffic_groups and report.profit_tik_tok:
+                if float(report.profit_tik_tok) < profits["Tik Tok"]:
+                    deltas["Tik Tok"][key] = profits["Tik Tok"] - float(report.profit_tik_tok)
 
             if commit:
-                if settings.INAPP_TRAFF in traffic_groups:
-                    report.profit_inapp = profits[settings.INAPP_TRAFF]
-                if settings.FPA_HSA_PWA in traffic_groups:
-                    report.profit_fpa_hsa_pwa = profits[settings.FPA_HSA_PWA]
-                if settings.NATIVE_TRAFF in traffic_groups:
-                    report.profit_native = profits[settings.NATIVE_TRAFF]
-                if settings.POP_TRAFF in traffic_groups:
-                    report.profit_pop = profits[settings.POP_TRAFF]
-                if settings.ADMIN in traffic_groups:
-                    report.profit_admin = profits[settings.ADMIN]
-                if settings.PUSH_TRAFF in traffic_groups:
-                    report.profit_push = profits[settings.PUSH_TRAFF]
-                if settings.TIK_TOK in traffic_groups:
-                    report.profit_tik_tok = profits[settings.TIK_TOK]
+                if "INAPP traff" in traffic_groups:
+                    report.profit_inapp = profits["INAPP traff"]
+                if "FPA/HSA/PWA" in traffic_groups:
+                    report.profit_fpa_hsa_pwa = profits["FPA/HSA/PWA"]
+                if "NATIVE traff" in traffic_groups:
+                    report.profit_native = profits["NATIVE traff"]
+                if "POP traff" in traffic_groups:
+                    report.profit_pop = profits["POP traff"]
+                if "ADMIN" in traffic_groups:
+                    report.profit_admin = profits["ADMIN"]
+                if "PUSH traff" in traffic_groups:
+                    report.profit_push = profits["PUSH traff"]
+                if "Tik Tok" in traffic_groups:
+                    report.profit_tik_tok = profits["Tik Tok"]
 
                 report.save()
 
         redis.clear()
+
+        for traffic_group in deltas:
+            for key in deltas[traffic_group]:
+                deltas[traffic_group][key] = round(deltas[traffic_group][key], 6)
 
         return deltas
