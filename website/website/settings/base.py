@@ -86,14 +86,23 @@ INTERNAL_IPS = [
     "localhost",
 ]
 
+# traffic groups
+ADMIN = "ADMIN"
+FPA_HSA_PWA = "FPA/HSA/PWA"
+INAPP_TRAFF = "INAPP traff"
+NATIVE_TRAFF = "NATIVE traff"
+POP_TRAFF = "POP traff"
+PUSH_TRAFF = "PUSH traff"
+TIK_TOK = "Tik Tok"
+
 TRAFFIC_GROUPS = (
-    ("ADMIN", "ADMIN"),
-    ("FPA/HSA/PWA", "FPA/HSA/PWA"),
-    ("INAPP traff", "INAPP traff"),
-    ("NATIVE traff", "NATIVE traff"),
-    ("POP traff", "POP traff"),
-    ("PUSH traff", "PUSH traff"),
-    ("Tik Tok", "Tik Tok")
+    (ADMIN, ADMIN),
+    (FPA_HSA_PWA, FPA_HSA_PWA),
+    (INAPP_TRAFF, INAPP_TRAFF),
+    (NATIVE_TRAFF, NATIVE_TRAFF),
+    (POP_TRAFF, POP_TRAFF),
+    (PUSH_TRAFF, PUSH_TRAFF),
+    (TIK_TOK, TIK_TOK)
 )
 
 REDIS_HOST = 'localhost'

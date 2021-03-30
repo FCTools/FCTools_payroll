@@ -330,9 +330,6 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
             else:
                 offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 
-        # if not offers_ids:
-        #     return []
-
         campaign["offers_list"] = deepcopy(offers_ids)
 
     _logger.info(f"Campaigns for {user} from {start_date} to {end_date} were successfully get.")
