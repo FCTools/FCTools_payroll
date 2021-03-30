@@ -177,7 +177,7 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
             campaign["instance"].save()
 
 
-def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
+def calculate_user_salary(user, start_date, end_date, commit, traffic_groups, cost=None):
     report = Rp()
     report.user = user
     report.start_date = start_date
@@ -198,7 +198,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
 
     report.revenues, report.profits = TrackerManager.calculate_profit_for_period(current_campaigns_tracker_list,
-                                                                                 traffic_groups)
+                                                                                 traffic_groups, cost=cost)
 
     _logger.info(f"Total revenue and profits was successfully calculated. "
                  f"Revenues: {report.revenues}. Profits: {report.profits}")

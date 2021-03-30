@@ -111,13 +111,18 @@ def count_view(request):
             end_date = form.cleaned_data["end_date"]
             update_db_flag = form.cleaned_data["update_db"]
             traffic_groups = form.cleaned_data["traffic_groups"]
+            cost = form.cleaned_data["cost"]
+
+            if cost and len(traffic_groups) > 1:
+                _logger.warning("Incorrect report form: manual cost and more than 1 traffic source.")
+                return render(request, form_template, {"form": form})
 
             update_basic_info()
 
             return render(
                 request,
                 result_template,
-                context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups),
+                context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups, cost=cost),
             )
         else:
             _logger.warning("Incorrect report form.")

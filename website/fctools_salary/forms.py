@@ -37,5 +37,7 @@ class CalculationForm(forms.Form):
         required=True, widget=DatePicker(attrs={"append": "fa fa-calendar", "icon_toggle": True, })
     )
 
+    cost = forms.FloatField(required=False, min_value=0, max_value=100000., initial=None)
+
     def clean(self):
         return self.cleaned_data

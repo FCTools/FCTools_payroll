@@ -15,12 +15,15 @@ class TrackerManager:
     """
 
     @staticmethod
-    def calculate_profit_for_period(campaigns_list, traffic_groups):
+    def calculate_profit_for_period(campaigns_list, traffic_groups, cost=None):
         """
         Calculates user's revenue and profit for the period without tests (just adds profit for all user campaigns).
 
         :param campaigns_list: list of campaigns for period with current traffic statistics
         :type campaigns_list: List[CampaignTracker]
+
+        :param cost: manually input cost
+        :type cost: float
 
         :param traffic_groups: traffic groups that includes in calculation
         :type traffic_groups: List[str]
@@ -32,10 +35,20 @@ class TrackerManager:
         profits = {traffic_group: 0.0 for traffic_group in traffic_groups}
         revenues = {traffic_group: 0.0 for traffic_group in traffic_groups}
 
-        for campaign in campaigns_list:
-            if campaign["instance"].traffic_group in traffic_groups:
-                profits[campaign["instance"].traffic_group] += float(campaign["instance"].profit)
-                revenues[campaign["instance"].traffic_group] += float(campaign["instance"].revenue)
+        if cost:
+            traffic_group = campaigns_list[0].traffic_group
+
+            for campaign in campaigns_list:
+                if campaign["instance"].traffic_group in traffic_groups:
+                    profits[campaign["instance"].traffic_group] += float(campaign["instance"].profit)
+                    revenues[campaign["instance"].traffic_group] += float(campaign["instance"].revenue)
+
+            profits[traffic_group] -= cost
+        else:
+            for campaign in campaigns_list:
+                if campaign["instance"].traffic_group in traffic_groups:
+                    profits[campaign["instance"].traffic_group] += float(campaign["instance"].profit)
+                    revenues[campaign["instance"].traffic_group] += float(campaign["instance"].revenue)
 
         for traffic_group in traffic_groups:
             profits[traffic_group] = round(profits[traffic_group], 6)
@@ -128,9 +141,5 @@ class TrackerManager:
                 report.save()
 
         redis.clear()
-
-        # for traffic_group in deltas:
-        #     for key in deltas[traffic_group]:
-        #         deltas[traffic_group][key] = round(deltas[traffic_group][key], 6)
 
         return deltas
