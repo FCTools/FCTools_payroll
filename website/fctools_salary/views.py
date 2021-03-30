@@ -27,7 +27,6 @@ def _return(request, error_message, traceback_, status_code=200):
     :param error_message: error message
     :param traceback_: formatted traceback
     :param status_code: response status code
-
     :return: Readable http-response with error message and traceback (support cyrillic symbols)
     """
 
@@ -42,10 +41,8 @@ def _return(request, error_message, traceback_, status_code=200):
 def error_response(request, exception):
     """
     Form error message and traceback.
-
     :param exception: exception
     :param request: request
-
     :return: return-method, that returns rendered http-response with error, traceback and status_code
     """
 
@@ -55,7 +52,6 @@ def error_response(request, exception):
 def base_view(view):
     """
     Base view with all exceptions handling.
-
     :param view: view to decorate
     :return: decorated view
     """
@@ -78,7 +74,6 @@ def base_menu(request):
     """
     Base menu, contains two buttons: edit db and count salary.
     Login required.
-
     :param request: request
     :return: main menu page
     """
@@ -94,7 +89,6 @@ def base_menu(request):
 def count_view(request):
     """
     View with form for calculation configuration.
-
     :param request: request
     :return: if form is valid, calculate salary and returns result page (count_result.html)
     """
@@ -111,13 +105,18 @@ def count_view(request):
             end_date = form.cleaned_data["end_date"]
             update_db_flag = form.cleaned_data["update_db"]
             traffic_groups = form.cleaned_data["traffic_groups"]
+            cost = form.cleaned_data["cost"]
+
+            if cost and len(traffic_groups) > 1:
+                _logger.warning("Incorrect report form: manual cost and more than 1 traffic source.")
+                return render(request, form_template, {"form": form})
 
             update_basic_info()
 
             return render(
                 request,
                 result_template,
-                context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups),
+                context=calculate_user_salary(user, start_date, end_date, update_db_flag, traffic_groups, cost=cost),
             )
         else:
             _logger.warning("Incorrect report form.")

@@ -8,6 +8,7 @@ import logging
 from datetime import date
 from typing import List, Dict
 
+from django.conf import settings
 from django.db import transaction
 
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
@@ -27,13 +28,10 @@ _logger = logging.getLogger(__name__)
 def _calculate_final_percent(revenue, salary_group):
     """
     Calculate final percent based on total revenue for the period and user salary group.
-
     :param revenue: total revenue for the period
     :type revenue: float
-
     :param salary_group: user salary group
     :type salary_group: int
-
     :return final percent based on user salary group and total revenue
     :rtype: float
     """
@@ -61,33 +59,30 @@ def _calculate_final_percent(revenue, salary_group):
 def _set_start_balances(user, traffic_groups):
     """
     Get user balances for selected traffic groups from database.
-
     :param user: user to get start balances
     :type user: User
-
     :param traffic_groups: traffic groups which balances needed
     :type traffic_groups: List[str]
-
     :return: start balance (from database) for each traffic group in traffic_groups
     :rtype: Dict[str, float]
     """
 
     result = {}
 
-    if "ADMIN" in traffic_groups:
-        result["ADMIN"] = round(float(user.admin_balance), 6)
-    if "FPA/HSA/PWA" in traffic_groups:
-        result["FPA/HSA/PWA"] = round(float(user.fpa_hsa_pwa_balance), 6)
-    if "INAPP traff" in traffic_groups:
-        result["INAPP traff"] = round(float(user.inapp_balance), 6)
-    if "NATIVE traff" in traffic_groups:
-        result["NATIVE traff"] = round(float(user.native_balance), 6)
-    if "POP traff" in traffic_groups:
-        result["POP traff"] = round(float(user.pop_balance), 6)
-    if "PUSH traff" in traffic_groups:
-        result["PUSH traff"] = round(float(user.push_balance), 6)
-    if "Tik Tok" in traffic_groups:
-        result["Tik Tok"] = round(float(user.tik_tok_balance), 6)
+    if settings.ADMIN in traffic_groups:
+        settings.ADMIN = round(float(user.admin_balance), 6)
+    if settings.FPA_HSA_PWA in traffic_groups:
+        result[settings.FPA_HSA_PWA] = round(float(user.fpa_hsa_pwa_balance), 6)
+    if settings.INAPP_TRAFF in traffic_groups:
+        result[settings.INAPP_TRAFF] = round(float(user.inapp_balance), 6)
+    if settings.NATIVE_TRAFF in traffic_groups:
+        result[settings.NATIVE_TRAFF] = round(float(user.native_balance), 6)
+    if settings.POP_TRAFF in traffic_groups:
+        result[settings.POP_TRAFF] = round(float(user.pop_balance), 6)
+    if settings.PUSH_TRAFF in traffic_groups:
+        result[settings.PUSH_TRAFF] = round(float(user.push_balance), 6)
+    if settings.TIK_TOK in traffic_groups:
+        result[settings.TIK_TOK] = round(float(user.tik_tok_balance), 6)
 
     return result
 
@@ -95,19 +90,14 @@ def _set_start_balances(user, traffic_groups):
 def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traffic_groups):
     """
     Calculate teamlead profit from other users.
-
     :param start_date: period start date
     :type start_date: date
-
     :param end_date: period end date
     :type end_date: date
-
     :param user: user (teamlead)
     :type user: User
-
     :param traffic_groups: traffic groups that includes in calculation
     :type traffic_groups: List[str]
-
     :return: profit from other users with detailed calculation (split by traffic groups)
     :rtype: Dict[str, List[Union[str, float]]]
     """
@@ -145,13 +135,10 @@ def _calculate_teamlead_profit_from_other_users(start_date, end_date, user, traf
 def _save_campaigns(campaigns_to_save, campaigns_db):
     """
     Save campaigns to database (or update statistics, if campaign already exists).
-
     :param campaigns_to_save: campaigns to save
     :type campaigns_to_save: List[CampaignTracker]
-
     :param campaigns_db: current campaigns from database
     :type campaigns_db: List[Campaign]
-
     :return: None
     """
 
@@ -177,7 +164,7 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
             campaign["instance"].save()
 
 
-def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
+def calculate_user_salary(user, start_date, end_date, commit, traffic_groups, cost=None):
     report = Rp()
     report.user = user
     report.start_date = start_date
@@ -198,7 +185,7 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
     _logger.info("Successfully get campaigns info (database and tracker, current and previous period).")
 
     report.revenues, report.profits = TrackerManager.calculate_profit_for_period(current_campaigns_tracker_list,
-                                                                                 traffic_groups)
+                                                                                 traffic_groups, cost=cost)
 
     _logger.info(f"Total revenue and profits was successfully calculated. "
                  f"Revenues: {report.revenues}. Profits: {report.profits}")

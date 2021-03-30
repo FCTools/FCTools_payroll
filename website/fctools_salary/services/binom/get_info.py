@@ -27,7 +27,6 @@ _logger = logging.getLogger(__name__)
 def get_users():
     """
     Get users from tracker.
-
     :return: list of users
     :rtype: List[User]
     """
@@ -63,7 +62,6 @@ def get_users():
 def get_offers():
     """
     Get offers from tracker.
-
     :return: list of offers
     :rtype: List[Offer]
     """
@@ -110,7 +108,6 @@ def get_offers():
 def get_traffic_sources():
     """
     Get traffic sources from tracker.
-
     :return: list of traffic sources
     :rtype: List[TrafficSource]
     """
@@ -189,10 +186,8 @@ def get_traffic_sources():
 def get_offers_ids_by_campaign(campaign):
     """
     Get list of offers ids for taken campaign.
-
     :param campaign: campaign
     :type campaign: Campaign
-
     :return: list of of offers ids
     :rtype: List[int]
     """
@@ -237,19 +232,14 @@ def get_offers_ids_by_campaign(campaign):
 def get_campaigns(start_date, end_date, user, redis_server=None):
     """
     Get user campaigns from start_date to end_date.
-
     :param start_date: period start date
     :type start_date: date
-
     :param end_date: period end date
     :type end_date: date
-
     :param user: user
     :type user: User
-
     :param redis_server: RedisClient instance for caching
     :type redis_server: RedisClient
-
     :return: list of campaigns from tracker, each campaign is dict with 2 keys: instance - Campaign class instance
     from models, offers_list - list of offers ids
     :rtype: List[Dict[str, Union[CampaignTracker, List]]]
@@ -330,9 +320,6 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
             else:
                 offers_ids = get_offers_ids_by_campaign(campaign["instance"])
 
-        # if not offers_ids:
-        #     return []
-
         campaign["offers_list"] = deepcopy(offers_ids)
 
     _logger.info(f"Campaigns for {user} from {start_date} to {end_date} were successfully get.")
@@ -342,16 +329,12 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
 def get_campaign_main_geo(campaign, start_date, end_date):
     """
     Get campaign's geo statistics and finds main geo (max clicks geo) based on period.
-
     :param campaign: campaign
     :type campaign: Campaign
-
     :param start_date: period start date
     :type start_date: date
-
     :param end_date: period end date
     :type end_date: date
-
     :return: main geo for this campaign, if success, else -1
     :rtype: Union[int, str]
     """
