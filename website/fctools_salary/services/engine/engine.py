@@ -178,7 +178,7 @@ def _save_campaigns(campaigns_to_save, campaigns_db):
             campaign["instance"].save()
 
 
-def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
+def calculate_user_salary(user, start_date, end_date, commit, traffic_groups, cost=None):
     report = Rp()
     report.user = user
     report.start_date = start_date
@@ -200,6 +200,15 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups):
 
     report.revenues, report.profits = TrackerManager.calculate_profit_for_period(current_campaigns_tracker_list,
                                                                                  traffic_groups)
+
+    if cost:
+        old_profit = report.profits[traffic_groups[0]]
+        report.profits[traffic_groups[0]] = report.revenues[traffic_groups[0]] - cost
+
+        if old_profit > report.profits[traffic_groups[0]]:
+            _logger.warning(
+                f"Old profit ({old_profit}) is greater than real profit"
+                f"({report.profits[traffic_groups[0]]}) for user {user.login}")
 
     _logger.info(f"Total revenue and profits was successfully calculated. "
                  f"Revenues: {report.revenues}. Profits: {report.profits}")
