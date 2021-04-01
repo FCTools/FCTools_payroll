@@ -8,6 +8,7 @@ import logging
 from datetime import date
 from typing import List, Dict
 
+from django.conf import settings
 from django.db import transaction
 
 from fctools_salary.domains.accounts.percent_dependency import PercentDependency
@@ -74,20 +75,20 @@ def _set_start_balances(user, traffic_groups):
 
     result = {}
 
-    if "ADMIN" in traffic_groups:
-        result["ADMIN"] = round(float(user.admin_balance), 6)
-    if "FPA/HSA/PWA" in traffic_groups:
-        result["FPA/HSA/PWA"] = round(float(user.fpa_hsa_pwa_balance), 6)
-    if "INAPP traff" in traffic_groups:
-        result["INAPP traff"] = round(float(user.inapp_balance), 6)
-    if "NATIVE traff" in traffic_groups:
-        result["NATIVE traff"] = round(float(user.native_balance), 6)
-    if "POP traff" in traffic_groups:
-        result["POP traff"] = round(float(user.pop_balance), 6)
-    if "PUSH traff" in traffic_groups:
-        result["PUSH traff"] = round(float(user.push_balance), 6)
-    if "Tik Tok" in traffic_groups:
-        result["Tik Tok"] = round(float(user.tik_tok_balance), 6)
+    if settings.ADMIN in traffic_groups:
+        settings.ADMIN = round(float(user.admin_balance), 6)
+    if settings.FPA_HSA_PWA in traffic_groups:
+        result[settings.FPA_HSA_PWA] = round(float(user.fpa_hsa_pwa_balance), 6)
+    if settings.INAPP_TRAFF in traffic_groups:
+        result[settings.INAPP_TRAFF] = round(float(user.inapp_balance), 6)
+    if settings.NATIVE_TRAFF in traffic_groups:
+        result[settings.NATIVE_TRAFF] = round(float(user.native_balance), 6)
+    if settings.POP_TRAFF in traffic_groups:
+        result[settings.POP_TRAFF] = round(float(user.pop_balance), 6)
+    if settings.PUSH_TRAFF in traffic_groups:
+        result[settings.PUSH_TRAFF] = round(float(user.push_balance), 6)
+    if settings.TIK_TOK in traffic_groups:
+        result[settings.TIK_TOK] = round(float(user.tik_tok_balance), 6)
 
     return result
 
