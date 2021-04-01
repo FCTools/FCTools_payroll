@@ -1,8 +1,10 @@
-"""
-Copyright © 2020-2021 FC Tools.
-All rights reserved.
-Author: German Yakimov
-"""
+# Copyright © 2020-2021 Filthy Claws Tools - All Rights Reserved
+#
+# This file is part of FCTools_payroll
+#
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Author: German Yakimov <german13yakimov@gmail.com>
 
 from django.conf import settings
 from django.conf.urls.static import static
