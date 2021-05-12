@@ -11,7 +11,7 @@
     "model": "fctools_salary.geo",
     "pk": 303,
     "fields": {
-        "country": "Åland Islands",
+        "country": "Aland Islands",
         "iso_code": "AX"
     }
 },
@@ -435,7 +435,7 @@
     "model": "fctools_salary.geo",
     "pk": 356,
     "fields": {
-        "country": "Côte d'Ivoire",
+        "country": "Cï¿½te d'Ivoire",
         "iso_code": "CI"
     }
 },
@@ -459,7 +459,7 @@
     "model": "fctools_salary.geo",
     "pk": 359,
     "fields": {
-        "country": "Curaçao",
+        "country": "Curaï¿½ao",
         "iso_code": "CW"
     }
 },
@@ -1443,7 +1443,7 @@
     "model": "fctools_salary.geo",
     "pk": 482,
     "fields": {
-        "country": "Réunion",
+        "country": "Rï¿½union",
         "iso_code": "RE"
     }
 },
@@ -1475,7 +1475,7 @@
     "model": "fctools_salary.geo",
     "pk": 486,
     "fields": {
-        "country": "Saint Barthélemy",
+        "country": "Saint Barthï¿½lemy",
         "iso_code": "BL"
     }
 },
