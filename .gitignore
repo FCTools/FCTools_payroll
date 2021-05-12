@@ -8,6 +8,7 @@ __pycache__/
 
 # PyCharm project folder
 .idea/
+set-env.sh
 
 
 # static files
