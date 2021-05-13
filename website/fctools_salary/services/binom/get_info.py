@@ -229,6 +229,14 @@ def get_offers_ids_by_campaign(campaign):
     try:
         for path in response_json["routing"]["paths"]:
             result += [int(offer["id_t"]) for offer in path["offers"]]
+
+        for path in response_json["rules"]:
+            for subpath in path["paths"]:
+                result += [int(offer["id_t"]) for offer in subpath["offers"]]
+
+        # make offers unique
+        result = list(set(result))
+
     except KeyError:
         _logger.error(f"Can't parse response from tracker (getting offers ids by campaign): {response_json}")
         return []
