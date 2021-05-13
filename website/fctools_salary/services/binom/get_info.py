@@ -230,9 +230,10 @@ def get_offers_ids_by_campaign(campaign):
         for path in response_json["routing"]["paths"]:
             result += [int(offer["id_t"]) for offer in path["offers"]]
 
-        for path in response_json["routing"]["rules"]:
-            for subpath in path["paths"]:
-                result += [int(offer["id_t"]) for offer in subpath["offers"]]
+        if response_json["routing"]["rules"]:
+            for path in response_json["routing"]["rules"]:
+                for subpath in path["paths"]:
+                    result += [int(offer["id_t"]) for offer in subpath["offers"]]
 
         # make offers unique
         result = list(set(result))
