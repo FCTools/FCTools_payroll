@@ -242,7 +242,9 @@ def calculate_user_salary(user, start_date, end_date, commit, traffic_groups, co
 
     if commit:
         report.save()
-        _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
+
+    # WARNING: it is temporary solution, campaigns saving must be in "if commit" block
+    _save_campaigns(current_campaigns_tracker_list, prev_campaigns_db_list)
 
     return {
         "user": str(user),

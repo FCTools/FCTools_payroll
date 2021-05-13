@@ -328,6 +328,7 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
 
                 else:
                     offers_ids = get_offers_ids_by_campaign(campaign["instance"])
+                    _logger.info(str(offers_ids))
 
                 redis_server.add_campaign_offers(campaign["instance"].id, offers_ids)
             else:
