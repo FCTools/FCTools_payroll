@@ -230,7 +230,7 @@ def get_offers_ids_by_campaign(campaign):
         for path in response_json["routing"]["paths"]:
             result += [int(offer["id_t"]) for offer in path["offers"]]
 
-        for path in response_json["rules"]:
+        for path in response_json["routing"]["rules"]:
             for subpath in path["paths"]:
                 result += [int(offer["id_t"]) for offer in subpath["offers"]]
 
@@ -328,7 +328,6 @@ def get_campaigns(start_date, end_date, user, redis_server=None):
 
                 else:
                     offers_ids = get_offers_ids_by_campaign(campaign["instance"])
-                    _logger.info(str(offers_ids))
 
                 redis_server.add_campaign_offers(campaign["instance"].id, offers_ids)
             else:
