@@ -13,7 +13,7 @@ from django.db import transaction
 
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.exceptions import UpdateError, TestNotSplitError
-from fctools_salary.services.binom.get_info import get_campaigns, get_campaign_main_geo
+from fctools_salary.services.binom.get_info import get_campaigns, get_campaign_main_geo, get_profit_by_particular_offer
 from fctools_salary.services.engine.tracker_manager import TrackerManager
 from fctools_salary.services.helpers.redis_client import RedisClient
 
@@ -92,7 +92,11 @@ class TestsManager:
                             and campaign["instance"].traffic_source.id in test_traffic_sources_ids
                             and len(test_offers_ids & set(campaign["offers_list"])) != 0
                     ):
+                        # suppose that here is only one offer
+                        test_offer_id = list(test_offers_ids & set(campaign["offers_list"]))[0]
+
                         if test_geos:
+                            # TODO: implement offer selecting logic here
                             if not redis.exists(campaign["instance"].id):
                                 max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
                                 redis.add_campaign_main_geo(campaign["instance"].id, max_clicks_geo)
@@ -105,7 +109,16 @@ class TestsManager:
                             if max_clicks_geo in test_geos:
                                 test_campaigns_list.append(campaign["instance"])
                         else:
-                            test_campaigns_list.append(campaign["instance"])
+                            profit = get_profit_by_particular_offer(campaign['instance'].id,
+                                                                    test_offer_id, start_date,
+                                                                    end_date)
+
+                            if not profit:
+                                return
+
+                            # set profit to profit only by test offer
+                            campaign['instance'].profit = profit
+                            test_campaigns_list.append(campaign['instance'])
 
                 for test_campaign in test_campaigns_list:
                     if test_campaign.profit >= 0:

@@ -245,6 +245,41 @@ def get_offers_ids_by_campaign(campaign):
     return result
 
 
+def get_profit_by_particular_offer(campaign_id, offer_id, start_date, end_date):
+    params = {
+        "page": "Stats",
+        "camp_id": campaign_id,
+        "group_1": 3,
+        "group_2": 1,
+        "group_3": 1,
+        "date": 12,
+        "date_s": str(start_date),
+        "date_e": str(end_date),
+        "api_key": settings.BINOM_API_KEY,
+        "timezone": "+3:00"
+    }
+
+    campaign_info = requests_manager.get(requests.Session(), settings.TRACKER_URL, params=params)
+
+    if not isinstance(campaign_info, requests.Response):
+        _logger.error(
+            f"Network error occurred while trying to get campaign info by offers from tracker: {campaign_info}")
+        return []
+
+    try:
+        campaign_info_json = campaign_info.json()
+    except json.JSONDecodeError as decode_error:
+        _logger.error(
+            f"Can't decode response from tracker (getting profit by particular offer): "
+            f"{decode_error.doc}"
+        )
+        return
+
+    for offer_stat in campaign_info_json:
+        if f'[{offer_id}]' in offer_stat['name']:
+            return offer_stat['profit']
+
+
 def get_campaigns(start_date, end_date, user, redis_server=None):
     """
     Get user campaigns from start_date to end_date.
