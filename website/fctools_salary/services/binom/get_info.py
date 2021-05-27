@@ -282,6 +282,8 @@ def get_profit_by_particular_offer(campaign_id, offer_id, start_date, end_date):
         if f'[{offer_id}]' in offer_stat['name']:
             return offer_stat['profit']
 
+    return 0
+
 
 def get_campaigns(start_date, end_date, user, redis_server=None):
     """

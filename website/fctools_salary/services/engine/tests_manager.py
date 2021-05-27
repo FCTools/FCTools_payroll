@@ -5,6 +5,7 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential
 # Author: German Yakimov <german13yakimov@gmail.com>
+
 import decimal
 import logging
 from datetime import datetime, timedelta
