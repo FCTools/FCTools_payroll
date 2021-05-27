@@ -5,7 +5,7 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited
 # Proprietary and confidential
 # Author: German Yakimov <german13yakimov@gmail.com>
-
+import decimal
 import logging
 from datetime import datetime, timedelta
 
@@ -117,7 +117,7 @@ class TestsManager:
                                 return
 
                             # set profit to profit only by test offer
-                            campaign['instance'].profit = float(profit)
+                            campaign['instance'].profit = decimal.Decimal(profit)
                             test_campaigns_list.append(campaign['instance'])
 
                 for test_campaign in test_campaigns_list:
