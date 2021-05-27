@@ -113,7 +113,7 @@ class TestsManager:
                                                                     test_offer_id, start_date,
                                                                     end_date)
 
-                            if not profit:
+                            if profit is None:
                                 return
 
                             # set profit to profit only by test offer

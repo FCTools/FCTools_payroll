@@ -267,7 +267,7 @@ def get_profit_by_particular_offer(campaign_id, offer_id, start_date, end_date):
     if not isinstance(campaign_info, requests.Response):
         _logger.error(
             f"Network error occurred while trying to get campaign info by offers from tracker: {campaign_info}")
-        return []
+        return
 
     try:
         campaign_info_json = campaign_info.json()
