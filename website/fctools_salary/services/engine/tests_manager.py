@@ -117,7 +117,7 @@ class TestsManager:
                                 return
 
                             # set profit to profit only by test offer
-                            campaign['instance'].profit = profit
+                            campaign['instance'].profit = float(profit)
                             test_campaigns_list.append(campaign['instance'])
 
                 for test_campaign in test_campaigns_list:
