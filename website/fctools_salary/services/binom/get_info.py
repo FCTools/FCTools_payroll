@@ -261,7 +261,7 @@ def get_profit_by_particular_offer(campaign_id, offer_id, start_date, end_date):
 
     campaign_info = requests_manager.get(requests.Session(), settings.TRACKER_URL, params=params)
 
-    if campaign_info.text == "no_clicks":
+    if campaign_info.text == '"no_clicks"':
         return 0
 
     if not isinstance(campaign_info, requests.Response):
