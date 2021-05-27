@@ -249,9 +249,9 @@ def get_profit_by_particular_offer(campaign_id, offer_id, start_date, end_date):
     params = {
         "page": "Stats",
         "camp_id": campaign_id,
-        "group_1": 3,
-        "group_2": 1,
-        "group_3": 1,
+        "group1": 3,
+        "group2": 1,
+        "group3": 1,
         "date": 12,
         "date_s": str(start_date),
         "date_e": str(end_date),
