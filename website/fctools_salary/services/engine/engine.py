@@ -46,17 +46,17 @@ def _calculate_final_percent(revenue, salary_group):
     if salary_group == 1:
         percent = 0.5
 
-        if revenue > 10000:
-            percent = 0.6
-        elif revenue > 5000:
-            percent = 0.55
+        # if revenue > 10000:
+        #     percent = 0.6
+        # elif revenue > 5000:
+        #     percent = 0.55
     elif salary_group == 2:
         percent = 0.3
 
-        if revenue > 20000:
-            percent = 0.4
-        elif revenue > 10000:
-            percent = 0.35
+        # if revenue > 20000:
+        #     percent = 0.4
+        # elif revenue > 10000:
+        #     percent = 0.35
 
     return percent
 
