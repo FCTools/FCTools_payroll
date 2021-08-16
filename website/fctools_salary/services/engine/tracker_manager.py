@@ -133,4 +133,7 @@ class TrackerManager:
             for key in deltas[traffic_group]:
                 deltas[traffic_group][key] = round(deltas[traffic_group][key], 6)
 
+                # TODO: remove this
+                deltas[traffic_group][key] = 0
+
         return deltas
