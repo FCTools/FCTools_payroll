@@ -79,51 +79,51 @@ class TrackerManager:
         for report in reports_list:
             key = f'{report.start_date} - {report.end_date}'
             campaigns = get_campaigns(report.start_date, report.end_date, user, redis)
-            profits = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)[1]
+            revenues = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)[0]
 
-            if settings.ADMIN in traffic_groups and report.profit_admin:
-                if float(report.profit_admin) < profits[settings.ADMIN]:
-                    deltas[settings.ADMIN][key] = profits[settings.ADMIN] - float(report.profit_admin)
+            if settings.ADMIN in traffic_groups and report.revenue_admin:
+                if float(report.revenue_admin) < revenues[settings.ADMIN]:
+                    deltas[settings.ADMIN][key] = revenues[settings.ADMIN] - float(report.revenue_admin)
 
-            if settings.PUSH_TRAFF in traffic_groups and report.profit_push:
-                if float(report.profit_push) < profits[settings.PUSH_TRAFF]:
-                    deltas[settings.PUSH_TRAFF][key] = profits[settings.PUSH_TRAFF] - float(report.profit_push)
+            if settings.PUSH_TRAFF in traffic_groups and report.revenue_push:
+                if float(report.revenue_push) < revenues[settings.PUSH_TRAFF]:
+                    deltas[settings.PUSH_TRAFF][key] = revenues[settings.PUSH_TRAFF] - float(report.revenue_push)
 
-            if settings.POP_TRAFF in traffic_groups and report.profit_pop:
-                if float(report.profit_pop) < profits[settings.POP_TRAFF]:
-                    deltas[settings.POP_TRAFF][key] = profits[settings.POP_TRAFF] - float(report.profit_pop)
+            if settings.POP_TRAFF in traffic_groups and report.revenue_pop:
+                if float(report.revenue_pop) < revenues[settings.POP_TRAFF]:
+                    deltas[settings.POP_TRAFF][key] = revenues[settings.POP_TRAFF] - float(report.revenue_pop)
 
-            if settings.NATIVE_TRAFF in traffic_groups and report.profit_native:
-                if float(report.profit_native) < profits[settings.NATIVE_TRAFF]:
-                    deltas[settings.NATIVE_TRAFF][key] = profits[settings.NATIVE_TRAFF] - float(report.profit_native)
+            if settings.NATIVE_TRAFF in traffic_groups and report.revenue_native:
+                if float(report.revenue_native) < revenues[settings.NATIVE_TRAFF]:
+                    deltas[settings.NATIVE_TRAFF][key] = revenues[settings.NATIVE_TRAFF] - float(report.revenue_native)
 
-            if settings.FPA_HSA_PWA in traffic_groups and report.profit_fpa_hsa_pwa:
-                if float(report.profit_fpa_hsa_pwa) < profits[settings.FPA_HSA_PWA]:
-                    deltas[settings.FPA_HSA_PWA][key] = profits[settings.FPA_HSA_PWA] - float(report.profit_fpa_hsa_pwa)
+            if settings.FPA_HSA_PWA in traffic_groups and report.revenue_fpa_hsa_pwa:
+                if float(report.revenue_fpa_hsa_pwa) < revenues[settings.FPA_HSA_PWA]:
+                    deltas[settings.FPA_HSA_PWA][key] = revenues[settings.FPA_HSA_PWA] - float(report.revenue_fpa_hsa_pwa)
 
-            if settings.INAPP_TRAFF in traffic_groups and report.profit_inapp:
-                if float(report.profit_inapp) < profits[settings.INAPP_TRAFF]:
-                    deltas[settings.INAPP_TRAFF][key] = profits[settings.INAPP_TRAFF] - float(report.profit_inapp)
+            if settings.INAPP_TRAFF in traffic_groups and report.revenue_inapp:
+                if float(report.revenue_inapp) < revenues[settings.INAPP_TRAFF]:
+                    deltas[settings.INAPP_TRAFF][key] = revenues[settings.INAPP_TRAFF] - float(report.revenue_inapp)
 
-            if settings.TIK_TOK in traffic_groups and report.profit_tik_tok:
-                if float(report.profit_tik_tok) < profits[settings.TIK_TOK]:
-                    deltas[settings.TIK_TOK][key] = profits[settings.TIK_TOK] - float(report.profit_tik_tok)
+            if settings.TIK_TOK in traffic_groups and report.revenue_tik_tok:
+                if float(report.revenue_tik_tok) < revenues[settings.TIK_TOK]:
+                    deltas[settings.TIK_TOK][key] = revenues[settings.TIK_TOK] - float(report.revenue_tik_tok)
 
             if commit:
                 if settings.INAPP_TRAFF in traffic_groups:
-                    report.profit_inapp = profits[settings.INAPP_TRAFF]
+                    report.revenue_inapp = revenues[settings.INAPP_TRAFF]
                 if settings.FPA_HSA_PWA in traffic_groups:
-                    report.profit_fpa_hsa_pwa = profits[settings.FPA_HSA_PWA]
+                    report.revenue_fpa_hsa_pwa = revenues[settings.FPA_HSA_PWA]
                 if settings.NATIVE_TRAFF in traffic_groups:
-                    report.profit_native = profits[settings.NATIVE_TRAFF]
+                    report.revenue_native = revenues[settings.NATIVE_TRAFF]
                 if settings.POP_TRAFF in traffic_groups:
-                    report.profit_pop = profits[settings.POP_TRAFF]
+                    report.revenue_pop = revenues[settings.POP_TRAFF]
                 if settings.ADMIN in traffic_groups:
-                    report.profit_admin = profits[settings.ADMIN]
+                    report.revenue_admin = revenues[settings.ADMIN]
                 if settings.PUSH_TRAFF in traffic_groups:
-                    report.profit_push = profits[settings.PUSH_TRAFF]
+                    report.revenue_push = revenues[settings.PUSH_TRAFF]
                 if settings.TIK_TOK in traffic_groups:
-                    report.profit_tik_tok = profits[settings.TIK_TOK]
+                    report.revenue_tik_tok = revenues[settings.TIK_TOK]
 
                 report.save()
 
