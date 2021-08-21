@@ -116,7 +116,7 @@ class TestsManager:
                                 if profit is None:
                                     return
 
-                            # set profit to profit only by test offer
+                            # set profit to profit only by test offers
                             campaign['instance'].profit += decimal.Decimal(profit)
 
                         test_campaigns_list.append(campaign['instance'])
