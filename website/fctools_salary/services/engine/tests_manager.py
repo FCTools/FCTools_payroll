@@ -93,33 +93,33 @@ class TestsManager:
                             and campaign["instance"].traffic_source.id in test_traffic_sources_ids
                             and len(test_offers_ids & set(campaign["offers_list"])) != 0
                     ):
-                        # suppose that here is only one offer
-                        test_offer_id = list(test_offers_ids & set(campaign["offers_list"]))[0]
+                        test_offers_list = list(test_offers_ids & set(campaign["offers_list"]))
 
-                        if test_geos:
-                            # TODO: implement offer selecting logic here
-                            if not redis.exists(campaign["instance"].id):
-                                max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
-                                redis.add_campaign_main_geo(campaign["instance"].id, max_clicks_geo)
+                        for test_offer_id in test_offers_list:
+                            if test_geos:
+                                if not redis.exists(campaign["instance"].id):
+                                    max_clicks_geo = get_campaign_main_geo(campaign["instance"], start_date, end_date)
+                                    redis.add_campaign_main_geo(campaign["instance"].id, max_clicks_geo)
+                                else:
+                                    max_clicks_geo = redis.get_campaign_main_geo(campaign["instance"].id)
+
+                                if max_clicks_geo == -1:
+                                    raise UpdateError(f"Can't get campaign {campaign.id} main geo.")
+
+                                if max_clicks_geo in test_geos:
+                                    test_campaigns_list.append(campaign["instance"])
                             else:
-                                max_clicks_geo = redis.get_campaign_main_geo(campaign["instance"].id)
+                                profit = get_profit_by_particular_offer(campaign['instance'].id,
+                                                                        test_offer_id, start_date,
+                                                                        end_date)
 
-                            if max_clicks_geo == -1:
-                                raise UpdateError(f"Can't get campaign {campaign.id} main geo.")
-
-                            if max_clicks_geo in test_geos:
-                                test_campaigns_list.append(campaign["instance"])
-                        else:
-                            profit = get_profit_by_particular_offer(campaign['instance'].id,
-                                                                    test_offer_id, start_date,
-                                                                    end_date)
-
-                            if profit is None:
-                                return
+                                if profit is None:
+                                    return
 
                             # set profit to profit only by test offer
-                            campaign['instance'].profit = decimal.Decimal(profit)
-                            test_campaigns_list.append(campaign['instance'])
+                            campaign['instance'].profit += decimal.Decimal(profit)
+
+                        test_campaigns_list.append(campaign['instance'])
 
                 for test_campaign in test_campaigns_list:
                     if test_campaign.profit >= 0:
