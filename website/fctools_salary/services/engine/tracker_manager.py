@@ -79,33 +79,35 @@ class TrackerManager:
         for report in reports_list:
             key = f'{report.start_date} - {report.end_date}'
             campaigns = get_campaigns(report.start_date, report.end_date, user, redis)
+
+            # first return value is revenue for period
             revenues = TrackerManager.calculate_profit_for_period(campaigns, traffic_groups)[0]
 
-            if settings.ADMIN in traffic_groups and report.revenue_admin:
+            if settings.ADMIN in traffic_groups and report.revenue_admin >= 0:
                 if float(report.revenue_admin) < revenues[settings.ADMIN]:
                     deltas[settings.ADMIN][key] = revenues[settings.ADMIN] - float(report.revenue_admin)
 
-            if settings.PUSH_TRAFF in traffic_groups and report.revenue_push:
+            if settings.PUSH_TRAFF in traffic_groups and report.revenue_push >= 0:
                 if float(report.revenue_push) < revenues[settings.PUSH_TRAFF]:
                     deltas[settings.PUSH_TRAFF][key] = revenues[settings.PUSH_TRAFF] - float(report.revenue_push)
 
-            if settings.POP_TRAFF in traffic_groups and report.revenue_pop:
+            if settings.POP_TRAFF in traffic_groups and report.revenue_pop >= 0:
                 if float(report.revenue_pop) < revenues[settings.POP_TRAFF]:
                     deltas[settings.POP_TRAFF][key] = revenues[settings.POP_TRAFF] - float(report.revenue_pop)
 
-            if settings.NATIVE_TRAFF in traffic_groups and report.revenue_native:
+            if settings.NATIVE_TRAFF in traffic_groups and report.revenue_native >= 0:
                 if float(report.revenue_native) < revenues[settings.NATIVE_TRAFF]:
                     deltas[settings.NATIVE_TRAFF][key] = revenues[settings.NATIVE_TRAFF] - float(report.revenue_native)
 
-            if settings.FPA_HSA_PWA in traffic_groups and report.revenue_fpa_hsa_pwa:
+            if settings.FPA_HSA_PWA in traffic_groups and report.revenue_fpa_hsa_pwa >= 0:
                 if float(report.revenue_fpa_hsa_pwa) < revenues[settings.FPA_HSA_PWA]:
                     deltas[settings.FPA_HSA_PWA][key] = revenues[settings.FPA_HSA_PWA] - float(report.revenue_fpa_hsa_pwa)
 
-            if settings.INAPP_TRAFF in traffic_groups and report.revenue_inapp:
+            if settings.INAPP_TRAFF in traffic_groups and report.revenue_inapp >= 0:
                 if float(report.revenue_inapp) < revenues[settings.INAPP_TRAFF]:
                     deltas[settings.INAPP_TRAFF][key] = revenues[settings.INAPP_TRAFF] - float(report.revenue_inapp)
 
-            if settings.TIK_TOK in traffic_groups and report.revenue_tik_tok:
+            if settings.TIK_TOK in traffic_groups and report.revenue_tik_tok >= 0:
                 if float(report.revenue_tik_tok) < revenues[settings.TIK_TOK]:
                     deltas[settings.TIK_TOK][key] = revenues[settings.TIK_TOK] - float(report.revenue_tik_tok)
 

@@ -21,22 +21,22 @@ class Report(models.Model):
     end_date = models.DateField(verbose_name="End date", null=False, blank=False, )
 
     revenue_admin = models.DecimalField(verbose_name="ADMIN revenue", null=True, blank=False, decimal_places=6,
-                                        max_digits=13, default=None, )
+                                        max_digits=13, default=-1, )
 
     revenue_native = models.DecimalField(verbose_name="NATIVE revenue", null=True, decimal_places=6, max_digits=13,
-                                         default=None, )
+                                         default=-1, )
 
     revenue_push = models.DecimalField(verbose_name="PUSH revenue", null=True, blank=False, decimal_places=6,
-                                       max_digits=13, default=None, )
+                                       max_digits=13, default=-1, )
 
     revenue_pop = models.DecimalField(verbose_name="POP revenue", null=True, blank=False, decimal_places=6,
-                                      max_digits=13, default=None, )
+                                      max_digits=13, default=-1, )
 
     revenue_fpa_hsa_pwa = models.DecimalField(verbose_name="FPA/HSA/PWA revenue", null=True, decimal_places=6,
-                                              max_digits=13, default=None, )
+                                              max_digits=13, default=-1, )
 
     revenue_inapp = models.DecimalField(verbose_name="INAPP revenue", null=True, decimal_places=6, max_digits=13,
-                                        default=None, )
+                                        default=-1, )
 
     revenue_tik_tok = models.DecimalField(verbose_name="Tik Tok revenue", null=True, decimal_places=6, max_digits=13,
-                                          default=None, )
+                                          default=-1, )
