@@ -117,7 +117,7 @@ class TestsManager:
                                                                         end_date)
 
                                 if profit is None:
-                                    return
+                                    profit = 0
 
                             # set profit to profit only by test offers
                             campaign['instance'].profit += decimal.Decimal(profit)
