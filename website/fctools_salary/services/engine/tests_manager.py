@@ -88,6 +88,11 @@ class TestsManager:
                     if campaign["instance"].id in done_campaigns_ids:
                         continue
 
+                    if campaign['instance'].id == 3552:
+                        _logger.error("LOOOOOOOK HERE")
+                        _logger.error(str(test_offers_ids))
+                        _logger.error(str(campaign["offers_list"]))
+
                     if (
                             campaign["instance"].traffic_group in traffic_groups
                             and campaign["instance"].traffic_source.id in test_traffic_sources_ids
