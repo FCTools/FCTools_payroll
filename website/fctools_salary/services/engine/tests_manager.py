@@ -95,6 +95,9 @@ class TestsManager:
                     ):
                         test_offers_list = list(test_offers_ids & set(campaign["offers_list"]))
 
+                        if not test_geos:
+                            campaign['instance'].profit = decimal.Decimal(0)
+
                         for test_offer_id in test_offers_list:
                             if test_geos:
                                 if not redis.exists(campaign["instance"].id):
