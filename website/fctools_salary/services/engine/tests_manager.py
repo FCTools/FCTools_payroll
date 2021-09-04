@@ -85,11 +85,8 @@ class TestsManager:
                 test_balance = test.balance
 
                 for campaign in campaigns_list:
-                    # if campaign["instance"].id in done_campaigns_ids:
-                    #     continue
-
-                    # TODO: test logic here (updating offers before testing)
-                    campaign['offers_list'] = get_offers_ids_by_campaign(campaign['instance'])
+                    if campaign["instance"].id in done_campaigns_ids:
+                        continue
 
                     if (
                             campaign["instance"].traffic_group in traffic_groups
