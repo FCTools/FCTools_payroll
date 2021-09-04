@@ -14,7 +14,7 @@ from django.db import transaction
 
 from fctools_salary.domains.accounts.test import Test
 from fctools_salary.exceptions import UpdateError, TestNotSplitError
-from fctools_salary.services.binom.get_info import get_campaigns, get_campaign_main_geo, get_profit_by_particular_offer
+from fctools_salary.services.binom.get_info import get_campaigns, get_campaign_main_geo, get_profit_by_particular_offer, get_offers_ids_by_campaign
 from fctools_salary.services.engine.tracker_manager import TrackerManager
 from fctools_salary.services.helpers.redis_client import RedisClient
 
@@ -85,13 +85,11 @@ class TestsManager:
                 test_balance = test.balance
 
                 for campaign in campaigns_list:
-                    if campaign["instance"].id in done_campaigns_ids:
-                        continue
+                    # if campaign["instance"].id in done_campaigns_ids:
+                    #     continue
 
-                    if campaign['instance'].id == 3552:
-                        _logger.error("LOOOOOOOK HERE")
-                        _logger.error(str(test_offers_ids))
-                        _logger.error(str(campaign["offers_list"]))
+                    # TODO: test logic here (updating offers before testing)
+                    campaign['offers_list'] = get_offers_ids_by_campaign(campaign['instance'])
 
                     if (
                             campaign["instance"].traffic_group in traffic_groups
